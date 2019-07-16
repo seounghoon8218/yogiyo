@@ -3,28 +3,49 @@
 
 <%-- ======= #25. tile1 중 header 페이지 만들기  ======= --%>
 <%
-	String cxtPath = request.getContextPath();
+	String ctxPath = request.getContextPath();
 %>
 
-<div align="center">
-	<ul class="nav nav-tabs mynav">
-		<li class="dropdown"><a class="dropdown-toggle"
-			data-toggle="dropdown" href="#">Home <span class="caret"></span></a>
-			<ul class="dropdown-menu">
-				<li><a href="<%=cxtPath%>/index.action">Home</a></li>
-				<li><a href="#">Submenu 1-2</a></li>
-				<li><a href="#">Submenu 1-3</a></li>
-			</ul></li>
-		<li class="dropdown"><a class="dropdown-toggle"
-			data-toggle="dropdown" href="#">주문 <span class="caret"></span></a>
-			<ul class="dropdown-menu">
-				<li><a href="<%=cxtPath%>/jumun.action">주문하기</a></li>
-				<li><a href="#">Submenu 1-2</a></li>
-				<li><a href="#">Submenu 1-3</a></li>
-			</ul></li>
-		<li><a href="#">Menu 2</a></li>
-		<li><a href="#">Menu 3</a></li>
-	</ul>
+<nav class="navbar navbar-inverse" style="background-color: red; border: none; height: 80px; margin-bottom: 0">
+  <div class="container-fluid" style="width: 70%;font-size: 16pt;" >
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#"><img src="<%=ctxPath %>/resources/images/로고예시.jpg" style="width: 70px; height: 50px;" /></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="col-sm-12 main-img-con" style="position: relative; margin: 0; padding: 0; height: 250px;">
+		<img alt="" src="<%=ctxPath %>/resources/images/메인이미지.jpg" style="width: 100%; height: 100%; opacity: 0.8;">
+		<div class="main-img-center"  style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);font-size: 18px;">
+			<h1 style="font-weight: bold; color: white; ">"어디로 배달해 드릴까요?"</h2>
+			<h4 style="font-weight: bold; color: white;">배달받으실 동 이름으로 검색해주세요.</h5>
+			 <div id="main-search-div">
+				<form name="mainsearchFrm">
+			      <input id="main-search-input" type="text" placeholder="건물명, 도로명, 지번으로 검색하세요.">
+			      <button id="main-search-button">검색</button>
+			    </form>
+		    </div>
+		</div>
 </div>
-
-
