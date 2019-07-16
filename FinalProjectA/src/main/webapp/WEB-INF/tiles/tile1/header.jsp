@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- ======= #25. tile1 중 header 페이지 만들기  ======= --%>
 <%
 	String ctxPath = request.getContextPath();
@@ -17,22 +17,25 @@
       <a class="navbar-brand" href="#"><img src="<%=ctxPath %>/resources/images/로고예시.jpg" style="width: 70px; height: 50px;" /></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
-      
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
-      </ul>
+     <c:if test="${sessionScope.loginuser == null }">
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
+	      </ul>
+     </c:if>
+     <c:if test="${sessionScope.loginuser != null }">
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
+	      </ul>
+      </c:if>
     </div>
   </div>
 </nav>
@@ -49,9 +52,3 @@
 		    </div>
 		</div>
 </div>
-<<<<<<< HEAD
-=======
-
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
->>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git

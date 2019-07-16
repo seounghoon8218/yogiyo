@@ -1,4 +1,4 @@
-package com.spring.yogiyo.cross;
+package com.spring.yogiyo.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component // Aspect 는 Service나 Controller 와 다르게 Component를 꼭 같이 써줘야 bean으로 올라감
-public class Cross {
+public class Aop {
 	/*
 	   XML에서 빈을 만드는 대신에 클래스명 앞에 @Component 어노테이션을 적어주면
 	     해당 클래스(지금은 Cross)는 bean으로 자동 등록된다.
