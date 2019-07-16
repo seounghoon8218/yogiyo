@@ -49,3 +49,9 @@
 		    </div>
 		</div>
 </div>
+<<<<<<< HEAD
+=======
+
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+>>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
