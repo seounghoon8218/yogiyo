@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시판2</title>
+<title>요기요2</title>
 
 <!-- 반응형 웹 쓰겠다. (부트스트랩)-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
