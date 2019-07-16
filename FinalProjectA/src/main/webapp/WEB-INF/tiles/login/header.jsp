@@ -14,7 +14,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/요기요로고.png" style="width: 100px; height: 50px;" /></a>
+      <a class="navbar-brand" href="#"><img src="<%=ctxPath %>/resources/images/로고예시.jpg" style="width: 70px; height: 50px;" /></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
      <c:if test="${sessionScope.loginuser == null }">
@@ -22,7 +22,7 @@
 	        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="<%=ctxPath%>/register.yo"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
+	        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
 	      </ul>
      </c:if>
      <c:if test="${sessionScope.loginuser != null }">
@@ -42,8 +42,8 @@
 <div class="col-sm-12 main-img-con" style="position: relative; margin: 0; padding: 0; height: 250px;">
 		<img alt="" src="<%=ctxPath %>/resources/images/메인이미지.jpg" style="width: 100%; height: 100%; opacity: 0.8;">
 		<div class="main-img-center"  style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);font-size: 18px;">
-			<h1 style="font-weight: bold; color: white; ">"어디로 <span style="color:#FAED7D;">배달</span>해 드릴까요?"</h2>
-			<h4 style="font-weight: bold; color: white; text-align: center;">배달받으실 동 이름으로 검색해주세요.</h5>
+			<h1 style="font-weight: bold; color: white; ">"어디로 배달해 드릴까요?"</h2>
+			<h4 style="font-weight: bold; color: white;">배달받으실 동 이름으로 검색해주세요.</h5>
 			 <div id="main-search-div">
 				<form name="mainsearchFrm">
 			      <input id="main-search-input" type="text" placeholder="건물명, 도로명, 지번으로 검색하세요.">
