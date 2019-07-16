@@ -14,7 +14,7 @@ public class YogiyoController {
 
 	// === #35. 의존객체 주입하기 ( DI : Dependency Injection ) ====
 	@Autowired
-	private InterYogiyoService serviec;
+	private InterYogiyoService service;
 
 	// === #36. 메인 페이지 요청 ====
 	@RequestMapping(value="/index.yo", method= {RequestMethod.GET})
@@ -33,4 +33,9 @@ public class YogiyoController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/register.yo" , method= {RequestMethod.GET})
+	public ModelAndView test(ModelAndView mv) {
+		mv.setViewName("register/register.tiles3");
+		return mv;
+	}
 }

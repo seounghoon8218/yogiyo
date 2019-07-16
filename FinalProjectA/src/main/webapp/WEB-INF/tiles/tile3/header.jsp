@@ -14,7 +14,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/로고예시.jpg" style="width: 70px; height: 50px;" /></a>
+      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/요기요로고.png" style="width: 100px; height: 50px;" /></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
      <c:if test="${sessionScope.loginuser == null }">
