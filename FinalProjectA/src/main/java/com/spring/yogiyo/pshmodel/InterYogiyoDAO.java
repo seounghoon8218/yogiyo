@@ -1,4 +1,4 @@
-package com.spring.yogiyo.model;
+package com.spring.yogiyo.pshmodel;
 
 public interface InterYogiyoDAO {
 

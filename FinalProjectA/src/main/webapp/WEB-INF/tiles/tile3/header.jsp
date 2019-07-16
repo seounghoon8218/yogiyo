@@ -39,16 +39,3 @@
     </div>
   </div>
 </nav>
-<div class="col-sm-12 main-img-con" style="position: relative; margin: 0; padding: 0; height: 250px;">
-		<img alt="" src="<%=ctxPath %>/resources/images/메인이미지.jpg" style="width: 100%; height: 100%; opacity: 0.8;">
-		<div class="main-img-center"  style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);font-size: 18px;">
-			<h1 style="font-weight: bold; color: white; ">"어디로 배달해 드릴까요?"</h2>
-			<h4 style="font-weight: bold; color: white;">배달받으실 동 이름으로 검색해주세요.</h5>
-			 <div id="main-search-div">
-				<form name="mainsearchFrm">
-			      <input id="main-search-input" type="text" placeholder="건물명, 도로명, 지번으로 검색하세요.">
-			      <button id="main-search-button">검색</button>
-			    </form>
-		    </div>
-		</div>
-</div>

@@ -1,4 +1,4 @@
-package com.spring.yogiyo.aop;
+package com.spring.yogiyo.pshaop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

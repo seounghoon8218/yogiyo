@@ -1,4 +1,4 @@
-package com.spring.yogiyo.service;
+package com.spring.yogiyo.pshservice;
 
 public interface InterYogiyoService {
 
