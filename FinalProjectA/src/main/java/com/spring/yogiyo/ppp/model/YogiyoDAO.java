@@ -1,4 +1,4 @@
-package com.spring.yogiyo.pshmodel;
+package com.spring.yogiyo.ppp.model;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
