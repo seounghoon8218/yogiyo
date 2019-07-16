@@ -33,9 +33,9 @@ public class YogiyoController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/register.yo" , method= {RequestMethod.GET})
+	@RequestMapping(value="/test.yo" , method= {RequestMethod.GET})
 	public ModelAndView test(ModelAndView mv) {
-		mv.setViewName("register/register.tiles3");
+		mv.setViewName("test.tiles2");
 		return mv;
 	}
 }
