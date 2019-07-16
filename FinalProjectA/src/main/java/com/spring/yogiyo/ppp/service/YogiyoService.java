@@ -1,9 +1,9 @@
-package com.spring.yogiyo.pshservice;
+package com.spring.yogiyo.ppp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.yogiyo.pshmodel.InterYogiyoDAO;
+import com.spring.yogiyo.ppp.model.InterYogiyoDAO;
 
 //#31. Service 선언
 @Service
