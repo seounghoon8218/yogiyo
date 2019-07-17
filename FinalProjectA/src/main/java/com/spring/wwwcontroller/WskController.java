@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WskController {
 
-	@RequestMapping(value="//.yo", method = {RequestMethod.GET})
+	@RequestMapping(value="/index/yogiyo.yo", method = {RequestMethod.GET})
 	public ModelAndView authmember(ModelAndView mv) {
 		
 		mv.setViewName("main/index.tiles1");
