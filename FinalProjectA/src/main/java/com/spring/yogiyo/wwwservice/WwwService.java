@@ -1,4 +1,4 @@
-package com.spring.yogiyo.www.service;
+package com.spring.yogiyo.wwwservice;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.common.AES256;
 import com.spring.member.model.MemberVO;
-import com.spring.yogiyo.www.model.InterWwwDAO;
+import com.spring.yogiyo.wwwmodel.InterWwwDAO;
 
 //=== #31. Service 선언 ===
 @Service

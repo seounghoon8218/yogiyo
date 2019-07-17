@@ -1,4 +1,4 @@
-package com.spring.yogiyo.www.service;
+package com.spring.yogiyo.wwwservice;
 
 import java.util.HashMap;
 import java.util.List;

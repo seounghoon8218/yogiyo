@@ -1,4 +1,4 @@
-package com.spring.yogiyo.www.model;
+package com.spring.yogiyo.wwwmodel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,19 +20,19 @@ public class WwwDAO implements InterWwwDAO {
 	// === #38. 메인 페이지용 이미지 파일을 가져오기===
 	@Override
 	public List<String> getImgfilenameList() {
-		List<String> imgfilenameList = sqlsession.selectList("board.getImgfilenameList");
+		List<String> imgfilenameList = sqlsession.selectList("www.getImgfilenameList");
 		return imgfilenameList;
 	}
 
 	// === #46. 로그인 처리하기 ===
 	@Override
 	public MemberVO getLoginMember(HashMap<String, String> paraMap) {
-		MemberVO loginuser = sqlsession.selectOne("board.getLoginMember", paraMap); // loginuser 서비스로감
+		MemberVO loginuser = sqlsession.selectOne("www.getLoginMember", paraMap); // loginuser 서비스로감
 		return loginuser;
 	}
 	@Override
 	public void setLastLoginDate(HashMap<String, String> paraMap) {
-		sqlsession.update("board.setLastLoginDate", paraMap);
+		sqlsession.update("www.setLastLoginDate", paraMap);
 		
 	}
 }

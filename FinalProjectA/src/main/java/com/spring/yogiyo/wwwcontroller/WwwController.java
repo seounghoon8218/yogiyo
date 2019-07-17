@@ -1,4 +1,4 @@
-package com.spring.yogiyo.www.controller;
+package com.spring.yogiyo.wwwcontroller;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.common.SHA256;
 import com.spring.member.model.MemberVO;
-import com.spring.yogiyo.www.service.InterWwwService;
+import com.spring.yogiyo.wwwservice.InterWwwService;
 
 // === #30. 컨트롤러 선언 ===
 @Controller
@@ -27,7 +27,7 @@ public class WwwController {
 	
 	
 	// === #40. 로그인 폼 페이지 요청 ===
-	@RequestMapping(value="/login.action", method= {RequestMethod.GET})
+	@RequestMapping(value="/login.yo", method= {RequestMethod.GET})
 	public ModelAndView login(ModelAndView mv) {
 		
 		mv.setViewName("login/loginform.tiles1");
@@ -35,14 +35,14 @@ public class WwwController {
 	}
 	
 	// === #41. 로그인 처리하기 ===
-	@RequestMapping(value="/loginEnd.action", method= {RequestMethod.POST})
+	@RequestMapping(value="/loginEnd.yo", method= {RequestMethod.POST})
 	public ModelAndView loginEnd(HttpServletRequest request, ModelAndView mv) {
 		
-		String userid = request.getParameter("userid");
+		String email = request.getParameter("email");
 		String pwd = request.getParameter("pwd");
 		
 		HashMap<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("userid", userid);
+		paraMap.put("email", email);
 		paraMap.put("pwd", SHA256.encrypt(pwd));
 		
 		MemberVO loginuser = service.getLoginMember(paraMap);
@@ -84,7 +84,7 @@ public class WwwController {
 					session.setAttribute("loginuser", loginuser);
 					
 					String msg = "암호를 3개월동안 변경하지 않았습니다.";
-					String loc = request.getContextPath()+"/myinfo.action";
+					String loc = request.getContextPath()+"/myinfo.yo";
 					
 					mv.addObject("msg", msg);
 					mv.addObject("loc", loc);

@@ -1,4 +1,4 @@
-package com.spring.yogiyo.www.aop;
+package com.spring.yogiyo.wwwaop;
 
 import java.io.IOException;
 
@@ -48,7 +48,7 @@ public class LoginCheck {
 		if( session.getAttribute("loginuser") == null ) {
 			try {
 				String msg = "먼저 로그인 하세요";
-				String loc = request.getContextPath()+"/login.action";
+				String loc = request.getContextPath()+"/login.yo";
 				request.setAttribute("msg", msg);
 				request.setAttribute("loc", loc);
 				

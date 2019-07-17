@@ -57,13 +57,13 @@
     
     function func_Login() {
     		 
-		 var userid = $("#userid").val(); 
+		 var email = $("#email").val(); 
 		 var pwd = $("#pwd").val(); 
 		
-		 if(userid.trim()=="") {
-		 	 alert("아이디를 입력하세요!!");
-			 $("#userid").val(""); 
-			 $("#userid").focus();
+		 if(email.trim()=="") {
+		 	 alert("이메일을 입력하세요!!");
+			 $("#email").val(""); 
+			 $("#email").focus();
 			 return;
 		 }
 		
@@ -76,7 +76,7 @@
 
 		 var frm = document.loginFrm;
 		 
-		 frm.action = "<%=ctxPath%>/loginEnd.action";
+		 frm.action = "<%=ctxPath%>/loginEnd.yo";
 		 frm.method = "POST";
 		 frm.submit();
 		 
@@ -95,10 +95,10 @@
 		    <div class="col-sm-8 col-lg-8 custom-border">
 				<div class="form-group custom-input">  <%-- 폼에서는 class form-group 을 사용해야 하며, 그 뜻은 폼에서 사용되어지는 1개 행 즉, 클래스 row 와 같은 용도로 사용되어지는 것이다. --%>
 					<div class="col-sm-3 col-lg-3">
-						<label for="userid">아이디</label>
+						<label for="email">아이디</label>
 					</div>
 					<div class="col-sm-9 col-lg-9">
-						<input type="text" class="form-control" name="userid" id="userid" value=""/> <%-- 부트스트랩에서 input 태그에는 항상 class form-control 이 사용되어져야 한다. --%>
+						<input type="text" class="form-control" name="email" id="email" value=""/> <%-- 부트스트랩에서 input 태그에는 항상 class form-control 이 사용되어져야 한다. --%>
 					</div>
 				</div>	
 					
