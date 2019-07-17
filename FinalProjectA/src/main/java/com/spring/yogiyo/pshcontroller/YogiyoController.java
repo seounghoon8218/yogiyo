@@ -27,11 +27,12 @@ public class YogiyoController {
 	}	  
 	
 	// 회원가입 폼 보여주기
-	@RequestMapping(value="/register.yo" , method= {RequestMethod.GET})
-	public ModelAndView register(ModelAndView mv) {
-		mv.setViewName("register/register.tiles3");
-		return mv;
-	}
+		@RequestMapping(value="/register.yo" , method= {RequestMethod.GET})
+		public ModelAndView register(ModelAndView mv) {
+			mv.setViewName("register/register.tiles3");
+			return mv;
+		}
+	
 	
 	@RequestMapping(value="/test.yo" , method= {RequestMethod.GET})
 	public ModelAndView test(ModelAndView mv) {
