@@ -3,21 +3,20 @@
 body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 #mycontent		{ background-color:#F5F5F5; float:left; width:69%; min-height:800px; padding-top: 40px;}
 #mysideinfo		{ background-color:#F0FFFF; float:left; width:30%; min-height:800px; padding-top: 20px;}
-<<<<<<< HEAD
+
 #myfooter		{ background-color:#555555; clear:both; height:230px; }
-=======
+
 
 #myheader		{ 
 	background-color:#EBEBE0; height:56px;
 }
 
-#mycontainer	{ width:100%; margin:0 auto; }
+#mycontainer  { width:100%; margin:0 auto; }
 #myheader li a {
 	color: white;
 }
-#myfooter		{ background-color:#555555; height:100px; }
->>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
-	
+#myfooter	  { background-color:#555555; height:100px; }
+
 #myheader a {text-decoration:none;}
 
 /* mouse over link */
