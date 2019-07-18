@@ -1,4 +1,4 @@
-package com.spring.yogiyo.ppp.model;
+package com.spring.yogiyo.pppmodel;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,6 @@ public class YogiyoDAO implements InterYogiyoDAO {
 	// === #33. 의존객체 주입하기 ( DI : Dependency Injection ) ====
 	@Autowired	// Type에 따라 알아서 Bean 주입해줌
 	private SqlSessionTemplate sqlsession;
-	
-	
 	
 }
 
