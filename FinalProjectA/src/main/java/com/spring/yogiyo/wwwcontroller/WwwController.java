@@ -43,7 +43,7 @@ public class WwwController {
 		
 		HashMap<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("email", email);
-		paraMap.put("pwd", SHA256.encrypt(pwd));
+		paraMap.put("pwd", pwd);
 		
 		MemberVO loginuser = service.getLoginMember(paraMap);
 		//////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ public class WwwController {
 			//	String loc = "javascript:history.back()";
 				
 				//// 로그인을 한지 1년이 지났지만 정상적으로 로그인 처리를 해주는 것 ///
-				String loc = "/board/index.action";
+				String loc = "/yogiyo/index.yo";
 				session.setAttribute("loginuser", loginuser);
 				
 				mv.addObject("msg", msg);
@@ -104,21 +104,21 @@ public class WwwController {
 		return mv;
 		
 	}
-	@RequestMapping(value="/myinfo.action", method= {RequestMethod.GET})
+	@RequestMapping(value="/myinfo.yo", method= {RequestMethod.GET})
 	public String myinfo() {
 		return "login/myinfo.tiles1";
 		// /Board/src/main/webapp/WEB-INF/views/tiles1/login/myinfo.jsp 파일을 생성한다.
 	}
 	
 	// === #50. 로그아웃 처리하기 ===
-	@RequestMapping(value="/logout.action", method= {RequestMethod.GET})
+	@RequestMapping(value="/logout.yo", method= {RequestMethod.GET})
 	public ModelAndView logout(ModelAndView mv, HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
 		String msg = "로그아웃 되었습니다.";
-		String loc = request.getContextPath()+"/index.action";
+		String loc = request.getContextPath()+"/index.yo";
 		
 		mv.addObject("msg", msg);
 		mv.addObject("loc", loc);
