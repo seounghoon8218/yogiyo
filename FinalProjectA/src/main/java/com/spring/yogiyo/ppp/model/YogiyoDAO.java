@@ -4,6 +4,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.spring.yogiyo.pppmodel.InterYogiyoDAO;
+
 //== #32. DAO 선언 ===
 @Repository
 public class YogiyoDAO implements InterYogiyoDAO {

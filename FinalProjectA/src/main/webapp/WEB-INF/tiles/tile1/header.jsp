@@ -23,6 +23,7 @@
 		 });
 		 $xml = simplexml_load_file("http://maps.google.co.kr/maps/api/geocode/xml?latlng=".latitude.",".longitude."&sensor=false");
 		 $get_address = $xml->result->formatted_address;
+		 
 		$.ajax({
 			url:"<%= ctxPath%>/gps.yo",
 			type:"GET",
