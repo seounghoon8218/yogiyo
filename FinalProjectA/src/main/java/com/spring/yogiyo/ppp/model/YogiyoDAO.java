@@ -12,5 +12,7 @@ public class YogiyoDAO implements InterYogiyoDAO {
 	@Autowired	// Type에 따라 알아서 Bean 주입해줌
 	private SqlSessionTemplate sqlsession;
 	
+	
+	
 }
 
