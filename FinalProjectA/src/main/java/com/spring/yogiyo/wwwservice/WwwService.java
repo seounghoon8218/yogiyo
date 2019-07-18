@@ -64,11 +64,11 @@ public class WwwService implements InterWwwService {
 				
 				dao.setLastLoginDate(paraMap); // 마지막으로 로그인 한 날짜시간 변경(기록)하기 (DML이 하나라 트랜잭션처리(@Transactional)를 안해도됨)
 				
-				try {
+				/*try {
 					loginuser.setEmail(aes.decrypt(loginuser.getEmail()) );
 				} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 					e.printStackTrace();
-				}
+				}*/
 			}// end of else---------
 		}// end of if(loginuser != null)--------
 		

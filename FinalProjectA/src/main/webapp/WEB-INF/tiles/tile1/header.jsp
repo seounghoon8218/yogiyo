@@ -72,7 +72,7 @@
 	        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+	        <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
