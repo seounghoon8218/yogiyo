@@ -1,4 +1,4 @@
-package com.spring.yogiyo.kkk.service;
+package com.spring.yogiyo.kkkservice;
 
 public interface InterKkkService {
 

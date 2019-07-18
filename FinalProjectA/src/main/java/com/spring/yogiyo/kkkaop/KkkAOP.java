@@ -1,4 +1,4 @@
-package com.spring.yogiyo.kkk.aop;
+package com.spring.yogiyo.kkkaop;
 
 public class KkkAOP {
 

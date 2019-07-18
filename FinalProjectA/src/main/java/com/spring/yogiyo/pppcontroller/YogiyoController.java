@@ -1,4 +1,4 @@
-package com.spring.yogiyo.ppp.controller;
+package com.spring.yogiyo.pppcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.yogiyo.ppp.service.InterYogiyoService;
+import com.spring.yogiyo.pppservice.InterYogiyoService;
 
 // #30
 @Controller
@@ -38,4 +38,6 @@ public class YogiyoController {
 		mv.setViewName("test.tiles2");
 		return mv;
 	}
+	
 }
+

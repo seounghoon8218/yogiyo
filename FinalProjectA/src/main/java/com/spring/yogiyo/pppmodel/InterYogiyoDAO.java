@@ -1,4 +1,4 @@
-package com.spring.yogiyo.ppp.model;
+package com.spring.yogiyo.pppmodel;
 
 public interface InterYogiyoDAO {
 

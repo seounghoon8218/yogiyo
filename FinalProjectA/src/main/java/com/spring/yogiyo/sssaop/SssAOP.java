@@ -1,4 +1,4 @@
-package com.spring.yogiyo.sss.aop;
+package com.spring.yogiyo.sssaop;
 
 public class SssAOP {
 

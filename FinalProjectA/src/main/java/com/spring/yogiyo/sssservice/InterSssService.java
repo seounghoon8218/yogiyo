@@ -1,4 +1,4 @@
-package com.spring.yogiyo.sss.service;
+package com.spring.yogiyo.sssservice;
 
 public interface InterSssService {
 

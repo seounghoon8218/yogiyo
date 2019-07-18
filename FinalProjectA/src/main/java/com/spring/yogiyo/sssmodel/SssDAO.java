@@ -1,4 +1,4 @@
-package com.spring.yogiyo.sss.model;
+package com.spring.yogiyo.sssmodel;
 
 public class SssDAO implements InterSssDAO {
 

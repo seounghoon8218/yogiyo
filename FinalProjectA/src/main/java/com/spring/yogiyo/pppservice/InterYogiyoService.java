@@ -1,4 +1,4 @@
-package com.spring.yogiyo.ppp.service;
+package com.spring.yogiyo.pppservice;
 
 public interface InterYogiyoService {
 

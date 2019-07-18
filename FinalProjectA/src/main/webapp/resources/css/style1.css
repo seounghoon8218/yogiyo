@@ -10,13 +10,11 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 #mycontainer	{ width:100%; margin:0 auto; }
 #myheader li a {
 	color: white;
-}
-<<<<<<< HEAD
+}1
 #mycontent		{ background-color:#F5F5F5; min-height:800px; padding-top: 40px;}
 #myfooter		{ background-color:#555555; height:230px; }
 =======
 #myfooter		{ background-color:#555555; height:100px; }
->>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
 	
 #myheader a {text-decoration:none;}
 
@@ -34,15 +32,17 @@ input::-moz-placeholder {color: #a8a8a8;}
 #main-search-div{
 	height: 40px;
 	width: 400px;
-	border: 1px solid #ff8040;
+	border: 0px solid #ff8040;
 }
 #main-search-input{
-	font-size: 16px;
-	width: 80%;
+	height: 42px;
+	margin-left: 10px;
+	font-size: 14px;
+	width: 67.5%;
 	padding: 10px;
 	border: 0px;
 	outline: none;
-	float: left;
+	border-radius: 7px 0 0 7px;
 }
 #main-search-button{
 	width: 20%;
@@ -52,4 +52,15 @@ input::-moz-placeholder {color: #a8a8a8;}
 	outline: none;
 	float: right;
 	color: #ffffff;
+	border-radius: 0 7px 7px 0 ;
 }
+
+#gpsbtn {
+	cursor:pointer;
+	width: 10%;
+	height: 38px;
+	vertical-align:middle;
+	float: left;
+	border-radius: 7px;
+}
+

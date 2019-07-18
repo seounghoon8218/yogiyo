@@ -1,4 +1,4 @@
-package com.spring.yogiyo.kkk.model;
+package com.spring.yogiyo.kkkmodel;
 
 public interface InterKkkDAO {
 
