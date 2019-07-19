@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==== #28. mapper 기본설정 ==== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
+<mapper namespace="www">
+	
+	<!-- === #47. 로그인 처리하기 === -->
+	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.member.model.MemberVO"> <!-- MemberVO가 리턴이라 set을 찾아서 넘겨주기때문에 as를 마음대로쓰면안된다 -->
+		select idx,email,pwd,name,tel
+			  , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap 
+      	      , trunc( months_between(sysdate, lastpwdchangdate) ) AS pwdchangegap
+			from tbl_member
+			where status = 1 and
+			      email = #{email} and
+			      pwd = #{pwd}  
+	</select>
+	<update id="setLastLoginDate" parameterType="HashMap">
+		update tbl_member set lastLoginDate = sysdate
+		where email = #{email}
+	</update>
+	
+</mapper>
