@@ -1,10 +1,19 @@
 @charset "UTF-8";
 
 body {font-family: Arial, Helvetica, sans-serif, 돋움; }
-
-#mycontainer	{ width:85%; margin:0 auto; padding:20px; }
-#myheader		{ background-color:#EBEBE0; height:56px; padding: 10px; }
 #mycontent		{ background-color:#F5F5F5; min-height:800px; padding-top: 40px;}
+
+#myheader		{ 
+	background-color:#EBEBE0; height:56px;
+}
+
+#mycontainer	{ width:100%; margin:0 auto; }
+#myheader li a {
+	color: white;
+}1
+#mycontent		{ background-color:#F5F5F5; min-height:800px; padding-top: 40px;}
+#myfooter		{ background-color:#555555; height:230px; }
+=======
 #myfooter		{ background-color:#555555; height:100px; }
 	
 #myheader a {text-decoration:none;}
@@ -15,4 +24,43 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 #myheader .mynav {font-size: 13pt;}
 .myrank {font-weight:bold; color:red; font-size:13pt;}
 .myaligncenter {text-align:center;}
+
+input:-ms-input-placeholder{ color:#a8a8a8; }
+input::-webkit-input-placeholder{color: #a8a8a8;}
+input::-moz-placeholder {color: #a8a8a8;}
+
+#main-search-div{
+	height: 40px;
+	width: 400px;
+	border: 0px solid #ff8040;
+}
+#main-search-input{
+	height: 42px;
+	margin-left: 10px;
+	font-size: 14px;
+	width: 67.5%;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	border-radius: 7px 0 0 7px;
+}
+#main-search-button{
+	width: 20%;
+	height: 42px;
+	border: 0px;
+	background: #ff8040;
+	outline: none;
+	float: right;
+	color: #ffffff;
+	border-radius: 0 7px 7px 0 ;
+}
+
+#gpsbtn {
+	cursor:pointer;
+	width: 10%;
+	height: 38px;
+	vertical-align:middle;
+	float: left;
+	border-radius: 7px;
+}
 

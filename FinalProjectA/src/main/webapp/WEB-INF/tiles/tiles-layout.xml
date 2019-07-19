@@ -46,6 +46,25 @@
 	</definition>
 	<!-- ==== tiles 를 사용하는 레이아웃 설정 끝 ==== -->
 	
+	<!-- ==== tiles 를 사용하는 레이아웃 설정 시작 ==== -->
+	
+	<definition name="layout-tiles3" template="/WEB-INF/tiles/layout/layout-tiles3.jsp"> 
+		<put-attribute name="header" value="/WEB-INF/tiles/tile3/header.jsp" />
+		<put-attribute name="content" value="" /> <!-- content 의 value값은 없음..! 내용물은 그때그때 달라지니까 아래 definition 을 통해 그때그때 변함 -->
+		<put-attribute name="footer" value="/WEB-INF/tiles/tile3/footer.jsp" />
+	</definition>
+	
+	<definition name="*.tiles3" extends="layout-tiles3">					  <!-- 뷰리졸버가 2순위고 타일즈가 1순위로 수정해뒀으니까.. -->
+		<put-attribute name="content" value="/WEB-INF/views/tiles3/{1}.jsp"/> <!-- control 단에서 return "cart.tiles1" 하면 실제는 ─> /WEB-INF/views/tiles1/cart.jsp -->
+	</definition>
+	<definition name="*/*.tiles3" extends="layout-tiles3">
+		<put-attribute name="content" value="/WEB-INF/views/tiles3/{1}/{2}.jsp"/><!-- control 단에서 return "product/cart.tiles1" 하면 실제는 ─> /WEB-INF/views/tiles1/product/cart.jsp -->
+	</definition>
+	<definition name="*/*/*.tiles3" extends="layout-tiles3">
+		<put-attribute name="content" value="/WEB-INF/views/tiles3/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<!-- ==== tiles 를 사용하는 레이아웃 설정 끝 ==== -->
+	
 	
 	<!-- ==== tiles 를 사용하지 않는 레이아웃 설정 시작 ==== -->
 	<definition name="layout-notiles" template="/WEB-INF/tiles/layout/layout-notiles.jsp"> 
