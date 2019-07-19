@@ -8,7 +8,7 @@
 	
 	if(loginuser != null && (gobackURL == null || gobackURL == "")) {
 		alert("로그인 성공!!");
-		location.href="<%= ctxPath%>/index.action";
+		location.href="<%= ctxPath%>/index.yo";
 	}
 	else if(loginuser != null && (gobackURL != null && gobackURL != "")){
 		alert("로그인 성공!!");

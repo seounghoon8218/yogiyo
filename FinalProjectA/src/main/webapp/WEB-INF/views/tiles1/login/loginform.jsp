@@ -76,7 +76,7 @@
 
 		 var frm = document.loginFrm;
 		 
-		 frm.action = "<%=ctxPath%>/loginEnd.action";
+		 frm.action = "<%=ctxPath%>/loginEnd.yo";
 		 frm.method = "POST";
 		 frm.submit();
 		 
