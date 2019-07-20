@@ -41,6 +41,18 @@
 		cursor: pointer;
 	}
 	
+	#cartegoryVar{
+		width:100%;
+		background-color: white;
+		border-bottom: 3px solid gray;
+	}
+	
+	.sticky {/* 포지션을 고정시켜서 상단바가 스크롤 내려도 계속 위에 고정되도록! */
+ 	 	position: fixed;
+  		top: 0;
+  		width: 100%; 
+	}
+	
 </style>
 
 <script type="text/javascript">
@@ -65,6 +77,30 @@
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 			}
 		}); // end of ajax---
+		
+// 카테고리바 스크롤해도 같이 따라오게 하기
+		var navbarTop = $("#cartegoryVar").offset().top;
+		//var navbarLeft = $("#navbar").offset().left;
+		
+		var scrollTop = 0;
+		$(window).scroll(function(event){
+			scrollTop = $(this).scrollTop();
+		  //  alert("scrollTop : "+scrollTop);
+		  //  alert("navbarTop : "+navbarTop);
+		
+		  //var scrollBottom = $("body").height() - $(window).height() - scrollTop;
+
+		  //console.log("scrollBottom => " + scrollBottom);
+		  
+		    if(scrollTop >= navbarTop) {
+		    	//alert("스크롤의 위치가 네비게이션위치 및 그 이하로 떨어졌네요.");
+				$("#cartegoryVar").addClass("sticky");
+			}
+			else {
+				$("#cartegoryVar").removeClass("sticky");
+			}
+		}); // end of $(window).scroll---------
+//	------------------	
 		
 	}); // end of ready--
 </script>
@@ -115,7 +151,9 @@
 		</div>
 </div>
 
-<div style="height: 50px; background-color: white;border-bottom: 3px solid gray; padding: 0; width: 80%; margin: 0 auto;">
-	<ul id="categoryul">
-	</ul>
+<div id="cartegoryVar" >
+	<div style="height: 50px; background-color: white;  padding: 0; width: 80%; margin: 0 auto;">
+		<ul id="categoryul">
+		</ul>
+	</div>
 </div>
