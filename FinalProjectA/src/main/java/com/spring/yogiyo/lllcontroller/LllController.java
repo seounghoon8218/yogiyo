@@ -2,9 +2,6 @@ package com.spring.yogiyo.lllcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.yogiyo.lllservice.InterLllService;
 
@@ -16,11 +13,5 @@ public class LllController {
 		@Autowired   // Type에 따라 알아서 Bean 을 주입해준다.
 		private InterLllService service;
 		
-	// === #40. 로그인 폼 페이지 요청 ===
-		@RequestMapping(value="/login.yo", method= {RequestMethod.GET})
-		public ModelAndView login(ModelAndView mv) {
-			
-			mv.setViewName("login/loginform.tiles1");
-			return mv;
-		}
+	
 }

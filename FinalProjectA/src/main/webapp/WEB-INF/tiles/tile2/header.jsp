@@ -6,8 +6,70 @@
 	String ctxPath = request.getContextPath();
 %>
 
+<style type="text/css">
+	#categoryul {
+		list-style:none;
+    	margin:0;
+    	padding:0;
+    	border: solid 0px red;
+    	height: 100%;
+	}
+	
+	#categoryul li{
+		text-align: center;
+		vertical-align: middle;
+		width : 9%;
+		height : 100%;
+		margin: 0 0 0 0;
+		padding-top: 15px;
+    	border : 0;
+    	float: left;
+    	border: solid 0px blue;
+	}
+	#categoryul li:hover{
+		background-color: black;
+		color: white;
+	}
+	
+	.categorylia{
+		color: black !important;
+		font-weight: bold;
+		height: 100%;
+		width: 100%;
+	}
+	.categorylia:hover {
+		cursor: pointer;
+	}
+	
+</style>
 
-<nav class="navbar navbar-inverse" style="background-color: red; border: none; height: 80px; margin-bottom: 0">
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$.ajax({
+			url:"<%= ctxPath%>/categoryListAjax.yo",
+			type:"GET",
+			dataType:"JSON",
+			success:function(json){
+				
+				$("#categoryul").empty();
+				var html = "";
+					html += "<a class='categorylia'><li>검색(이미지)</li></a>";
+					html += "<a class='categorylia'><li>전체보기</li></a>";
+				$.each(json, function(index,item){
+					html += "<a class='categorylia'><li>"+item.shopcategoryname+"</li></a>";
+				});
+				
+				$("#categoryul").append(html);	
+			}, error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		}); // end of ajax---
+		
+	}); // end of ready--
+</script>
+
+<nav class="navbar navbar-inverse" style="background-color: red; border: none; margin-bottom: 0">
   <div class="container-fluid" style="width: 70%;font-size: 16pt;" >
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -51,4 +113,9 @@
 			    </form>
 		    </div>
 		</div>
+</div>
+
+<div style="height: 50px; background-color: white;border-bottom: 3px solid gray; padding: 0; width: 80%; margin: 0 auto;">
+	<ul id="categoryul">
+	</ul>
 </div>
