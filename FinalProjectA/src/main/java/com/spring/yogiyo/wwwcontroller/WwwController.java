@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.common.SHA256;
@@ -30,7 +31,7 @@ public class WwwController {
 	@RequestMapping(value="/login.yo", method= {RequestMethod.GET})
 	public ModelAndView login(ModelAndView mv) {
 		
-		mv.setViewName("login/loginform.tiles1");
+		mv.setViewName("login/loginform.tiles3");
 		return mv;
 	}
 	
@@ -95,7 +96,7 @@ public class WwwController {
 					// 아무런 이상없이 로그인 하는 경우
 					session.setAttribute("loginuser", loginuser);
 					
-					mv.setViewName("login/loginEnd.tiles1");
+					mv.setViewName("login/loginEnd.tiles3");
 					// /Board/src/main/webapp/WEB-INF/views/tiles1/login/loginEnd.jsp 파일을 생성한다.
 				}
 			}
@@ -106,7 +107,7 @@ public class WwwController {
 	}
 	@RequestMapping(value="/myinfo.yo", method= {RequestMethod.GET})
 	public String myinfo() {
-		return "login/myinfo.tiles1";
+		return "login/myinfo.tiles3";
 		// /Board/src/main/webapp/WEB-INF/views/tiles1/login/myinfo.jsp 파일을 생성한다.
 	}
 	
@@ -127,5 +128,36 @@ public class WwwController {
 		return mv;
 	}
 	
+	// 회원가입 폼 보여주기
+	@RequestMapping(value="/register.yo" , method= {RequestMethod.GET})
+	public ModelAndView register(ModelAndView mv) {
+		mv.setViewName("register/register.tiles3");
+		return mv;
+	}
+	
+	// === #41. 회원가입 처리하기 ===
+	@RequestMapping(value="/registerEnd.yo", method= {RequestMethod.POST})
+	public String registerEnd(MemberVO membervo) {
+		
+		service.RegisterMember(membervo);
+		
+		return "register/registerEnd.tiles3";
+	}
+	// 이메일중복확인
+	@ResponseBody
+	@RequestMapping(value="/emailcheck.yo", method= {RequestMethod.POST})
+	public int Emailcheck(HttpServletRequest request) throws Exception{
+		
+		String email = request.getParameter("eamil");
+		MemberVO emailcheck = service.emailcheck(email);
+		
+		int result = 0;
+		
+		if(emailcheck != null) {
+			result = 1;
+		}
+		System.out.println(result);
+		return result;
+	}
 	
 }
