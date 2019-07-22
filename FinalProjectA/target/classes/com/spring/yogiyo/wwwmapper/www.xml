@@ -21,4 +21,13 @@
 		where email = #{email}
 	</update>
 	
+	<insert id="RegisterMember" parameterType="String"> 
+		insert into tbl_Member (idx,email, pwd, name, tel, status) values (seq_tbl_member.nextval, #{email}, #{pwd}, #{name}, #{tel}, 1) 
+	</insert>
+
+	<select id="emailcheck" resultType="com.spring.member.model.MemberVO">
+		select email from tbl_member
+		where email = #{email}
+	</select>
+	
 </mapper>

@@ -35,13 +35,6 @@ public class YogiyoController {
 		// /Yogiyo/src/main/webapp/WEB-INF/views/tiles1/main/index.jsp 파일을 생성한다.
 	}	  
 	
-	// 회원가입 폼 보여주기
-	@RequestMapping(value="/register.yo" , method= {RequestMethod.GET})
-	public ModelAndView register(ModelAndView mv) {
-		mv.setViewName("register/register.tiles3");
-		return mv;
-	}
-	
 	// 음식점들 보여주는 화면
 	@RequestMapping(value="/categryList.yo" , method= {RequestMethod.GET})
 	public ModelAndView test(ModelAndView mv) {
