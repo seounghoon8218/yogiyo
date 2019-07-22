@@ -1,11 +1,20 @@
 package com.spring.yogiyo.pppcontroller;
 
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.spring.yogiyo.pppservice.InterYogiyoService;
 
 // #30
@@ -33,10 +42,32 @@ public class YogiyoController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/test.yo" , method= {RequestMethod.GET})
+	// 음식점들 보여주는 화면
+	@RequestMapping(value="/categryList.yo" , method= {RequestMethod.GET})
 	public ModelAndView test(ModelAndView mv) {
-		mv.setViewName("test.tiles2");
+		mv.setViewName("categryList.tiles2");
 		return mv;
+	}
+	
+	// tiles2 의 헤더부분 카테고리리스트
+	@RequestMapping(value="/categoryListAjax.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String gps(HttpServletRequest request) {
+		
+		Gson gson = new Gson();
+		JsonArray jsonArr = new JsonArray();
+		// 카테고리 리스트 불러오기
+		List<HashMap<String, String>> categoryList = service.getShopCategory();
+		
+		for(HashMap<String, String> map : categoryList) {
+			JsonObject jsonObj = new JsonObject();
+			jsonObj.addProperty("shopcategorycode", map.get("shopcategorycode"));
+			jsonObj.addProperty("shopcategoryname", map.get("shopcategoryname"));
+			
+			jsonArr.add(jsonObj);
+		}
+		return gson.toJson(jsonArr);
+		
 	}
 	
 }

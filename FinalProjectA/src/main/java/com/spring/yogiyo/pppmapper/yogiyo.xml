@@ -5,8 +5,18 @@
 
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="yogiyo">
-
 	
+	<resultMap type="HashMap" id="categoryList">
+		
+		<result property="shopcategorycode" 	column="shopcategorycode" 		javaType="String" />
+		<result property="shopcategoryname" 	column="shopcategoryname" 		javaType="String" />
+		
+	</resultMap>
+
+	<select id="getShopCategory" resultMap="categoryList">
+		select shopcategorycode, shopcategoryname 
+		from tbl_shopcategory
+	</select>
 	
 </mapper>
 

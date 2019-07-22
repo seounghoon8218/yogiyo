@@ -31,10 +31,15 @@ public class oooController {
 	@RequestMapping(value="/shopregisterEnd.yo", method= {RequestMethod.POST})
 	public ModelAndView shopregisterEnd(oooVO ovo, ModelAndView mv) {
 		
-		//크로스 사이트 스크립트 공격에 대응하는 안전한 코드 작성하기
-		ovo.setWonsanji(MyUtil.replaceParameter(ovo.getWonsanji()));
+		String wonsanji = ovo.getWonsanji();
+		
+		wonsanji = MyUtil.replaceParameter(wonsanji);
+		wonsanji = ovo.getWonsanji().replaceAll("\r\n", "<br>");		
+		ovo.setWonsanji(wonsanji);
 		
 		int n = service.addshop(ovo);
+		System.out.println("n===>" + n);
+		
 		
 		mv.addObject("n", n);
 		mv.setViewName("register/shopregisterEnd.tiles3");

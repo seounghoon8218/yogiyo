@@ -90,7 +90,7 @@
 			
 			<!-- end ngRepeat: banner in banner_list -->
 			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('all')">
+				<a href="<%=ctxPath %>/categryList.yo" class="thumbnail" ng-click="select_home_category('all')">
 					<div class="category-title">전체보기</div>
 					<img src="<%=ctxPath %>/resources/images/category-01.png">
 				</a>			

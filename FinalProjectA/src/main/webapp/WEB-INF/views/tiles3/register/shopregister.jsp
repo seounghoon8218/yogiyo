@@ -26,15 +26,29 @@
 
 </style>  
 <script type="text/javascript">
+
 	
-	$("#registerBtn").click(function(){
+
+	$(document).ready(function(){
 		
-		var frm = document.shopregisterFrm;
-		frm.method="POST";
-		frm.action = "<%=ctxPath%>/shopregisterEnd.yo";
-		frm.submit();
+		$("#registerBtn").click(function(){
+			
+			var frm = document.shopregisterFrm;
+			
+			frm.method= "POST";
+			frm.action= "<%=ctxPath %>/shopregisterEnd.yo";
+			frm.submit();
+			
+		})//end registeBtn
 		
-	}); // end registerBtn
+		
+	})// end ready
+		
+		
+		
+		
+		
+	
 	
 </script>
    
@@ -88,39 +102,11 @@
 				<td><textarea rows="8" cols="30" placeholder="(필수)원산지 정보 입력" id="wonsanji" name="wonsanji" class></textarea> </td>
 			</tr>
 			
-			<tr><td>&nbsp;<td></tr>
-			<tr><th><span>약관동의 </span></th></tr>
-			<tr style="background-color: white;">
-				<td>
-					<input type="checkbox" value="" id="check" />
-					<label for="check">전체동의</label>
-				</td>
-			</tr>
-			<tr style="background-color: white;">
-				<td>
-					<input type="checkbox" value="" id="check2" style="margin-left: 10px;" />
-					<label for="check2">이용약관동의(필수)</label>
-					<span style="opacity: 0.8; text-align: "><a href="">내용보기 ></a></span>
-				</td>
-			</tr>
-			<tr style="background-color: white;">
-				<td>
-					<input type="checkbox" value="" id="check3" style="margin-left: 10px;"/>
-					<label for="check3">개인정보 수집 및 이용동의(필수)</label>
-					<span style="opacity: 0.8; text-align: "><a href="">내용보기 ></a></span>
-				</td>
-			</tr>
-			<tr style="background-color: white;">
-				<td>
-					<input type="checkbox" value="" id="check4" style="margin-left: 10px;"/>
-					<label for="check4">만 14세 이상 이용자(필수)</label>
-					<span style="opacity: 0.8; text-align: "><a href="">내용보기 ></a></span>
-				</td>
-			</tr>
+			
 			<tr><td>&nbsp;<td></tr>
 			<tr>
 				<td>
-					<button type="button" id="registerBtn" style="width: 100%; color: white; background-color: red;"><span style="font-weight: bold; font-size: 15pt;">매장 등록</span></button>
+					<button type="button" id="registerBtn" style="width: 100%; color: white; background-color: red;"  ><span style="font-weight: bold; font-size: 15pt;">매장 등록</span></buttonscac>
 				</td>
 			</tr>
 		</table>

@@ -17,6 +17,7 @@ public class oooVO {
 	private String sanghoname;		//상호명
 	private String wonsanji;		//원산지
 	
+	public oooVO() {}
 	
 	public oooVO(int masterno, String shopname, String shopcategorycode, String addr, String addr2, String wdo,
 			String kdo, String shoptel, String shopimage, String shoptime, String minprice, String paymethod,
