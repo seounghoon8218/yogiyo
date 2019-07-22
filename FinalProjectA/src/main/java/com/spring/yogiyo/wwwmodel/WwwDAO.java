@@ -33,6 +33,17 @@ public class WwwDAO implements InterWwwDAO {
 	@Override
 	public void setLastLoginDate(HashMap<String, String> paraMap) {
 		sqlsession.update("www.setLastLoginDate", paraMap);
-		
+	}
+
+	// 회원가입
+	@Override
+	public void RegisterMember(MemberVO membervo) {
+		sqlsession.insert("www.RegisterMember", membervo);
+	}
+
+	// 이메일 중복체크
+	@Override
+	public MemberVO emailcheck(String email) throws Exception {
+		return sqlsession.selectOne("www.emailcheck", email);
 	}
 }

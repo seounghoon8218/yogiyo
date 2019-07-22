@@ -1,7 +1,5 @@
 package com.spring.yogiyo.wwwservice;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,12 +45,12 @@ public class WwwService implements InterWwwService {
 				/////////////아래는 로그인 한지 1년이 지났지만 정상적으로 로그인처리를 해주는 것/////////////////////////////////////////////////
 				//// 정상적으로 로그인 처리를 허락치 않으려면 아래를 주석처리하면 된다.
 				dao.setLastLoginDate(paraMap); // 마지막으로 로그인 한 날짜시간 변경(기록)하기 (DML이 하나라 트랜잭션처리(@Transactional)를 안해도됨)
-				
+				/*	
 				try {
 					loginuser.setEmail(aes.decrypt(loginuser.getEmail()) );
 				} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 					e.printStackTrace();
-				}
+				}*/
 				///////////////////////////////////////////////////////////////
 			}
 			else {
@@ -73,5 +71,18 @@ public class WwwService implements InterWwwService {
 		}// end of if(loginuser != null)--------
 		
 		return loginuser;
+	}
+
+	// 회원가입
+	@Override
+	public void RegisterMember(MemberVO membervo) {
+		dao.RegisterMember(membervo);
+	}
+
+	// 이메일 중복체크
+	@Override
+	public MemberVO emailcheck(String email) throws Exception {
+		
+		return dao.emailcheck(email);
 	}
 }
