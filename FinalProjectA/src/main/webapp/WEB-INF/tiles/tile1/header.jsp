@@ -13,6 +13,8 @@
 
 <script type="text/javascript">
 
+
+
 	function goGPS() {
 		
 		var latitude = "";
@@ -21,8 +23,6 @@
 			 latitude = position.coords.latitude;   //위도
 		     longitude = position.coords.longitude; //경도
 		 });
-		 $xml = simplexml_load_file("http://maps.google.co.kr/maps/api/geocode/xml?latlng=".latitude.",".longitude."&sensor=false");
-		 $get_address = $xml->result->formatted_address;
 		 
 		$.ajax({
 			url:"<%= ctxPath%>/gps.yo",
@@ -34,8 +34,7 @@
 				latitude = json.latitude;
 				longitude = json.longitude;
 				
-				var html =latitude+" - "+longitude;
-				
+				var html = "url = http://maps.google.co.kr/maps/geo?q="+latitude+","+longitude;
 				$("#main-search-input").val(html);
 				
 			}, error: function(request, status, error){
@@ -56,7 +55,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/요기요로고.png" style="width: 100px; height: 50px;" /></a>
+      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/요기요로고.png" style="width: 130px; height: 50px;" /></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
      <c:if test="${sessionScope.loginuser == null }">
@@ -72,7 +71,7 @@
 	        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+	        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
