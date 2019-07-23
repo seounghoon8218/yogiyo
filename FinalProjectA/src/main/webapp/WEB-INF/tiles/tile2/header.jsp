@@ -56,6 +56,8 @@
 	
 </style>
 
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>	 
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		
@@ -103,7 +105,71 @@
 		}); // end of $(window).scroll---------
 //	------------------	
 		
+		
+		$("#main-search-input").click(function(){
+		    new daum.Postcode({
+		       oncomplete: function(data) {
+		    	   $("#main-search-input").val(data.address);	
+		       }
+		    }).open();
+		}); // click ---------------------------
+		
+		
 	}); // end of ready--
+	
+	/////////////////// GPS ///////////////////
+	
+   function goGPS() {
+       
+       var latitude = "";
+       var longitude = "";
+       
+       navigator.geolocation.getCurrentPosition(function(position) {
+           latitude = position.coords.latitude;   //위도
+           longitude = position.coords.longitude; //경도
+           
+       var latlng = latitude+","+longitude;  // 위도,경도
+            goLatlngToAddress(latlng);
+       });
+              
+      function goLatlngToAddress(latlng) {
+    	  
+          $.ajax({
+             url:"https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDDQx9Q_JsWUjWyssoeEaeBGSbhvGcTyrA&sensor=false&language=ko&latlng="+latlng,
+             type:"GET",
+             data:{"latitude":latitude , "longitude":longitude},
+             dataType:"JSON",
+             success:function(json){
+                
+                if(json.status == 'OK') {
+                     var html="";
+                     var adlocation = json.results[1].formatted_address;
+                     
+                     html += adlocation.substring( 5 );
+                     
+                     
+                     $("#main-search-input").val(html);
+                  } else if(json.status == 'ZERO_RESULTS') {
+                      alert("지오코딩이 성공했지만 반환된 결과가 없음을 나타냅니다.\n\n이는 지오코딩이 존재하지 않는 address 또는 원격 지역의 latlng을 전달받는 경우 발생할 수 있습니다.")
+                  } else if(json.status == 'OVER_QUERY_LIMIT') {
+                      alert("할당량이 초과되었습니다.");
+                  } else if(json.status == 'REQUEST_DENIED') {
+                      alert("요청이 거부되었습니다.\n\n대부분의 경우 sensor 매개변수가 없기 때문입니다.");
+                  } else if(json.status == 'INVALID_REQUEST') {
+                      alert("일반적으로 쿼리(address 또는 latlng)가 누락되었음을 나타냅니다.");
+                  }
+                
+             }, error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+             }
+             
+          }); // ajax --------------------------------------
+          
+      } // goLatlngToAddress ------------------------------------      
+      
+   } // goGPS() ---------------------------------
+   
+	
 </script>
 
 <nav class="navbar navbar-inverse" style="background-color: red; border: none; margin-bottom: 0">
@@ -145,7 +211,8 @@
 		<div class="main-img-center"  style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);font-size: 18px;">
 			 <div id="main-search-div">
 				<form name="mainsearchFrm">
-			      <input id="main-search-input" type="text" placeholder="건물명, 도로명, 지번으로 검색하세요.">
+				  <a id="gpsbtn" onclick="goGPS();"><img src="/yogiyo/resources/images/gps.jpg" style="border-radius: 10px; width: 40px; height: 40px;"/></a>
+			      <input id="main-search-input" type="text" placeholder="건물명, 도로명, 지번으로 검색하세요." autocomplete="off">
 			      <button id="main-search-button">검색</button>
 			    </form>
 		    </div>

@@ -20,7 +20,7 @@ public class KkkController {
 
 	@Autowired
 	private InterKkkService service;
-		
+		/*
 	@RequestMapping(value="/gps.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
 	@ResponseBody
 	public String gps(HttpServletRequest request) {
@@ -38,5 +38,6 @@ public class KkkController {
 		return gson.toJson(jsonObj);
 		
 	}
+	*/
 	
 }
