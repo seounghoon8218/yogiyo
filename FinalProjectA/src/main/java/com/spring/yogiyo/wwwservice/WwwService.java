@@ -85,7 +85,6 @@ public class WwwService implements InterWwwService {
 	@Override
 	public int selectUserID(String email) {
 		int n = dao.selectUserID(email);
-		System.out.println("서비스");
 		return n;
 	}
 
