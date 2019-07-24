@@ -16,11 +16,14 @@
 		
 	}
 </style>
-<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
+<!-- <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script> -->
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		 
+		var emailchecknum = 0; // 이메일 중복체크 여부 확인?
+				
+				
 		 $("#btnRegister").click(function() {
 			 func_Register();
 		 }); // end of $("#btnRegister").click();-----------------------
@@ -44,49 +47,141 @@
 					 $("#check").prop("checked",false);
 				 }
 			 
-			 });
-			 
-		
-		
-		$('#pwd2').blur(function(){
-			   if($('#pwd').val() != $('#pwd2').val()){
-			    	if($('#pwd2').val()!=''){
-				    alert("비밀번호가 일치하지 않습니다.");
-			    	    $('#pwd2').val('');
-			          $('#pwd2').focus();
-			       }
-			    }
-		})// end of $('#pwd2').blur(function(){----------
-		
-		$(".emailcheck").click(function () {
+			 });	
 			
-			var query = {email : $("email").val()};
-			
-			$.ajax({
-				url: "/yogiyo/emailcheck.yo",
-				type: "POST",
-				data: query,
-				success : function(data) {
-					
-					if(data == 1) {
-						$(".result .msg").text("사용 불가");
-						$(".result .msg").attr("style", "color:#f00");
-						
-						$("#btnRegister").attr("disabled", "disabled");
-					}
-					else {
-						$(".result .msg").text("사용 가능");
-						$(".result .msg").attr("style", "color:#00f");
-						
-						$("#btnRegister").removeAttr("disabled");
-					}
+		
+			// 이메일 정규식 표현
+			$("#email").blur(function(){
+				
+				var email = $(this).val();
+				
+				var regExp_EMAIL = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;  
+				
+				var bool = regExp_EMAIL.test(email);
+				
+				if(!bool) {
+					$(this).parent().find(".error").show();
+					$("#btnRegister").attr("disabled",true)
+					$(this).attr("disabled",false)
+					$("#showerror").html("이메일형식이 잘못되었어요.");
+					$(this).focus();
 				}
-			});//end of ajax---------
-		});// end of $(".emailcheck").click(function () {---------
+				else {
+					$(this).parent().find(".error").hide();
+					$("#btnRegister").attr("disabled",false)
+					$("#showerror").html("");
+					
+					if(emailchecknum == 0){
+
+						$("#showerror").html("이메일 중복체크 해주세요.");
+						$(this).focus();
+					}
+					else{
+						$("#showerror").html("");
+					}
+					
+				}
+				
+				
+			});// end of $("#email").blur()--------------
+			
+			// 비밀번호 정규식 표현
+			$("#pwd").blur(function(){
+				var passwd = $(this).val();
+				
+			
+				var regExp_PW = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g); 
+			
+				
+				var bool = regExp_PW.test(passwd);
+				
+				if(!bool) {
+					$("#error_passwd").show();
+					$("#btnRegister").attr("disabled",true) 
+					$(this).attr("disabled",false)
+					$("#showerror").html("암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로만 입력가능합니다.");
+					$(this).focus();
+				}
+				else {
+					$("#error_passwd").hide();
+					$("#btnRegister").attr("disabled",false)
+					$("#showerror").html("");
+					
+				} 
+			}); // end of $("#pwd").blur()---------------
+			
+			// 비밀번호 재확인 검사
+			$("#pwd2").blur(function(){
+				var passwd = $("#pwd").val();
+				var passwdCheck = $(this).val();
+				
+				if(passwd != passwdCheck) {
+					$(this).parent().find(".error").show();
+					$("#btnRegister").attr("disabled",true)
+					$(this).attr("disabled",false)
+					$("#pwd").attr("disabled",false)
+					$("#showerror").html("비밀번호가 일치하지 않습니다.");
+					$("#pwd").focus();
+				}
+				else {
+					$(this).parent().find(".error").hide();
+					$("#showerror").html("");
+					$("#btnRegister").attr("disabled",false).removeClass("bgcol");
+				}
+				
+			});// end of $("#pwdcheck").blur()--------------	
+		
+		 //아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
+		$("#emailcheck").click(function(){
+				fn_userIDCheck();
+			});
 
 	})// end of $(document).ready(function(){---------
 	
-	
+	function fn_userIDCheck() {
+		$("#showerror").html("");
+		var email = $("#email").val();
+		var userData = {"email": email}
+		
+		console.log(email);
+		
+		if(email.length < 1) {
+			alert("이메일을 입력해주시기 바랍니다.");
+		}
+		else {
+			$.ajax({
+				type : "GET",
+				url : "/yogiyo/emailcheck.yo",
+				data : userData,
+				dataType:"JSON",
+				success : function(json) {
+					
+				
+					 if (json.n == 0) {
+						$("#email").attr("disabled", true);
+						alert("사용이 가능한 이메일입니다.");
+						$("#showerror").html("");
+						emailchecknum = 1;
+					}
+					else if (json.n == 1) {
+						alert("이미 존재하는 이메일입니다. 다른 이메일 사용해주세요");
+						emailchecknum = 0;
+					}
+					else {
+						alert("에러가 발생");
+						emailchecknum = 0;
+					}
+				 
+				},
+				error : function(error) {
+					alert("서버가 응답하지 않습니다. 다시 시도");
+				}
+			});
+			
+		}
+	}
+		
+		
 	function func_Register() {
 		var email = $("#email").val(); 
 		var pwd = $("#pwd").val();
@@ -120,7 +215,7 @@
 	</div>
 	<form name="registerFrm">
 		<table style="width: 70%">
-			<tr><th><span>회원정보 입력</span></th></tr>
+			<tr><th><span>회원정보 입력</span>&nbsp;&nbsp;<span id="showerror" style="color: red;"></span></th></tr>
 			<tr>
 				<td>
 					<input type="email" placeholder="(필수)이메일 주소 입력" name="email" id="email"/>
@@ -128,12 +223,8 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="result">
-					<span class="msg">왜안바뀌어</span>
-				<td>
-			</tr>
-			<tr>
-				<td><input type="password" placeholder="(필수)비밀번호 입력" name="pwd" id="pwd" required/></td>
+				<td><input type="password" placeholder="(필수)비밀번호 입력" name="pwd" id="pwd" class="requiredInfo" required/>
+				</td>
 			</tr>
 			<tr>
 				<td><input type="password" placeholder="(필수)비밀번호 재확인" name="pwd2" id="pwd2" required/></td>
@@ -176,7 +267,7 @@
 			<tr><td>&nbsp;<td></tr>
 			<tr>
 				<td>
-					<button id="btnRegister" type="submit" disabled="disabled" style="width: 100%; color: white; background-color: red;">
+					<button id="btnRegister" type="button" style="width: 100%; color: white; background-color: red;">
 						<span style="font-weight: bold; font-size: 15pt;">회원가입 완료</span>
 					</button>
 				</td> 

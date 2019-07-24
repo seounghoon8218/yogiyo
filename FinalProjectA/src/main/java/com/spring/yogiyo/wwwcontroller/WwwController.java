@@ -2,7 +2,9 @@ package com.spring.yogiyo.wwwcontroller;
 
 import java.util.HashMap;
 
+import javax.activation.CommandMap;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.common.SHA256;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.spring.member.model.MemberVO;
 import com.spring.yogiyo.wwwservice.InterWwwService;
 
@@ -143,21 +146,23 @@ public class WwwController {
 		
 		return "register/registerEnd.tiles3";
 	}
-	// 이메일중복확인
+	
+	// === 이메일 중복확인 ===
+	@RequestMapping(value="/emailcheck.yo", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	@RequestMapping(value="/emailcheck.yo", method= {RequestMethod.POST})
-	public int Emailcheck(HttpServletRequest request) throws Exception{
+	public String emailcheck(HttpServletRequest request){
 		
-		String email = request.getParameter("eamil");
-		MemberVO emailcheck = service.emailcheck(email);
+		Gson gson = new Gson();
 		
-		int result = 0;
+		String email = request.getParameter("email");
 		
-		if(emailcheck != null) {
-			result = 1;
-		}
-		System.out.println(result);
-		return result;
+		int n = service.selectUserID(email);
+		
+		JsonObject jsonobj = new JsonObject();
+		
+		jsonobj.addProperty("n", n);
+		
+		return gson.toJson(jsonobj);
 	}
 	
 }

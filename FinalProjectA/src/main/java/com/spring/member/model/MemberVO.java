@@ -1,5 +1,9 @@
 package com.spring.member.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+
+import com.spring.common.AES256;
 
 /*
   VO(Value Object) 또는  DTO(Data Transfer Object) 생성하기 
@@ -7,11 +11,11 @@ package com.spring.member.model;
 
 public class MemberVO { 
 
+
    private int idx;            // 회원번호(시퀀스로 데이터가 들어온다)
    private String email;       // 이메일
    private String name;        // 회원명
    private String pwd;         // 비밀번호
-   private String pwd2;
    private String tel;         // 휴대폰 번호
    private String post1;       // 우편번호
    private String post2;  
@@ -42,7 +46,7 @@ public class MemberVO {
    
    public MemberVO() { }
    
-   public MemberVO(int idx, String email,String name, String pwd, String pwd2, String tel,
+   public MemberVO(int idx, String email,String name, String pwd, String tel,
          String post1, String post2, String addr1, String addr2, 
          int coin, int point,
          String registerday, int status) {
@@ -50,7 +54,6 @@ public class MemberVO {
       this.email = email;
       this.name = name;
       this.pwd = pwd;
-      this.pwd2 = pwd2;
       this.tel = tel;
       this.post1 = post1;
       this.post2 = post2;
@@ -87,15 +90,7 @@ public class MemberVO {
    }
 
    public void setPwd(String pwd) {
-      this.pwd = pwd;
-   }
-
-   public String getPwd2() {
-      return pwd2;
-   }
-
-   public void setPwd2(String pwd2) {
-      this.pwd2 = pwd2;
+		this.pwd =pwd;
    }
 
    public String getEmail() {
