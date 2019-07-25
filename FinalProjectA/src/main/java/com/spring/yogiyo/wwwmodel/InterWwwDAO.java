@@ -3,6 +3,8 @@ package com.spring.yogiyo.wwwmodel;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.activation.CommandMap;
+
 import com.spring.member.model.MemberVO;
 
 public interface InterWwwDAO {
@@ -14,6 +16,8 @@ public interface InterWwwDAO {
 
 	void RegisterMember(MemberVO membervo); // 회원가입 처리
 
-	MemberVO emailcheck(String email) throws Exception;// 이메일중복체크
+
+	int selectUserID(String email);
+
 	
 }

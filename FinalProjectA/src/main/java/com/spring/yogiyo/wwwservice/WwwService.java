@@ -3,6 +3,8 @@ package com.spring.yogiyo.wwwservice;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.activation.CommandMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,10 +81,11 @@ public class WwwService implements InterWwwService {
 		dao.RegisterMember(membervo);
 	}
 
-	// 이메일 중복체크
+
 	@Override
-	public MemberVO emailcheck(String email) throws Exception {
-		
-		return dao.emailcheck(email);
+	public int selectUserID(String email) {
+		int n = dao.selectUserID(email);
+		return n;
 	}
+
 }

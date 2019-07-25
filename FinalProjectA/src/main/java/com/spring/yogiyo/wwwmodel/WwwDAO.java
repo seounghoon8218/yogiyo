@@ -1,17 +1,25 @@
 package com.spring.yogiyo.wwwmodel;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.activation.CommandMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.spring.common.SHA256;
 import com.spring.member.model.MemberVO;
 
 //=== #32. DAO 선언 ===
 @Repository
 public class WwwDAO implements InterWwwDAO {
+
+public SHA256 as = null;
 
 	//=== #33. 의존객체 주입하기(DI: Dependency Injection) ===
 	@Autowired
@@ -38,12 +46,17 @@ public class WwwDAO implements InterWwwDAO {
 	// 회원가입
 	@Override
 	public void RegisterMember(MemberVO membervo) {
+			membervo.setPwd(as.encrypt(membervo.getPwd()));
 		sqlsession.insert("www.RegisterMember", membervo);
 	}
 
-	// 이메일 중복체크
+	
+
 	@Override
-	public MemberVO emailcheck(String email) throws Exception {
-		return sqlsession.selectOne("www.emailcheck", email);
+	public int selectUserID(String email) {
+		int n = sqlsession.selectOne("www.selectUserID", email);
+		return n;
 	}
+
+
 }

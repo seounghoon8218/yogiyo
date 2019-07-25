@@ -3,6 +3,8 @@ package com.spring.yogiyo.wwwservice;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.activation.CommandMap;
+
 import com.spring.member.model.MemberVO;
 
 public interface InterWwwService {
@@ -13,6 +15,7 @@ public interface InterWwwService {
 
 	public void RegisterMember(MemberVO membervo); // 회원가입처리하기
 
-	MemberVO emailcheck(String email) throws Exception;// 이메일중복체크
+	int selectUserID(String email);
+
 	
 }
