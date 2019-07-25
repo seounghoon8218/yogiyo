@@ -76,5 +76,6 @@ where status = 1 and
 
 >>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
 
-
+select *
+from tbl_shop;
 

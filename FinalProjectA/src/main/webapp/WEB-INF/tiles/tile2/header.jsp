@@ -225,3 +225,21 @@
 		</ul>
 	</div>
 </div>
+
+
+<div class="list-option">
+  <div class="list-option-inner">
+  <select>
+    <option value="rank" >기본 정렬순</option>
+    <option value="review_avg" >별점순</option>
+    <option value="review_count" >리뷰 많은순</option>
+    <option value="min_order_value" >최소 주문 금액순</option>
+    <option value="distance" >거리순</option>    
+  </select>
+  <i class="arr-down"></i>
+  </div>
+</div>
+
+
+
+

@@ -29,6 +29,7 @@ input:-ms-input-placeholder{ color:#a8a8a8; }
 input::-webkit-input-placeholder{color: #a8a8a8;}
 input::-moz-placeholder {color: #a8a8a8;}
 
+/* 헤더 주소창 */
 #main-search-div{
 	height: 40px;
 	width: 400px;
@@ -55,6 +56,7 @@ input::-moz-placeholder {color: #a8a8a8;}
 	border-radius: 0 7px 7px 0 ;
 }
 
+/* 현재위치 버튼 */
 #gpsbtn {
 	cursor:pointer;
 	width: 10%;

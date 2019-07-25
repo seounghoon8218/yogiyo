@@ -1,5 +1,8 @@
 package com.spring.yogiyo.kkkcontroller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
@@ -14,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.spring.yogiyo.kkkservice.InterKkkService;
+import com.spring.yogiyo.ooomodel.oooVO;
 
 @Controller
 public class KkkController {
@@ -39,5 +43,40 @@ public class KkkController {
 		
 	}
 	*/
+	@RequestMapping(value="/getShopList.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String getShopList(HttpServletRequest request) {
+		
+		Gson gson = new Gson();
+		
+		// 매장 가져오기
+		List<oooVO> shopList = service.getShopList();
+		
+		JsonArray jsonArr = new JsonArray();
+		
+		for(oooVO shopvo : shopList) {
+			JsonObject jsonObj = new JsonObject();
+			
+			jsonObj.addProperty("shopname", shopvo.getShopname());
+			jsonObj.addProperty("shopcategorycode", shopvo.getShopcategorycode());
+			jsonObj.addProperty("addr", shopvo.getAddr());
+			jsonObj.addProperty("addr2", shopvo.getAddr2());
+			jsonObj.addProperty("shoptel", shopvo.getShoptel());
+			jsonObj.addProperty("shopimage", shopvo.getShopimage());
+			jsonObj.addProperty("shoptime", shopvo.getShoptime());
+			jsonObj.addProperty("minprice", shopvo.getMinprice());
+			jsonObj.addProperty("paymethod", shopvo.getPaymethod());
+			jsonObj.addProperty("sanghoname", shopvo.getSanghoname());
+			jsonObj.addProperty("wonsanji", shopvo.getWonsanji());
+			
+			jsonArr.add(jsonObj);
+			
+		}
+				
+		return gson.toJson(jsonArr);
+		
+	}
+	
+	
 	
 }

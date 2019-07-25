@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 body {font-family: Arial, Helvetica, sans-serif, 돋움; }
-#mycontent		{ background-color:#F5F5F5; float:left; width:75%; min-height:800px; padding-top: 40px;}
-#mysideinfo		{ background-color:white; float:left; width:25%; min-height:800px; padding-top: 20px;}
+#mycontent		{ background-color:#F5F5F5; float:left; width:80%; min-height:800px; padding-top: 40px;}
+#mysideinfo		{ background-color:#F5F5F5; float:left; width:20%; min-height:800px; padding-top: 20px;}
 
 #myfooter		{ background-color:#555555; clear:both; height:230px; }
 
@@ -33,6 +33,7 @@ input:-ms-input-placeholder{ color:#a8a8a8; }
 input::-webkit-input-placeholder{color: #a8a8a8;}
 input::-moz-placeholder {color: #a8a8a8;}
 
+/* 헤더 주소창 */
 #main-search-div{
 	height: 40px;
 	width: 400px;
@@ -59,6 +60,7 @@ input::-moz-placeholder {color: #a8a8a8;}
 	border-radius: 0 7px 7px 0 ;
 }
 
+/* 현재위치 버튼 */
 #gpsbtn {
 	cursor:pointer;
 	width: 10%;
@@ -68,3 +70,68 @@ input::-moz-placeholder {color: #a8a8a8;}
 	border-radius: 7px;
 }
 	
+/* 항목 */	
+.list-option {
+    float: none;
+    margin: 0 auto;
+    padding-left: 10px !important;
+  }
+  
+  .list-option-inner {
+    max-width: 490px;
+}
+  
+  .list-option {
+  padding: 10px 10px 10px 3px;
+  width: 50%;
+  float: right;
+}
+.list-option select {
+  float: none;
+  background: #fff;
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 14px;
+  line-height: 1.2;
+  border: 1px solid #d9d9d9;
+  border-radius: 0;
+  height: 36px;
+  -webkit-appearance: none; /* 보기 화살표 제거 */
+}
+
+
+
+
+
+
+
+
+.restaurant{
+	width: 65%;
+	border: 1px solid gray;
+	margin-left: 250px;
+	height: 160px;
+	background-color: white;
+	margin-bottom: 50px;
+}
+
+.restaurant-img{
+	height: 130px;
+	width: 200px;
+	vertical-align: middle;
+	margin: 0 30px 0 30px;
+	padding: 20px;
+	
+}
+
+.restaurant-name{
+	font-size: 25px;
+}
+
+.stars {
+	font-size: 20px;
+}
+
+.restaurants-info{
+	vertical-align: middle;
+}
