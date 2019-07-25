@@ -99,13 +99,7 @@ input::-moz-placeholder {color: #a8a8a8;}
   -webkit-appearance: none; /* 보기 화살표 제거 */
 }
 
-
-
-
-
-
-
-
+/* 매장 ajax */
 .restaurant{
 	width: 65%;
 	border: 1px solid gray;
@@ -113,6 +107,16 @@ input::-moz-placeholder {color: #a8a8a8;}
 	height: 160px;
 	background-color: white;
 	margin-bottom: 50px;
+}
+
+.restaurant-table{
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.logo{
+	width: 20%;
 }
 
 .restaurant-img{
@@ -135,3 +139,5 @@ input::-moz-placeholder {color: #a8a8a8;}
 .restaurants-info{
 	vertical-align: middle;
 }
+
+

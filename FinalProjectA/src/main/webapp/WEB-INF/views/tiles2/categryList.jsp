@@ -23,10 +23,11 @@
 		            	 var html = "";
 		            	 $.each(json, function(index, item){
 		            		html += "<div class='restaurant' style='padding-top: 13px;'>";
-		 		  			html += "<table>";
+		            		html += "<form name='restaurantView'>";
+		 		  			html += "<table class='restaurant-table'>";
 		 		  			html += "<tr>";
-		 		  			html += "<td>";
-		 		  			html += "<div class='logo'><img class='restaurant-img' src='<%=ctxPath %>/resources/images/category-01.png' /></div>";
+		 		  			html += "<td class='logo'>";
+		 		  			html += "<div><img class='restaurant-img' src='<%=ctxPath %>/resources/images/category-01.png' /></div>";		 		  			
 		 		  			html += "</td>";
 		 		  			html += "<td>";
 		 		  			html += "<div class='restaurants-info'>";
@@ -43,6 +44,7 @@
 		 		  			html += "</td>";
 		 		  			html += "</tr>";
 		 		  			html += "</table>";
+		 		  			html += "</form>";
 		 		  			html += "</div>";
 						}); // each ---------------
 		                    
@@ -53,32 +55,7 @@
 		             }
 		             
 		          });
-		  		
-		  		<%--var html = "";
-		  		 for(var i=0; i<10; i++){
-		  			html += "<div class='restaurant' style='padding-top: 13px;'>";
-		  			html += "<table>";
-		  			html += "<tr>";
-		  			html += "<td>";
-		  			html += "<div class='logo'><img class='restaurant-img' src='<%=ctxPath %>/resources/images/category-01.png' /></div>";
-		  			html += "</td>";
-		  			html += "<td>";
-		  			html += "<div class='restaurants-info'>";
-		  			html += "<div class='restaurant-name' title='고릴라김밥'>고릴라김밥</div>";
-		  			html += "<div class='stars'> ";
-		  			html += "<span class='ico-star1' >★ 4.0</span>";
-		  			html += "<span class='review' >리뷰 29</span>";
-		  			html += "<span class='review_num' >사장님댓글 2</span><br/>";
-		  			html += "<span class='yogiseo-payment'>요기서결제</span>";
-		  			html += "<span class='min-price'>16,000원 이상 배달</span><br/>";
-		  			html += "<span class='delivery-time'>40~50분 </span>";
-		  			html += "</div>";
-		  			html += "</div>";
-		  			html += "</td>";
-		  			html += "</tr>";
-		  			html += "</table>";
-		  			html += "</div>";
-		  		} --%>
+		  				  		
 		  		$("#scrollvar").append(html);
 		  	}
 		  	
@@ -87,30 +64,6 @@
 		
 	}); // end of ready-----------
 </script>
-
-<%-- <div class="restaurant" style="padding-top: 13px;">
-	<table>
-		<tr>
-            <td>
-              <div class="logo"><img class="restaurant-img" src="<%=ctxPath %>/resources/images/category-01.png" /></div>
-            </td>
-            <td>
-              <div class="restaurants-info">                
-                <div class="restaurant-name " title="고릴라김밥">고릴라김밥</div>
-                <div class="stars">                  
-                  <span class="ico-star1 " >★ 4.0</span>                  
-                  <span class="review " >리뷰 29</span>
-                  <span class="review_num " >사장님댓글 2</span><br/>               
-                  <span class="yogiseo-payment">요기서결제</span>
-                  <span class="min-price">16,000원 이상 배달</span><br/>
-                  <span class="delivery-time">40~50분 </span>
-                </div>
-              </div>
-            </td>
-          </tr>		
-	</table>
-</div> --%>
-
 
 
 	

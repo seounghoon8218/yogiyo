@@ -1,12 +1,7 @@
 package com.spring.yogiyo.wwwmodel;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.activation.CommandMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,42 +16,42 @@ public class WwwDAO implements InterWwwDAO {
 
 public SHA256 as = null;
 
-	//=== #33. 의존객체 주입하기(DI: Dependency Injection) ===
-	@Autowired
-	private SqlSessionTemplate sqlsession;
+   //=== #33. 의존객체 주입하기(DI: Dependency Injection) ===
+   @Autowired
+   private SqlSessionTemplate sqlsession;
 
-	// === #38. 메인 페이지용 이미지 파일을 가져오기===
-	@Override
-	public List<String> getImgfilenameList() {
-		List<String> imgfilenameList = sqlsession.selectList("www.getImgfilenameList");
-		return imgfilenameList;
-	}
+   // === #38. 메인 페이지용 이미지 파일을 가져오기===
+   @Override
+   public List<String> getImgfilenameList() {
+      List<String> imgfilenameList = sqlsession.selectList("www.getImgfilenameList");
+      return imgfilenameList;
+   }
 
-	// === #46. 로그인 처리하기 ===
-	@Override
-	public MemberVO getLoginMember(HashMap<String, String> paraMap) {
-		MemberVO loginuser = sqlsession.selectOne("www.getLoginMember", paraMap); // loginuser 서비스로감
-		return loginuser;
-	}
-	@Override
-	public void setLastLoginDate(HashMap<String, String> paraMap) {
-		sqlsession.update("www.setLastLoginDate", paraMap);
-	}
+   // === #46. 로그인 처리하기 ===
+   @Override
+   public MemberVO getLoginMember(HashMap<String, String> paraMap) {
+      MemberVO loginuser = sqlsession.selectOne("www.getLoginMember", paraMap); // loginuser 서비스로감
+      return loginuser;
+   }
+   @Override
+   public void setLastLoginDate(HashMap<String, String> paraMap) {
+      sqlsession.update("www.setLastLoginDate", paraMap);
+   }
 
-	// 회원가입
-	@Override
-	public void RegisterMember(MemberVO membervo) {
-			membervo.setPwd(as.encrypt(membervo.getPwd()));
-		sqlsession.insert("www.RegisterMember", membervo);
-	}
+   // 회원가입
+   @Override
+   public void RegisterMember(MemberVO membervo) {
+         membervo.setPwd(as.encrypt(membervo.getPwd()));
+         System.out.println("dao"+membervo.getEmail());
+      sqlsession.insert("www.RegisterMember", membervo);
+   }
 
-	
-
-	@Override
-	public int selectUserID(String email) {
-		int n = sqlsession.selectOne("www.selectUserID", email);
-		return n;
-	}
+   // 이메일 중복검사
+   @Override
+   public int selectUserID(String email) {
+      int n = sqlsession.selectOne("www.selectUserID", email);
+      return n;
+   }
 
 
 }

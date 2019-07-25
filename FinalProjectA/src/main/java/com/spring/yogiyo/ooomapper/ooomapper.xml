@@ -5,14 +5,29 @@
 
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="ooo">
-	<insert id="addshop">
-		insert into tbl_shop(masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji)
-		values (seq_tbl_shop_masterno.nextval, #{shopname}, #{shopcategorycode}, #{addr}, #{addr2}, #{wdo}, #{kdo}, #{shoptel}, #{shopimage}, #{shoptime}, #{minprice}, #{paymethod}, #{sanghoname}, #{wonsanji})
-	</insert>
-	
-	
+   <insert id="addshop">
+      insert into tbl_shop(masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji)
+      values (seq_tbl_shop_masterno.nextval, #{shopname}, #{shopcategorycode}, #{addr}, #{addr2}, #{wdo}, #{kdo}, #{shoptel}, #{shopimage}, #{shoptime}, #{minprice}, #{paymethod}, #{sanghoname}, #{wonsanji})
+   </insert>
+   
+   <resultMap type="HashMap" id="shopCategoryMap">
+      <result property="shopcategorycode" column="shopcategorycode" javaType="String" />
+      <result property="shopcategoryname" column="shopcategoryname" javaType="String" />
+   </resultMap>
+   
+   <select id="selectShopCategory" resultMap="shopCategoryMap" >
+      select shopcategorycode, shopcategoryname
+      from tbl_shopcategory
+      order by shopcategorycode desc
+   </select>
+   
+    
+   <select id="getMasterNo" resultType="int" >
+      select SEQ_TBL_SHOP_MASTERNO.nextval as masterno
+      from dual
+   </select>
+   
 </mapper>
-
 
 
 
