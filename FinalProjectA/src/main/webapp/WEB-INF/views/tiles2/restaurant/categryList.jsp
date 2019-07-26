@@ -22,8 +22,9 @@
 		             success:function(json){
 		            	 var html = "";
 		            	 $.each(json, function(index, item){
+		            		html += "<a href='<%=ctxPath%>/restaurantView.yo?masterno="+item.masterno+"'>";
 		            		html += "<div class='restaurant' style='padding-top: 13px;'>";
-		            		html += "<form name='restaurantView'>";
+		            		html += "<form name='restaurantViewFrm'>";
 		 		  			html += "<table class='restaurant-table'>";
 		 		  			html += "<tr>";
 		 		  			html += "<td class='logo'>";
@@ -46,6 +47,7 @@
 		 		  			html += "</table>";
 		 		  			html += "</form>";
 		 		  			html += "</div>";
+		            		html += "</a>";
 						}); // each ---------------
 		                    
 		            	 $("#scrollvar").append(html);
@@ -55,14 +57,13 @@
 		             }
 		             
 		          });
-		  				  		
-		  		$("#scrollvar").append(html);
 		  	}
 		  	
 		}); // end of $(window).scroll---------
 		
-		
 	}); // end of ready-----------
+	
+	
 </script>
 
 
