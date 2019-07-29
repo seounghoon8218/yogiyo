@@ -1,25 +1,25 @@
 @charset "UTF-8";
 
 body {font-family: Arial, Helvetica, sans-serif, 돋움; }
-#mycontent		{ background-color:#F5F5F5; float:left; width:80%; min-height:800px; padding-top: 40px;}
-#mysideinfo		{ background-color:#F5F5F5; float:left; width:20%; min-height:800px; padding-top: 20px;}
+#mycontent      { background-color:#F5F5F5; float:left; width:80%; min-height:800px; padding-top: 40px;}
+#mysideinfo      { background-color:#F5F5F5; float:left; width:20%; min-height:800px; padding-top: 20px;}
 
-#myfooter		{ background-color:#555555; clear:both; height:230px; }
+#myfooter      { background-color:#555555; clear:both; height:230px; }
 
 
-#myheader		{ 
-	background-color:#EBEBE0; 
+#myheader      { 
+   background-color:#EBEBE0; 
 }
 
 #mycontainer  { width:100%; margin:0 auto; }
 #myheader li a {
-	color: white;
+   color: white;
 }
-#myfooter	  { background-color:#555555; height:100px; }
+#myfooter     { background-color:#555555; height:100px; }
 
 =======
-#myfooter		{ background-color:#555555; height:100px; }
-	
+#myfooter      { background-color:#555555; height:100px; }
+   
 #myheader a {text-decoration:none;}
 
 /* mouse over link */
@@ -35,42 +35,42 @@ input::-moz-placeholder {color: #a8a8a8;}
 
 /* 헤더 주소창 */
 #main-search-div{
-	height: 40px;
-	width: 400px;
-	border: 0px solid #ff8040;
+   height: 40px;
+   width: 400px;
+   border: 0px solid #ff8040;
 }
 #main-search-input{
-	height: 42px;
-	margin-left: 10px;
-	font-size: 14px;
-	width: 67.5%;
-	padding: 10px;
-	border: 0px;
-	outline: none;
-	border-radius: 7px 0 0 7px;
+   height: 42px;
+   margin-left: 10px;
+   font-size: 14px;
+   width: 67.5%;
+   padding: 10px;
+   border: 0px;
+   outline: none;
+   border-radius: 7px 0 0 7px;
 }
 #main-search-button{
-	width: 20%;
-	height: 42px;
-	border: 0px;
-	background: #ff8040;
-	outline: none;
-	float: right;
-	color: #ffffff;
-	border-radius: 0 7px 7px 0 ;
+   width: 20%;
+   height: 42px;
+   border: 0px;
+   background: #ff8040;
+   outline: none;
+   float: right;
+   color: #ffffff;
+   border-radius: 0 7px 7px 0 ;
 }
 
 /* 현재위치 버튼 */
 #gpsbtn {
-	cursor:pointer;
-	width: 10%;
-	height: 38px;
-	vertical-align:middle;
-	float: left;
-	border-radius: 7px;
+   cursor:pointer;
+   width: 10%;
+   height: 38px;
+   vertical-align:middle;
+   float: left;
+   border-radius: 7px;
 }
-	
-/* 항목 */	
+   
+/* 항목 */   
 .list-option {
     float: none;
     margin: 0 auto;
@@ -101,43 +101,42 @@ input::-moz-placeholder {color: #a8a8a8;}
 
 /* 매장 ajax */
 .restaurant{
-	width: 65%;
-	border: 1px solid gray;
-	margin-left: 250px;
-	height: 160px;
-	background-color: white;
-	margin-bottom: 50px;
+   width: 65%;
+   border: 1px solid gray;
+   margin-left: 250px;
+   height: 160px;
+   background-color: white;
+   margin-bottom: 50px;
 }
 
 .restaurant-table{
-	width: 100%;
-	height: 100%;
-	cursor: pointer;
+   width: 100%;
+   height: 100%;
+   cursor: pointer;
 }
 
 .logo{
-	width: 20%;
+   width: 20%;
 }
 
 .restaurant-img{
-	height: 130px;
-	width: 200px;
-	vertical-align: middle;
-	margin: 0 30px 0 30px;
-	padding: 20px;
-	
+   height: 130px;
+   width: 200px;
+   vertical-align: middle;
+   margin: 0 30px 0 30px;
+   padding: 20px;
+   
 }
 
 .restaurant-name{
-	font-size: 25px;
+   font-size: 25px;
 }
 
 .stars {
-	font-size: 20px;
+   font-size: 20px;
 }
 
 .restaurants-info{
-	vertical-align: middle;
+   vertical-align: middle;
 }
-
 
