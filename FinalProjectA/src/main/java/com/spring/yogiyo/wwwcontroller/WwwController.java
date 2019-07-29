@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.spring.common.SHA256;
 import com.spring.member.model.MemberVO;
 import com.spring.yogiyo.wwwservice.InterWwwService;
 
@@ -27,6 +28,9 @@ public class WwwController {
    @Autowired // Type에 따라 알아서 Bean 을 주입해준다.
    private InterWwwService service;
    
+  
+   // === 비번암호화
+   public SHA256 as = null;
    
    // === #40. 로그인 폼 페이지 요청 ===
    @RequestMapping(value="/login.yo", method= {RequestMethod.GET})
@@ -42,6 +46,9 @@ public class WwwController {
       
       String email = request.getParameter("email");
       String pwd = request.getParameter("pwd");
+      
+      // 로그인할때 입력한 비번 암호화해서 비교하기 위해
+      pwd = as.encrypt(pwd);
       
       HashMap<String, String> paraMap = new HashMap<String, String>();
       paraMap.put("email", email);

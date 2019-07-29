@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.common.AES256;
+import com.spring.common.SHA256;
 import com.spring.member.model.MemberVO;
 import com.spring.yogiyo.wwwmodel.InterWwwDAO;
 
@@ -21,7 +22,8 @@ public class WwwService implements InterWwwService {
    //=== #45. 양방향 암호화 알고리즘인 AES256을 사용하여 암호화/복호화 하기 ===
    @Autowired 
    AES256 aes;
-
+   
+   
    // === #37. 메인 페이지용 이미지 파일을 가져오기===
    @Override
    public List<String> getImgfilenameList() {
@@ -76,7 +78,6 @@ public class WwwService implements InterWwwService {
    // 회원가입
    @Override
    public void RegisterMember(MemberVO membervo) {
-      System.out.println("서"+membervo.getEmail());
       dao.RegisterMember(membervo);
       
    }

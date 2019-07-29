@@ -42,7 +42,6 @@ public SHA256 as = null;
    @Override
    public void RegisterMember(MemberVO membervo) {
          membervo.setPwd(as.encrypt(membervo.getPwd()));
-         System.out.println("dao"+membervo.getEmail());
       sqlsession.insert("www.RegisterMember", membervo);
    }
 

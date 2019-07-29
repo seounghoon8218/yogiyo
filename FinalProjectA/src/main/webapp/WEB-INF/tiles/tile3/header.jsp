@@ -18,23 +18,33 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
      <c:if test="${sessionScope.loginuser == null }">
-	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
-	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="<%=ctxPath%>/register.yo"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
-	      </ul>
+         <ul class="nav navbar-nav navbar-right">
+           <li><a href="<%=ctxPath%>/login.yo"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+           <li><a href="<%=ctxPath%>/register.yo"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
+         </ul>
      </c:if>
      <c:if test="${sessionScope.loginuser != null }">
-	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
-	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
-	      </ul>
+         <ul class="nav navbar-nav navbar-right">
+           <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+           <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+         </ul>
+         <c:if test="${sessionScope.loginuser.email != 'admin@gmail.com' }">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
+            </ul>
+         </c:if>
+         <c:if test="${sessionScope.loginuser.email == 'admin@gmail.com' }">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="<%=ctxPath%>/shopregister.yo"><span class="glyphicon glyphicon-log-in"></span> 매장등록</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 메뉴등록</a></li>
+            </ul>
+         </c:if>
       </c:if>
     </div>
   </div>
