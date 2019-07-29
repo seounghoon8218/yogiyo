@@ -1,5 +1,6 @@
 package com.spring.yogiyo.kkkservice;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,11 @@ public class KkkService implements InterKkkService {
 
 		// 매장 가져오기
 		@Override
-		public List<oooVO> getShopList() {
-			List<oooVO> shopList = dao.getShopList();
+		public List<oooVO> getShopList(HashMap<String,String> paraMap) {
+			List<oooVO> shopList = dao.getShopList(paraMap);
 			return shopList;
 		}
+		
 
 		// 매장하나정보 가지고오기
 		@Override
@@ -28,5 +30,6 @@ public class KkkService implements InterKkkService {
 			oooVO shop = dao.getShopView(masterno);
 			return shop;
 		}
+
 	
 }

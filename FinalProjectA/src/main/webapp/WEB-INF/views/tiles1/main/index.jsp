@@ -90,35 +90,35 @@
 			
 			<!-- end ngRepeat: banner in banner_list -->
 			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
-				<a href="<%=ctxPath %>/categryList.yo" class="thumbnail" ng-click="select_home_category('all')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=0" class="thumbnail" ng-click="select_home_category('all')">
 					<div class="category-title">전체보기</div>
 					<img src="<%=ctxPath %>/resources/images/category-01.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('치킨')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=1" class="thumbnail" ng-click="select_home_category('치킨')">
 					<div class="category-title">치킨</div>
 					<img src="<%=ctxPath %>/resources/images/category-02.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('피자양식')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=2" class="thumbnail" ng-click="select_home_category('피자양식')">
 					<div class="category-title">피자/양식</div>
 					<img src="<%=ctxPath %>/resources/images/category-03.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('중식')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=3" class="thumbnail" ng-click="select_home_category('중식')">
 					<div class="category-title">중국집</div>
 					<img src="<%=ctxPath %>/resources/images/category-04.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('한식')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=4" class="thumbnail" ng-click="select_home_category('한식')">
 					<div class="category-title">한식</div>
 					<img src="<%=ctxPath %>/resources/images/category-05.png">
 				</a>
@@ -126,35 +126,35 @@
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('일식돈까스')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=5" class="thumbnail" ng-click="select_home_category('일식돈까스')">
 					<div class="category-title">일식/돈까스</div>
 					<img src="<%=ctxPath %>/resources/images/category-06.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('족발보쌈')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=6" class="thumbnail" ng-click="select_home_category('족발보쌈')">
 					<div class="category-title">족발/보쌈</div>
 					<img src="<%=ctxPath %>/resources/images/category-07.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('분식')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=7" class="thumbnail" ng-click="select_home_category('분식')">
 					<div class="category-title">분식</div>
 					<img src="<%=ctxPath %>/resources/images/category-09.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('카페디저트')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=8" class="thumbnail" ng-click="select_home_category('카페디저트')">
 					<div class="category-title">카페/디저트</div>
 					<img src="<%=ctxPath %>/resources/images/category-11.png">
 				</a>			
 			</div>
 			
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<a href="" class="thumbnail" ng-click="select_home_category('편의점')">
+				<a href="<%=ctxPath %>/categryList.yo?shopcategorycode=9" class="thumbnail" ng-click="select_home_category('편의점')">
 					<div class="category-title">편의점</div>
 					<img src="<%=ctxPath %>/resources/images/category-convenience-store.png">
 				</a>			

@@ -70,9 +70,9 @@
             $("#categoryul").empty();
             var html = "";
                html += "<a class='categorylia'><li>검색(이미지)</li></a>";
-               html += "<a class='categorylia'><li>전체보기</li></a>";
+               html += "<a href='<%=ctxPath %>/categryList.yo?shopcategorycode=0' class='categorylia'><li>전체보기</li></a>";
             $.each(json, function(index,item){
-               html += "<a class='categorylia'><li>"+item.shopcategoryname+"</li></a>";
+               html += "<a href='<%=ctxPath %>/categryList.yo?shopcategorycode="+(index+1)+"' class='categorylia'><li>"+item.shopcategoryname+"</li></a>";
             });
             
             $("#categoryul").append(html);   

@@ -7,9 +7,12 @@
 <mapper namespace="kkk">
 
 	<!-- 매장가져오기 -->
-	<select id="getShopList" resultType="com.spring.yogiyo.ooomodel.oooVO">
+	<select id="getShopList" resultType="com.spring.yogiyo.ooomodel.oooVO" parameterType="HashMap">
 		select masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji
-		from tbl_shop
+		from tbl_shop		
+		<if test='shopcategorycode != "0"'>
+		where shopcategorycode = #{shopcategorycode}
+		</if>
 	</select>
 	
 	<!-- 매장하나정보 가지고오기 -->

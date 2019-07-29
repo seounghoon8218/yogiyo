@@ -1,5 +1,6 @@
 package com.spring.yogiyo.kkkmodel;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.spring.yogiyo.ooomodel.oooVO;
@@ -7,7 +8,7 @@ import com.spring.yogiyo.ooomodel.oooVO;
 public interface InterKkkDAO {
 
 	// 매장가져오기
-	List<oooVO> getShopList();
+	List<oooVO> getShopList(HashMap<String,String> paraMap);
 
 	// 매장하나정보 가지고오기
 	oooVO getShopView(String masterno);
