@@ -35,17 +35,12 @@ public class YogiyoController {
 		// /Yogiyo/src/main/webapp/WEB-INF/views/tiles1/main/index.jsp 파일을 생성한다.
 	}	  
 	
-	// 음식점들 보여주는 화면
-	@RequestMapping(value="/categryList.yo" , method= {RequestMethod.GET})
-	public ModelAndView test(ModelAndView mv) {
-		mv.setViewName("categryList.tiles2");
-		return mv;
-	}
+	
 	
 	// tiles2 의 헤더부분 카테고리리스트
 	@RequestMapping(value="/categoryListAjax.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public String gps(HttpServletRequest request) {
+	public String categoryListAjax(HttpServletRequest request) {
 		
 		Gson gson = new Gson();
 		JsonArray jsonArr = new JsonArray();

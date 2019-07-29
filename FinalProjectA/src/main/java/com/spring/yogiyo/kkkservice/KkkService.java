@@ -21,5 +21,12 @@ public class KkkService implements InterKkkService {
 			List<oooVO> shopList = dao.getShopList();
 			return shopList;
 		}
+
+		// 매장하나정보 가지고오기
+		@Override
+		public oooVO getShopView(String masterno) {
+			oooVO shop = dao.getShopView(masterno);
+			return shop;
+		}
 	
 }

@@ -22,5 +22,12 @@ public class KkkDAO implements InterKkkDAO {
 		List<oooVO> shopList = sqlsession.selectList("kkk.getShopList");
 		return shopList;
 	}
+
+	// 매장하나정보 가지고오기
+	@Override
+	public oooVO getShopView(String masterno) {
+		oooVO shop = sqlsession.selectOne("kkk.getShopView",masterno);
+		return shop;
+	}
 	
 }

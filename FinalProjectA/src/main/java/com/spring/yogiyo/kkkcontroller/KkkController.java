@@ -43,6 +43,14 @@ public class KkkController {
 		
 	}
 	*/
+	
+	// 음식점들 보여주는 화면
+		@RequestMapping(value="/categryList.yo" , method= {RequestMethod.GET})
+		public ModelAndView test(ModelAndView mv) {
+			mv.setViewName("restaurant/categryList.tiles2");
+			return mv;
+		}
+	
 	@RequestMapping(value="/getShopList.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
 	@ResponseBody
 	public String getShopList(HttpServletRequest request) {
@@ -57,6 +65,7 @@ public class KkkController {
 		for(oooVO shopvo : shopList) {
 			JsonObject jsonObj = new JsonObject();
 			
+			jsonObj.addProperty("masterno", shopvo.getMasterno());
 			jsonObj.addProperty("shopname", shopvo.getShopname());
 			jsonObj.addProperty("shopcategorycode", shopvo.getShopcategorycode());
 			jsonObj.addProperty("addr", shopvo.getAddr());
@@ -77,6 +86,17 @@ public class KkkController {
 		
 	}
 	
+	@RequestMapping(value="/restaurantView.yo" , method= {RequestMethod.GET})
+	public String restaurantView(HttpServletRequest request) {
+		
+		String masterno = request.getParameter("masterno");
+		
+		oooVO shop = service.getShopView(masterno); // 매장하나정보 가지고오기
+		
+		request.setAttribute("shop", shop);
+		
+		return "restaurant/restaurantView.tiles2";
+	}
 	
 	
 }
