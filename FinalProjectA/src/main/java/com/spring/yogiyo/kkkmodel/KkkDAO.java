@@ -1,5 +1,6 @@
 package com.spring.yogiyo.kkkmodel;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,10 +19,11 @@ public class KkkDAO implements InterKkkDAO {
 
 	// 매장가져오기
 	@Override
-	public List<oooVO> getShopList() {
-		List<oooVO> shopList = sqlsession.selectList("kkk.getShopList");
+	public List<oooVO> getShopList(HashMap<String,String> paraMap) {
+		List<oooVO> shopList = sqlsession.selectList("kkk.getShopList",paraMap);
 		return shopList;
 	}
+	
 
 	// 매장하나정보 가지고오기
 	@Override
@@ -29,5 +31,6 @@ public class KkkDAO implements InterKkkDAO {
 		oooVO shop = sqlsession.selectOne("kkk.getShopView",masterno);
 		return shop;
 	}
+
 	
 }

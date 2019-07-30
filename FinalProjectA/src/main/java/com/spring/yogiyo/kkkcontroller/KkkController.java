@@ -1,6 +1,7 @@
 package com.spring.yogiyo.kkkcontroller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +47,11 @@ public class KkkController {
 	
 	// 음식점들 보여주는 화면
 		@RequestMapping(value="/categryList.yo" , method= {RequestMethod.GET})
-		public ModelAndView test(ModelAndView mv) {
+		public ModelAndView test(ModelAndView mv , HttpServletRequest request) {
+			String shopcategorycode = request.getParameter("shopcategorycode");
+			
+			mv.addObject("shopcategorycode",shopcategorycode);
+			
 			mv.setViewName("restaurant/categryList.tiles2");
 			return mv;
 		}
@@ -54,11 +59,17 @@ public class KkkController {
 	@RequestMapping(value="/getShopList.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
 	@ResponseBody
 	public String getShopList(HttpServletRequest request) {
+
+		String shopcategorycode = request.getParameter("shopcategorycode");
 		
 		Gson gson = new Gson();
 		
-		// 매장 가져오기
-		List<oooVO> shopList = service.getShopList();
+		// 매장들 가져오기
+		HashMap<String,String> paraMap = new HashMap<String,String>();
+		paraMap.put("shopcategorycode", shopcategorycode);
+		
+		List<oooVO> shopList = service.getShopList(paraMap);
+		
 		
 		JsonArray jsonArr = new JsonArray();
 		

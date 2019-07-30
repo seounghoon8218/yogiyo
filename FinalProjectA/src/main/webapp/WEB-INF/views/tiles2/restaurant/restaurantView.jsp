@@ -7,19 +7,20 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div class='restaurant' style='padding-top: 13px;'>
-		<form name='restaurantViewFrm'>
-			<table class='restaurant-table'>
+	<div style='width: 50%; border: 1px soild gray; background-color: #fff;'>
+		<div style="padding: 10px; font-size: 110%; border-bottom: 1px solid gray;" >
+	        <span>${shop.shopname}</span>
+	    </div>
+			<table class='restaurant-tableView'>
 				<tr>
-					<td class='logo'>
+					<td class='logoView'>
 						<div>
 							<img class='restaurant-img'
 								src='<%=request.getContextPath()%>/resources/images/category-01.png' />
 						</div>
 					</td>
 					<td>
-						<div class='restaurants-info'>
-							<div class='restaurant-name'>${shop.shopname }</div>
+						<div class='restaurants-info'>							
 							<div class='stars'>
 								<span class='ico-star1'>★ 4.0</span> <span class='review'>리뷰29</span>
 								<span class='review_num'>사장님댓글 2</span><br /> 
@@ -31,7 +32,6 @@
 					</td>
 				</tr>
 			</table>
-		</form>
 	</div>
 </body>
 </html>
