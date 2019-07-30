@@ -52,9 +52,9 @@
 		
 		switch (searchTypeVal) {
 		case "deptname":
-		// 부서별 인원통계
+		// 음식종류별 매장 수
 			$.ajax({
-				url:"test13deptnameJSON.action",
+				url:"<%=ctxPath%>/chartTest.yo",
 				type:"GET",
 				dataType:"JSON",
 				success:function(json){
@@ -62,8 +62,8 @@
 					
 					var resultArr = [];
 					for(var i=0; i<json.length;i++ ){
-						var obj = {name: json[i].DEPARTMENT_NAME 
-								  ,y : Number(json[i].PERCNT) };
+						var obj = {name: json[i].shopcategoryname 
+								  ,y : Number(json[i].percnt) };
 						resultArr.push(obj); // 배열속에 객체넣기
 					}
 					
@@ -76,7 +76,7 @@
 					        type: 'pie'
 					    },
 					    title: {
-					        text: '우리회사 부서별 인원통계'
+					        text: '음식종류별 매장 수'
 					    },
 					    tooltip: {
 					        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -247,7 +247,13 @@
 			});		
 			break; 
 			*/
-
+		
+		case "management":
+			$("#chart_container").empty();
+			
+			
+			
+			break;
 		default:
 			break;
 		}
@@ -259,20 +265,19 @@
 </head>
 <body>
 	<div align="center">
-		<h2>우리회사 사원 통계정보( 차 트 )</h2>
+		<h2>관리자 통계</h2>
 		
 		<form name="searchFrm" style="margin-bottom: 100px;">
 			<select name="searchType" id="searchType">
 				<option value="" >통계선택.</option>
-				<option value="deptname">부서별 인원통계</option>
-				<option value="gender">성별 인원통계</option>
+				<option value="deptname">업종별 매장수</option>
+				<option value="management">회원관리</option>
 				<option value="deptnameGender">부서별 성별 인원통계</option>
 			</select>
 		</form>
 		
 		<%-- 원차트 --%>
-		<div id="chart_container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-		<%-- 막대차트 --%>
+		<div id="chart_container" style="min-width: 310px; min-height: 400px; max-width: 600px; margin: 0 auto"></div>
 	</div>
 </body>
 </html>

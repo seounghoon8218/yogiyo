@@ -58,5 +58,36 @@ public class YogiyoController {
 		
 	}
 	
+	// 관리자 차트보는페이지
+	@RequestMapping(value="/adminChart.yo", method= {RequestMethod.GET})
+	public ModelAndView adminChart(ModelAndView mv) {
+		
+		mv.setViewName("admin/chart.tiles3");
+		
+		return mv;
+	}	  
+
+	@RequestMapping(value="/chartTest.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String chartTest(HttpServletRequest request) {
+		
+		List<HashMap<String, String>> chartList = service.chartList();
+
+		Gson gson = new Gson();
+
+		JsonArray jsonArr = new JsonArray();
+		for (HashMap<String, String> map : chartList) {
+			JsonObject jsonObj = new JsonObject();
+
+			jsonObj.addProperty("shopcategoryname", map.get("shopcategoryname"));
+			jsonObj.addProperty("cnt", map.get("cnt"));
+			jsonObj.addProperty("percnt", map.get("percnt"));
+
+			jsonArr.add(jsonObj);
+		}
+
+		return gson.toJson(jsonArr);
+	}
+	
 }
 

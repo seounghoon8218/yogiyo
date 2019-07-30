@@ -18,6 +18,25 @@
 		from tbl_shopcategory
 	</select>
 	
+	<resultMap type="HashMap" id="chartTest">
+		
+		<result property="shopcategoryname" 	column="shopcategoryname" 	javaType="String" />
+		<result property="cnt" 				column="cnt" 				javaType="String" />
+		<result property="percnt" 			column="percnt" 			javaType="String" />
+		
+	</resultMap>
+	
+	<!-- // 차트 테스트 ( 업종별 매장수 차트 ) -->
+	<select id="chartList" resultMap="chartTest">
+		select C.shopcategoryname as shopcategoryname
+		      , count(*) as cnt
+              , round(count(*)/(select count(*) from TBL_SHOP)*100,2) as percnt
+		from TBL_SHOPCATEGORY C left join TBL_SHOP S
+		on S.shopcategorycode = C.shopcategorycode
+		group by C.shopcategoryname
+		order by percnt desc
+	</select>
+	
 </mapper>
 
 
