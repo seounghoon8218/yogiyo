@@ -16,5 +16,7 @@ public interface InterWwwDAO {
 
    int selectUserID(String email); // 이메일 중복검사
 
+   int edit(MemberVO membervo);
+
    
 }

@@ -27,7 +27,7 @@
      </c:if>
      <c:if test="${sessionScope.loginuser != null }">
          <ul class="nav navbar-nav navbar-right">
-           <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+           <li><a href="<%=ctxPath%>/edit.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
          </ul>
          <ul class="nav navbar-nav navbar-right">
            <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>

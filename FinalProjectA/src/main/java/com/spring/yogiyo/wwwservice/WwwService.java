@@ -82,11 +82,18 @@ public class WwwService implements InterWwwService {
       
    }
 
-
+   // 중복검사
    @Override
    public int selectUserID(String email) {
       int n = dao.selectUserID(email);
       return n;
    }
+   
+   // 회원정보 수정
+	@Override
+	public int edit(MemberVO membervo) {
+		int n = dao.edit(membervo);
+		return n;
+	}
 
 }

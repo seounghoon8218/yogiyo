@@ -52,5 +52,12 @@ public SHA256 as = null;
       return n;
    }
 
+	@Override
+	public int edit(MemberVO membervo) {
+		membervo.setPwd(as.encrypt(membervo.getPwd()));
+		int n = sqlsession.update("www.edit", membervo);
+	    return n;
+	}
+
 
 }

@@ -30,6 +30,12 @@
       FROM tbl_member
       WHERE email = #{email}
    </select>
+   
+   <!-- 회원정보 수정 -->
+	<update id="edit" parameterType="com.spring.member.model.MemberVO">
+		update tbl_member set name = #{name} ,pwd = #{pwd}, lastpwdchangdate = sysdate, tel = #{tel}
+		where idx = #{idx}
+	</update>
 
    
 </mapper>

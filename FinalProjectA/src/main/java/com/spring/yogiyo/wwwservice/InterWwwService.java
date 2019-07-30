@@ -14,7 +14,9 @@ public interface InterWwwService {
 
    public void RegisterMember(MemberVO membervo); // 회원가입처리하기
 
-   int selectUserID(String email);
+   int selectUserID(String email);// 이메일 중복검사
+
+   int edit(MemberVO membervo); // 회원정보 수정
 
    
 }

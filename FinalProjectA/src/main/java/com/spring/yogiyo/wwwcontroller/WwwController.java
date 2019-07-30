@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.spring.common.MyUtil;
 import com.spring.common.SHA256;
 import com.spring.member.model.MemberVO;
 import com.spring.yogiyo.wwwservice.InterWwwService;
@@ -166,5 +167,59 @@ public class WwwController {
       
       return gson.toJson(jsonobj);
    }
+   
+   // 내정보수정 폼 보여주기
+   @RequestMapping(value="/edit.yo" , method= {RequestMethod.GET})
+   public ModelAndView edit(ModelAndView mv) {
+      mv.setViewName("login/edit.tiles3");
+      return mv;
+   }
+   
+   // === 내정보수정 처리하기 ===
+   @RequestMapping(value="/edit.yo", method= {RequestMethod.POST})
+   public ModelAndView editEnd(ModelAndView mv, MemberVO membervo, HttpServletRequest request) {
+	   String idx = request.getParameter("idx");
+		if(idx == null) idx="";
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+
+		if( !idx.equals(String.valueOf(loginuser.getIdx()) ) ) {
+			// 로그인을 했지만 로그인한 자신의 정보를 수정하는 것이 아니라
+			// 다른 사용자의 정보를 수정하려고 접근한 경우
+			String msg = "다른 사용자의 정보 변경 불가!!";
+			String loc = "javascript:history.back()";
+			
+			mv.addObject("msg", msg);
+		    mv.addObject("loc", loc);
+		      
+		    mv.setViewName("msg");
+		    return mv;
+		}
+		else {
+			// 로그인을 해서 자신의 정보를 수정하려고 한 경우
+			mv.addObject("membervo", membervo);
+			
+			mv.setViewName("login/edit.tiles3");
+		}
+      return mv;
+   }
+   // === 수정 페이지 완료하기 ===
+	@RequestMapping(value="/editEnd.yo", method= {RequestMethod.POST})
+	public ModelAndView editEnd(MemberVO membervo, HttpServletRequest request, ModelAndView mv) {
+
+		int result = service.edit(membervo);
+		
+		if(result == 0) {
+			mv.addObject("msg","회원수정이 불가합니다.");
+		}
+		else {
+			mv.addObject("msg","내 정보수정 성공.");
+		}
+		mv.addObject("loc",request.getContextPath()+"/edit.yo");
+		mv.setViewName("msg");
+		
+		return mv;
+	}
    
 }
