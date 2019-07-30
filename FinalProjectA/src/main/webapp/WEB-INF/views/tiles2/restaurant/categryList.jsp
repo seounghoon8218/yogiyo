@@ -30,7 +30,7 @@
 		 		  			html += "<table class='restaurant-table'>";
 		 		  			html += "<tr>";
 		 		  			html += "<td class='logo'>";
-		 		  			html += "<div><img class='restaurant-img' src='<%=ctxPath %>/resources/images/category-01.png' /></div>";		 		  			
+		 		  			html += "<div><img class='restaurant-img' src='<%=ctxPath %>/resources/images/"+item.shopimage+"' /></div>";		 		  			
 		 		  			html += "</td>";
 		 		  			html += "<td>";
 		 		  			html += "<div class='restaurants-info'>";
@@ -80,7 +80,7 @@
  		  			html += "<table class='restaurant-table'>";
  		  			html += "<tr>";
  		  			html += "<td class='logo'>";
- 		  			html += "<div><img class='restaurant-img' src='<%=ctxPath %>/resources/images/category-01.png' /></div>";		 		  			
+ 		  			html += "<div><img class='restaurant-img' src='<%=ctxPath %>/resources/images/"+item.shopimage+"' /></div>";		 		  			
  		  			html += "</td>";
  		  			html += "<td>";
  		  			html += "<div class='restaurants-info'>";

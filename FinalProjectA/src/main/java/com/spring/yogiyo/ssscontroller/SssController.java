@@ -2,6 +2,8 @@ package com.spring.yogiyo.ssscontroller;
 
 import java.io.File;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.common.FileManager;
 import com.spring.common.MyUtil;
 import com.spring.yogiyo.sssmodel.MenuVO;
+import com.spring.yogiyo.sssmodel.sssBoardVO;
 import com.spring.yogiyo.sssservice.InterSssService;
 
 @Controller
@@ -52,7 +55,7 @@ public class SssController {
 		if (!attach.isEmpty()) {
 			HttpSession session = mrequest.getSession();
 			String root = session.getServletContext().getRealPath("/");
-			String path = root + "resources" + File.separator + "files";
+			String path = root + "resources" + File.separator + "images";
 			String newFileName = "";
 			byte[] bytes = null;
 			long fileSize = 0;
@@ -86,6 +89,59 @@ public class SssController {
 	}
 	
 	
-	
+	// 자유게시판등록 페이지
+	@RequestMapping(value = "/addBoard.yo", method = { RequestMethod.GET })
+	public ModelAndView requireLogin_addBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) {
+
+		String fk_seq = request.getParameter("fk_seq");
+		String groupno = request.getParameter("groupno");
+		String depthno = request.getParameter("depthno");
+		
+		mv.addObject("fk_seq",fk_seq);
+		mv.addObject("groupno",groupno);
+		mv.addObject("depthno",depthno);
+		
+		mv.setViewName("sssBoard/addBoard.tiles3");
+
+		return mv;
+	}
+
+	// 자유게시판 등록 요청
+	@RequestMapping(value="/addBoardEnd.yo", method= {RequestMethod.POST})
+	public String addBoardEnd(sssBoardVO sssbvo, MultipartHttpServletRequest mrequest) {
+		
+		MultipartFile attach = sssbvo.getAttach();
+		if (!attach.isEmpty()) {
+			HttpSession session = mrequest.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root + "resources"+File.separator+"images";
+			
+			String newFileName = "";
+			byte[] bytes = null;			
+			long fileSize = 0;
+			
+			try {
+				bytes = attach.getBytes();
+				newFileName = fileManager.doFileUpload(bytes, attach.getOriginalFilename(), path);
+				
+				sssbvo.setFileName(newFileName);
+				sssbvo.setOrgFilename(attach.getOriginalFilename());
+				fileSize = attach.getSize();
+				sssbvo.setFileSize(String.valueOf(fileSize));
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			String content = sssbvo.getContent();
+			sssbvo.setContent(MyUtil.replaceParameter(content));
+			content = sssbvo.getContent().replaceAll("/r/n", "<br/>");
+			sssbvo.setContent(content);
+
+			
+		}
+		
+		return null;
+	}
 	
 }
