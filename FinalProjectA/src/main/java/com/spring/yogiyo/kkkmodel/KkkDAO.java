@@ -32,5 +32,19 @@ public class KkkDAO implements InterKkkDAO {
 		return shop;
 	}
 
+	// 메뉴카테고리 가져오기
+	@Override
+	public List<HashMap<String, String>> getMenucategoryList() {
+		List<HashMap<String, String>> menucategoryList = sqlsession.selectList("kkk.getMenucategoryList");
+		return menucategoryList;
+	}
+
+	// 리스트별 메뉴 가져오기
+	@Override
+	public List<HashMap<String, String>> getMenuList(HashMap<String, String> paramap) {
+		List<HashMap<String, String>> menuList = sqlsession.selectList("kkk.getMenuList",paramap);
+		return menuList;
+	}
+
 	
 }

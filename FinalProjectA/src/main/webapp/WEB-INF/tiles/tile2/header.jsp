@@ -130,6 +130,7 @@
            
        var latlng = latitude+","+longitude;  // 위도,경도
             goLatlngToAddress(latlng);
+       
        });
               
       function goLatlngToAddress(latlng) {

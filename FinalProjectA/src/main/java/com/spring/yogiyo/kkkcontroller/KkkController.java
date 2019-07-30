@@ -105,9 +105,69 @@ public class KkkController {
 		oooVO shop = service.getShopView(masterno); // 매장하나정보 가지고오기
 		
 		request.setAttribute("shop", shop);
-		
+		request.setAttribute("masterno", masterno);
 		return "restaurant/restaurantView.tiles2";
 	}
 	
+	@RequestMapping(value="/kkk/menucategoryList.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String menucategoryList(HttpServletRequest request) {
+
+		Gson gson = new Gson();
+		
+		// 메뉴카테고리 가져오기
+		List<HashMap<String, String>> menucategoryList = service.getMenucategoryList();
+		
+		
+		JsonArray jsonArr = new JsonArray();
+		
+		for(HashMap<String, String> map : menucategoryList) {
+			JsonObject jsonObj = new JsonObject();
+			
+			jsonObj.addProperty("menuspeccode",map.get("menuspeccode"));
+			jsonObj.addProperty("menuspecname",map.get("menuspecname"));
+			
+			
+			jsonArr.add(jsonObj);
+			
+		}
+				
+		return gson.toJson(jsonArr);
+	}
+
+	@RequestMapping(value="/kkk/menuList.yo" , method= {RequestMethod.GET} ,produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String menuList(HttpServletRequest request) {
+		
+		Gson gson = new Gson();
+		String masterno = request.getParameter("masterno");
+		String code = request.getParameter("code");
+		
+		HashMap<String, String> paramap = new HashMap<String,String>();
+		paramap.put("masterno", masterno);
+		paramap.put("code", code);
+		
+		// 리스트별 메뉴 가져오기
+		List<HashMap<String, String>> menuList = service.getMenuList(paramap);
+		
+		
+		JsonArray jsonArr = new JsonArray();
+		
+		for(HashMap<String, String> map : menuList) {
+			JsonObject jsonObj = new JsonObject();
+			
+			jsonObj.addProperty("menucode",map.get("menucode"));
+			jsonObj.addProperty("masterno",map.get("masterno"));
+			jsonObj.addProperty("menuname",map.get("menuname"));
+			jsonObj.addProperty("menuprice",map.get("menuprice"));
+			jsonObj.addProperty("filename",map.get("filename"));
+			jsonObj.addProperty("pop_menuspeccode",map.get("pop_menuspeccode"));
+			
+			jsonArr.add(jsonObj);
+			
+		}
+		
+		return gson.toJson(jsonArr);
+	}
 	
 }

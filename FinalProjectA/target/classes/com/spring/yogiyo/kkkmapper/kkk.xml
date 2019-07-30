@@ -22,4 +22,33 @@
 		where masterno = #{masterno}
 	</select>
 	
+	<!-- // 메뉴카테고리 가져오기 -->
+	<resultMap type="HashMap" id="MenucategoryMap">
+      <result property="menuspeccode" column="menuspeccode" javaType="String" />
+      <result property="menuspecname" column="menuspecname" javaType="String" />
+   </resultMap>
+   	
+	<select id="getMenucategoryList" resultMap="MenucategoryMap">
+		select menuspeccode, menuspecname 
+		from TBL_MENUSPEC
+	</select>
+	
+	<!-- // 리스트별 메뉴 가져오기 -->
+	<resultMap type="HashMap" id="MenuMap">
+      <result property="menucode" column="menucode" javaType="String" />
+      <result property="masterno" column="masterno" javaType="String" />
+      <result property="menuname" column="menuname" javaType="String" />
+      <result property="menuprice" column="menuprice" javaType="String" />
+      <result property="filename" column="filename" javaType="String" />
+      <result property="pop_menuspeccode" column="pop_menuspeccode" javaType="String" />
+   </resultMap>
+   	
+	<select id="getMenuList" resultMap="MenuMap" parameterType="HashMap">
+		select menucode, masterno, menuname, menuprice, filename, pop_menuspeccode
+ 		from tbl_menuspec s left join tbl_menu m
+ 			on s.menuspeccode = m.fk_menuspeccode
+ 		where menuspeccode = #{code}
+ 		and masterno = #{masterno}
+	</select>
+	
 </mapper>
