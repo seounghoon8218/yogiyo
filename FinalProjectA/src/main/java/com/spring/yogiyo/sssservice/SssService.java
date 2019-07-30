@@ -1,5 +1,7 @@
 package com.spring.yogiyo.sssservice;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,14 @@ public class SssService implements InterSssService {
 	// 메뉴등록
 	@Override
 	public int menuRegister(MenuVO menuvo) {
-		int menuReg = dao.menuRegister(menuvo); 
-		return menuReg;
+		int n = dao.menuRegister(menuvo); 
+		return n;
 	}
+
+	
+	
+	
+	
+	
 
 }

@@ -7,8 +7,8 @@
 <mapper namespace="sss">
 
 	<insert id="menuRegister" parameterType="com.spring.yogiyo.sssmodel.MenuVO">
-		insert into tbl_menu(menucode, masterno, fk_menuspeccode, menuname, menuprice, menucomment, menuimage)
-		values(SEQ_TBL_MENU_MENUCODE.nextval, #{masterno}, #{fk_menuspeccode}, #{menuname}, #{menuprice}, #{menucomment}, #{menuimage});
+		insert into tbl_menu(menucode, masterno,fk_masterno, fk_menuspeccode, menuname, menuprice, menucomment, fileName, orgFilename, fileSize, fk_shopcategory, pop_menuspeccode)
+		values(SEQ_TBL_MENU_MENUCODE.nextval, #{masterno}, #{masterno}, #{fk_menuspeccode}, #{menuname}, #{menuprice}, #{menucomment}, #{fileName}, #{orgFilename}, #{fileSize}, #{fk_shopcategorycode}, #{pop_menuspeccode})
 	</insert>
 
 </mapper>
