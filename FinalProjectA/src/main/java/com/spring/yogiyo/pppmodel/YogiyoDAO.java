@@ -21,6 +21,13 @@ public class YogiyoDAO implements InterYogiyoDAO {
 		List<HashMap<String, String>> categoryList = sqlsession.selectList("yogiyo.getShopCategory");
 		return categoryList;
 	}
+
+	// 차트 테스트 ( 업종별 매장수 차트 )
+	@Override
+	public List<HashMap<String, String>> chartList() {
+		List<HashMap<String, String>> chartList = sqlsession.selectList("yogiyo.chartList");
+		return chartList;
+	}
 	
 }
 

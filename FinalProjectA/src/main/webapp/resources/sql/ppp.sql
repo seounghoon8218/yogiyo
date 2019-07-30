@@ -29,3 +29,81 @@ insert into TBL_SHOP
 values(SEQ_TBL_SHOP_MASTERNO.nextval,'회산물식당',5,'서울특별시 중구 남대문로2가','지훈빌딩1층','37.5638735','126.9820656','02-726-8332','회산물식당.jpg','10:00 - 21:00','17000','카드','회산물식당','국내산만을 사용합니다.');
 
 commit;
+
+select * from TBL_SHOP;
+select * from TBL_SHOPCATEGORY;
+
+select C.shopcategoryname as shopcategoryname
+		      , count(*) as CNT
+              , round(count(*)/(select count(*) from TBL_SHOP)*100,2) as PERCNT
+		from TBL_SHOPCATEGORY C left join TBL_SHOP S
+		on S.shopcategorycode = C.shopcategorycode
+		group by C.shopcategoryname
+        order by percnt desc;
+
+
+select * from tbl_member;
+desc tbl_member;
+
+select * from user_sequences;        
+        
+declare 
+    v_email VARCHAR2(300) := 'psh7603zz';
+    v_name VARCHAR2(30) := '박성훈';
+ begin
+     for i in 1..150 loop
+        insert into tbl_member(IDX, EMAIL, PWD,NAME,TEL,LASTLOGINDATE,REGISTERDAY,LASTPWDCHANGDATE,STATUS) 
+        values(SEQ_TBL_MEMBER.nextval , v_email || i || '@naver.com', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382' ,v_name||i , '01012345678' , default , default , default , default);
+     end loop;
+ end;        
+        
+
+----
+
+CREATE OR REPLACE FUNCTION RADIANS(nDegrees IN NUMBER) 
+RETURN NUMBER DETERMINISTIC 
+IS
+BEGIN
+  /*
+  -- radians = degrees / (180 / pi)
+  -- RETURN nDegrees / (180 / ACOS(-1)); but 180/pi is a constant, so...
+  */
+  RETURN nDegrees / 57.29577951308232087679815481410517033235;
+END RADIANS;
+ 
+create or replace function DISTNACE_WGS84( H_LAT in number, H_LNG in number, T_LAT in number, T_LNG in number)
+return number deterministic
+is
+begin
+  return ( 6371.0 * acos(  
+          cos( radians( H_LAT ) )*cos( radians( T_LAT /* 위도 */ ) )
+          *cos( radians( T_LNG /* 경도 */ )-radians( H_LNG ) )
+          +
+          sin( radians( H_LAT ) )*sin( radians( T_LAT /* 위도 */ ) )        
+         ));
+end DISTNACE_WGS84;
+ 
+select DISTNACE_WGS84(33.504274, 126.529182, 33.524383, 126.544333) from dual;
+/* 결과 2.64059773979495999846417249534463003211 */
+ 
+/*
+  삼성혈 LOCALY = 33.504274, LOCALX = 126.529182
+*/
+
+----- 내위치에서 2km 범위의 가게 불러오기
+select * 
+from 
+(
+    select masterno, shopname, WDO, KDO
+        , DISTNACE_WGS84(37.5632533, 126.529182, WDO, KDO) as DISTANCE
+    from tbl_shop
+    where (WDO between 37.5632533-0.019 and 37.5632533+0.019)
+        and (KDO between 126.9868325-0.022 and 126.9868325+0.022)
+    order by DISTANCE
+)TMP 
+where rownum < 10;
+
+-----
+
+select * from tbl_shop;
+ 

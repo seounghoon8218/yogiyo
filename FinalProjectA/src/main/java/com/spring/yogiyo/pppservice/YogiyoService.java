@@ -22,5 +22,12 @@ public class YogiyoService implements InterYogiyoService {
 		List<HashMap<String, String>> categoryList = dao.getShopCategory();
 		return categoryList;
 	}
+
+	// 차트 테스트 ( 업종별 매장수 차트 )
+	@Override
+	public List<HashMap<String, String>> chartList() {
+		List<HashMap<String, String>> chartList = dao.chartList();
+		return chartList;
+	}
 	
 }
