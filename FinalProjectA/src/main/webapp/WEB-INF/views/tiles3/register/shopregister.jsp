@@ -33,7 +33,7 @@
    .inputmargin{
       margin-top: 10px;
    }
-   
+   #title { margin-left: 25%; width: 50%; border-bottom: red solid 2px;}
 }
 
 </style>  
@@ -215,8 +215,10 @@
 </script>
    
 <div style=" width: 80%; border: 0px solid; margin: 0 auto;">
-   <div align="center" style="font-weight: bold; margin-bottom: 35px;">
-      <h2><span>매장 등록</span></h2>
+  
+    <div id="title"  align="left" style="font-weight: bold; margin-bottom: 35px;">
+		<h2>메뉴 등록</h2>
+		<h6 style="color: #888;">운영중인 음식점의 매장을 요기요에 등록하세요. 온라인 메뉴등록중 어려움이 있으시면 고객센터(02-3447-3612)로 연락주세요</h6>
    </div>
    <form name="shopregisterFrm">
       <span>매장정보 입력</span>

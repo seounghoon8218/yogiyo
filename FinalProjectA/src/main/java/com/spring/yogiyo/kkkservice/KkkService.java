@@ -105,7 +105,21 @@ public class KkkService implements InterKkkService {
 	      // 리뷰 보여주기
 	      @Override
 	      public List<HashMap<String, String>> getReviewList(String masterno) {
-	         List<HashMap<String, String>> reviewList = dao.getReviewList(masterno);
+	    	  
+	    	 // 조건
+	    	 int count = dao.getReviewCount1(masterno);
+	    	 
+	    	 List<HashMap<String, String>> reviewList = null;
+	    	 
+	    	 if(count > 0) { 
+	    		  reviewList = dao.getReviewList(masterno);
+	    		  System.out.println("~~~~~ 리뷰 있음!!!");
+	    	 }
+	    	 else {
+	    		 System.out.println("~~~~~ 리뷰 없음!!!");
+	    	 }
+	    		 
+	    	 	 
 	         return reviewList;
 	      }
 
@@ -123,5 +137,13 @@ public class KkkService implements InterKkkService {
 	         return k;
 	         
 	      }	      
+	      
+	      // 별점이랑 리뷰갯수 업데이트 해주기
+	      @Override
+	      public int updateStarpAndReviewc(HashMap<String, String> masterStarReviewMap) {
+	         int sprc = dao.updateStarpAndReviewc(masterStarReviewMap);
+	         return sprc;
+	      }         
+	      
 	      
 }

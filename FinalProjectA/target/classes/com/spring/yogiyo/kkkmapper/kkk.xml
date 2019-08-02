@@ -7,106 +7,131 @@
 <mapper namespace="kkk">
 
 	<!-- 매장가져오기 --> <!-- 손혜현 보여주기 수정 -->
-   <select id="getShopList" resultType="com.spring.yogiyo.ooomodel.oooVO" parameterType="HashMap">
-      select RNO, masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji, DISTANCE
-      from
-      (
-          select rownum as RNO, masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji, DISTANCE
-          from
-          (  
-            select masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji
-            		, DISTNACE_WGS84(#{latitude}, #{longitude}, WDO, KDO) as DISTANCE
-            from tbl_shop  
-            where  (WDO between (#{latitude}-0.022) and (#{latitude}+0.022))
-        	and (KDO between (#{longitude}-0.022) and (#{longitude}+0.022))
-            <if test='shopcategorycode != "0"'>
-            and shopcategorycode = #{shopcategorycode}
-            </if>          	
-         )V
-      )T
-      where RNO between #{cnt} and (#{cnt}+4)
-   </select>
-   <!-- 손혜현 보여주기 수정 -->
-	
+	<select id="getShopList"
+		resultType="com.spring.yogiyo.ooomodel.oooVO" parameterType="HashMap">
+		select RNO, masterno, shopname, shopcategorycode, addr, addr2, wdo,
+		kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname,
+		wonsanji, DISTANCE
+		from
+		(
+		select rownum as RNO, masterno, shopname, shopcategorycode, addr, addr2,
+		wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod,
+		sanghoname, wonsanji, DISTANCE
+		from
+		(
+		select masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel,
+		shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji
+		, DISTNACE_WGS84(#{latitude}, #{longitude}, WDO, KDO) as DISTANCE
+		from tbl_shop
+		where (WDO between (#{latitude}-0.022) and (#{latitude}+0.022))
+		and (KDO between (#{longitude}-0.022) and (#{longitude}+0.022))
+		<if test='shopcategorycode != "0"'>
+			and shopcategorycode = #{shopcategorycode}
+		</if>
+		)V
+		)T
+		where RNO between #{cnt} and (#{cnt}+4)
+	</select>
+	<!-- 손혜현 보여주기 수정 -->
+
 	<!-- 매장하나정보 가지고오기 -->
-	<select id="getShopView" parameterType="String" resultType="com.spring.yogiyo.ooomodel.oooVO">
-		select masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji
+	<select id="getShopView" parameterType="String"
+		resultType="com.spring.yogiyo.ooomodel.oooVO">
+		select masterno, shopname, shopcategorycode, addr, addr2,
+		wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod,
+		sanghoname, wonsanji
 		from tbl_shop
 		where masterno = #{masterno}
 	</select>
-	
+
 	<!-- // 메뉴카테고리 가져오기 -->
 	<resultMap type="HashMap" id="MenucategoryMap">
-      <result property="menuspeccode" column="menuspeccode" javaType="String" />
-      <result property="menuspecname" column="menuspecname" javaType="String" />
-   </resultMap>
-   	
+		<result property="menuspeccode" column="menuspeccode"
+			javaType="String" />
+		<result property="menuspecname" column="menuspecname"
+			javaType="String" />
+	</resultMap>
+
 	<select id="getMenucategoryList" resultMap="MenucategoryMap">
-		select menuspeccode, menuspecname 
+		select menuspeccode,
+		menuspecname
 		from TBL_MENUSPEC
 	</select>
-	
+
 	<!-- // 리스트별 메뉴 가져오기 -->
 	<resultMap type="HashMap" id="MenuMap">
-      <result property="menucode" column="menucode" javaType="String" />
-      <result property="masterno" column="masterno" javaType="String" />
-      <result property="menuname" column="menuname" javaType="String" />
-      <result property="menuprice" column="menuprice" javaType="String" />
-      <result property="filename" column="filename" javaType="String" />
-      <result property="pop_menuspeccode" column="pop_menuspeccode" javaType="String" />
-   </resultMap>
-   	
-	<select id="getMenuList" resultMap="MenuMap" parameterType="HashMap">
-		select menucode, masterno, menuname, menuprice, filename, pop_menuspeccode
- 		from tbl_menuspec s left join tbl_menu m
- 			on s.menuspeccode = m.fk_menuspeccode
- 		where menuspeccode = #{code}
- 		and masterno = #{masterno}
+		<result property="menucode" column="menucode" javaType="String" />
+		<result property="masterno" column="masterno" javaType="String" />
+		<result property="menuname" column="menuname" javaType="String" />
+		<result property="menuprice" column="menuprice"
+			javaType="String" />
+		<result property="filename" column="filename" javaType="String" />
+		<result property="pop_menuspeccode" column="pop_menuspeccode"
+			javaType="String" />
+	</resultMap>
+
+	<select id="getMenuList" resultMap="MenuMap"
+		parameterType="HashMap">
+		select menucode, masterno, menuname, menuprice,
+		filename, pop_menuspeccode
+		from tbl_menuspec s left join tbl_menu m
+		on s.menuspeccode = m.fk_menuspeccode
+		where menuspeccode = #{code}
+		and masterno = #{masterno}
 	</select>
-	
+
 	<!-- // 장바구니에 insert 하기 전 이미 존재하는것인지 체크하기 -->
 	<select id="cartSelect" parameterType="HashMap" resultType="int">
 		select count(*)
 		from tbl_cart
 		where masterno = #{masterno}
-			and menucode = #{menucode}
-			and email = #{email}
+		and menucode = #{menucode}
+		and email = #{email}
 	</select>
 	<!-- // 장바구니에 insert 해주기 -->
 	<insert id="cartInsert" parameterType="HashMap">
-		insert into tbl_cart(orderno,masterno,menucode,menuname,menuqty,menuprice,email)
+		insert into
+		tbl_cart(orderno,masterno,menucode,menuname,menuqty,menuprice,email)
 		values(seq_tbl_cart_orderno.nextval,#{masterno},#{menucode},#{menuname},#{menuqty},#{menuprice},#{email})
 	</insert>
-	
+
 	<!-- // 장바구니에 delete 해주기 -->
 	<delete id="delMenu" parameterType="String">
-		delete from tbl_cart where orderno = #{orderno}
+		delete from tbl_cart where
+		orderno = #{orderno}
 	</delete>
-	
+
 	<!-- // 로그인된 email 에 해당하는 cart테이블정도 select 해오기 -->
 	<resultMap type="HashMap" id="cartMap">
-      <result property="orderno" column="orderno" javaType="String" />
-      <result property="masterno" column="masterno" javaType="String" />
-      <result property="menucode" column="menucode" javaType="String" />
-      <result property="menuname" column="menuname" javaType="String" />
-      <result property="menuqty" column="menuqty" javaType="String" />
-      <result property="menuprice" column="menuprice" javaType="String" />
-      <result property="shopname" column="shopname" javaType="String" />
-      <result property="shopimage" column="shopimage" javaType="String" />
-      <result property="filename" column="filename" javaType="String" />
-   </resultMap>
-	<select id="selectCartList" parameterType="String" resultMap="cartMap">
-		select orderno,v.masterno as masterno,v.menucode as menucode,v.menuname as menuname,v.menuqty as menuqty,v.menuprice as menuprice,shopname,shopimage,m.filename as filename , v.email as email
+		<result property="orderno" column="orderno" javaType="String" />
+		<result property="masterno" column="masterno" javaType="String" />
+		<result property="menucode" column="menucode" javaType="String" />
+		<result property="menuname" column="menuname" javaType="String" />
+		<result property="menuqty" column="menuqty" javaType="String" />
+		<result property="menuprice" column="menuprice"
+			javaType="String" />
+		<result property="shopname" column="shopname" javaType="String" />
+		<result property="shopimage" column="shopimage"
+			javaType="String" />
+		<result property="filename" column="filename" javaType="String" />
+	</resultMap>
+	<select id="selectCartList" parameterType="String"
+		resultMap="cartMap">
+		select orderno,v.masterno as masterno,v.menucode as
+		menucode,v.menuname as menuname,v.menuqty as menuqty,v.menuprice as
+		menuprice,shopname,shopimage,m.filename as filename , v.email as email
 		from
 		(
-			select orderno,c.masterno as masterno,menucode,menuname,menuqty,menuprice,s.shopname as shopname,s.shopimage as shopimage, c.email as email 
-			from tbl_cart c join tbl_shop s
-			    on c.masterno = s.masterno
+		select orderno,c.masterno as
+		masterno,menucode,menuname,menuqty,menuprice,s.shopname as
+		shopname,s.shopimage as shopimage, c.email as email
+		from tbl_cart c join tbl_shop s
+		on c.masterno = s.masterno
 		)v join tbl_menu m
 		on v.menucode = m.menucode
 		where email = #{email}
 	</select>
-	
+
 	<!-- // 타음식점 추가 불가 기능 -->
 	<select id="getCartMasterno" resultType="String">
 		select masterno
@@ -118,76 +143,110 @@
 		)V
 		where RNO = 1
 	</select>
-	
-	
+
+
 	<!-- dl지훈 -->
-   <resultMap type="HashMap" id="shopInfo">
-      <result property="shopname"   column="shopname"   javaType="String" />
-      <result property="minprice"   column="minprice"   javaType="String" />
-      <result property="paymethod"  column="paymethod"  javaType="String" />
-      <result property="sanghoname" column="sanghoname" javaType="String" />
-      <result property="masterno"   column="masterno"   javaType="String" />
-      <result property="wonsanji"   column="wonsanji"   javaType="String" />
-      <result property="shoptime"   column="shoptime"   javaType="String" />
-   </resultMap>
-   
-   <select id="getShopInfo" resultType="HashMap" resultMap="shopInfo">
-      select shopname, minprice, paymethod, sanghoname, masterno, wonsanji, shoptime
-      from tbl_shop
-      where masterno = #{masterno}
-   </select>
-   <!-- dl지훈 -->
+	<resultMap type="HashMap" id="shopInfo">
+		<result property="shopname" column="shopname" javaType="String" />
+		<result property="minprice" column="minprice" javaType="String" />
+		<result property="paymethod" column="paymethod"
+			javaType="String" />
+		<result property="sanghoname" column="sanghoname"
+			javaType="String" />
+		<result property="masterno" column="masterno" javaType="String" />
+		<result property="wonsanji" column="wonsanji" javaType="String" />
+		<result property="shoptime" column="shoptime" javaType="String" />
+	</resultMap>
+
+	<select id="getShopInfo" resultType="HashMap"
+		resultMap="shopInfo">
+		select shopname, minprice, paymethod, sanghoname, masterno, wonsanji,
+		shoptime
+		from tbl_shop
+		where masterno = #{masterno}
+	</select>
+	<!-- dl지훈 -->
 
 	<!-- 명훈,선규 -->
-	<select id="getStarpointAvg" resultType="double" parameterType="com.spring.yogiyo.ooomodel.oooVO">
-      select nvl(trunc(sum(starpoint)/count(*),1),0)
-      from tbl_review
-      where fk_masterno = #{masterno}
-   </select>
-   
-   <select id="getReviewCount" resultType="int" parameterType="com.spring.yogiyo.ooomodel.oooVO">
-      select count(*)
-      from  tbl_review
-      where fk_masterno = #{masterno}
-   </select>
-   
-   
-   <resultMap type="HashMap" id="reviewMap">
-        <result property="reviewno" column="reviewno" javaType="String" />
-         <result property="fk_masterno" column="fk_masterno" javaType="String" />
-         <result property="fk_menucode" column="fk_menucode" javaType="String" />
-         <result property="starpoint" column="starpoint" javaType="String" />
-         <result property="image" column="image" javaType="String" /> 
-         <result property="comments" column="comments" javaType="String" />
-        <result property="reviewRegDate" column="reviewRegDate" javaType="String" />
-        <result property="email" column="email" javaType="String" />
-        <result property="menuname" column="menuname" javaType="String" />
-   </resultMap>
-   
-   <select id="getReviewList" parameterType="String" resultMap="reviewMap">           
-      select R.reviewno as reviewno, R.fk_masterno as fk_masterno, R.fk_menucode as fk_menucode, R.starpoint as starpoint, R.image as image, R.comments as comments, to_char(R.reviewRegDate, 'yyyy-mm-dd') as reviewRegDate
-          , R.email as email  <!-- , N.menuname as menuname -->
-      from tbl_review R 
-      where R.fk_masterno = #{masterno} 
-      order by reviewno desc  
-   </select>
-   
-   <insert id="addReview" parameterType="HashMap">
-      insert into tbl_review(reviewno, fk_masterno, fk_menucode, image, starpoint, comments, reviewRegDate, email, filename, orgfilename, filesize)
-      values(seq_tbl_review_reviewno.nextval, #{fk_masterno}, '61', #{image}, #{starpoint}, #{comments}, default, #{email}, #{filename}, #{orgfilename}, #{filesize} )
-   </insert>
-   
-   <resultMap type="HashMap" id="checkMap">
-      <result property="paymenuname"  column="paymenuname"  javaType="String" />
-      <result property="payno"  column="payno"  javaType="String" />
-      
-   </resultMap>
-   
-   <select id="checkOrderStatus" parameterType="HashMap" resultMap="checkMap">
-      select paymenuname, payno
-      from   tbl_payment 
-      where  status = 1 and  masterno = #{masterno} and email = #{loginuserEmail}
-   </select>		
+	<select id="getStarpointAvg" resultType="double"
+		parameterType="com.spring.yogiyo.ooomodel.oooVO">
+		select nvl(trunc(sum(starpoint)/count(*),1),0)
+		from tbl_review
+		where fk_masterno = #{masterno}
+	</select>
+
+	<select id="getReviewCount" resultType="int"
+		parameterType="com.spring.yogiyo.ooomodel.oooVO">
+		select count(*)
+		from tbl_review
+		where fk_masterno = #{masterno}
+	</select>
+
+
+	<resultMap type="HashMap" id="reviewMap">
+		<result property="reviewno" column="reviewno" javaType="String" />
+		<result property="fk_masterno" column="fk_masterno"
+			javaType="String" />
+		<result property="fk_menucode" column="fk_menucode"
+			javaType="String" />
+		<result property="starpoint" column="starpoint"
+			javaType="String" />
+		<result property="image" column="image" javaType="String" />
+		<result property="comments" column="comments" javaType="String" />
+		<result property="reviewRegDate" column="reviewRegDate"
+			javaType="String" />
+		<result property="email" column="email" javaType="String" />
+		<result property="menuname" column="menuname" javaType="String" />
+	</resultMap>
+
+	<select id="getReviewCount1" parameterType="String"
+		resultType="int">
+		select count(*)
+		from tbl_review
+		where fk_masterno = #{masterno}
+	</select>
+
+
+	<select id="getReviewList" parameterType="String"
+		resultMap="reviewMap">
+		select R.reviewno as reviewno, R.fk_masterno as fk_masterno,
+		R.fk_menucode as fk_menucode, R.starpoint as starpoint, R.image as
+		image, R.comments as comments, to_char(R.reviewRegDate, 'yyyy-mm-dd')
+		as reviewRegDate
+		, R.email as email  <!-- , N.menuname as menuname -->
+		from tbl_review R
+		where R.fk_masterno = #{masterno}
+		order by reviewno desc
+	</select>
+
+	<insert id="addReview" parameterType="HashMap">
+		insert into tbl_review(reviewno, fk_masterno, fk_menucode, image, starpoint,
+		comments, reviewRegDate, email, filename, orgfilename, filesize)
+		values(seq_tbl_review_reviewno.nextval, #{fk_masterno}, '61',
+		#{image}, #{starpoint}, #{comments}, default, #{email}, #{filename},
+		#{orgfilename}, #{filesize} )
+	</insert>
+
+	<resultMap type="HashMap" id="checkMap">
+		<result property="paymenuname" column="paymenuname"
+			javaType="String" />
+		<result property="payno" column="payno" javaType="String" />
+
+	</resultMap>
+
+	<select id="checkOrderStatus" parameterType="HashMap"
+		resultMap="checkMap">
+		select paymenuname, payno
+		from tbl_payment
+		where status = 1 and masterno = #{masterno} and email = #{loginuserEmail}
+	</select>
 	<!-- 명훈,선규 -->
-	
+
+	<!-- // 별점이랑 리뷰갯수 업데이트 해주기 -->
+	<update id="updateStarpAndReviewc" parameterType="HashMap">
+		update TBL_SHOP set starpointsum = #{starpointAvg} , reviewcount =
+		#{reviewCount}
+		where masterno = #{masterno}
+	</update>
+
 </mapper>

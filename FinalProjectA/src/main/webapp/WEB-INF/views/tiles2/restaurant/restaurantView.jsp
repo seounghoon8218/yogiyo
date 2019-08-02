@@ -291,37 +291,41 @@ img {
 	         success:function(json){
 	            var html="";
 	            console.log(json);
-	            $.each(json, function(index,item){
-	               html += "<div style='border: 1px solid #D5D5D5; padding:5px;' >";
-	               html += "<span style='font-weight: bold; font-size: 11pt; padding-left: 15px;'>"+item.email+"</span>";
-	               html += "<span style='float: right; font-size: 10pt; padding-right: 5px;'>"+item.reviewRegDate+"</span><br>";
-	               if(item.starpoint==1){
-	                  html += "<span style='color: #ffa400; padding-left: 15px;'>★</span><span style='color: #e0e0e0;'>★★★★</span><br>";
-	               }
-	               
-	               if(item.starpoint==2){
-	                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★</span><span style='color: #e0e0e0;'>★★★</span><br>";
-	               }
-	               
-	               if(item.starpoint==3){
-	                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★★</span><span style='color: #e0e0e0;'>★★</span><br>";
-	               }
-	               
-	               if(item.starpoint==4){
-	                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★★★</span><span style='color: #e0e0e0;'>★</span><br>";
-	               }
-	               
-	               if(item.starpoint==5){
-	                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★★★★</span><span style='color: #e0e0e0;'></span><br>";
-	               }
-	               if(item.image != null){
-	                  html += "<img src='<%=ctxPath%>/resources/images/"+item.image+"' style='width: 500px; height: 300px;'/><br>";
-	               }
-	               /* html += "<span style='color:#E5D85C; padding-left: 15px;'>"+855416846568+"</span><br><br>"; */
-	               html += "<span style='padding-left: 15px; font-size: 12pt;'>"+item.comments+"</span>";
-	               html += "</div>";
-	            }); // end each
 	            
+	            if(json.length > 0) {
+	            
+		            $.each(json, function(index,item){
+		               html += "<div style='border: 1px solid #D5D5D5; padding:5px;' >";
+		               html += "<span style='font-weight: bold; font-size: 11pt; padding-left: 15px;'>"+item.email+"</span>";
+		               html += "<span style='float: right; font-size: 10pt; padding-right: 5px;'>"+item.reviewRegDate+"</span><br>";
+		               if(item.starpoint==1){
+		                  html += "<span style='color: #ffa400; padding-left: 15px;'>★</span><span style='color: #e0e0e0;'>★★★★</span><br>";
+		               }
+		               
+		               if(item.starpoint==2){
+		                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★</span><span style='color: #e0e0e0;'>★★★</span><br>";
+		               }
+		               
+		               if(item.starpoint==3){
+		                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★★</span><span style='color: #e0e0e0;'>★★</span><br>";
+		               }
+		               
+		               if(item.starpoint==4){
+		                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★★★</span><span style='color: #e0e0e0;'>★</span><br>";
+		               }
+		               
+		               if(item.starpoint==5){
+		                  html += "<span style='color: #ffa400; padding-left: 15px;'>★★★★★</span><span style='color: #e0e0e0;'></span><br>";
+		               }
+		               if(item.image != null){
+		                  html += "<img src='<%=ctxPath%>/resources/images/"+item.image+"' style='width: 500px; height: 300px;'/><br>";
+		               }
+		               /* html += "<span style='color:#E5D85C; padding-left: 15px;'>"+855416846568+"</span><br><br>"; */
+		               html += "<span style='padding-left: 15px; font-size: 12pt;'>"+item.comments+"</span>";
+		               html += "</div>";
+		            }); // end each
+	            
+	            }
 	            
 	            
 	            $("#reviewShow").html(html);
@@ -519,25 +523,25 @@ img {
 				<span>${shop.shopname}</span>
 			</div>
 			<table style="width: 100%; height: 100%;">
-				<tr>
-					<td style="width: 15%;">
-						<div>
-							<img
-								style="height: 80px; width: 80px; vertical-align: middle; margin: 10px;"
-								src='<%=request.getContextPath()%>/resources/images/미샤.png' />
-						</div>
-					</td>
-					<td>
-						<div>
-							<div style="font-size: 110%; text-align: left;">
-								<span>★ 4.0</span> <span>리뷰29</span> <span>사장님댓글 2</span><br />
-								<span>요기서결제</span> <span>${shop.minprice} 원 이상 배달</span><br />
-								<span>40~50분 </span>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
+            <tr>
+               <td style="width: 15%;">
+                  <div>
+                     <img
+                        style="height: 80px; width: 80px; vertical-align: middle; margin: 10px;"
+                        src='<%=request.getContextPath()%>/resources/images/${shop.shopimage}' />
+                  </div>
+               </td>
+               <td>
+                  <div>
+                     <div style="font-size: 110%; text-align: left;">
+                        <span>★ ${starpointAvg}</span> <br><span>리뷰 ${reviewCount }</span><br />
+                        <span>요기서결제 | </span> <span>${shop.minprice} 원 이상 배달</span><br />
+                        
+                     </div>
+                  </div>
+               </td>
+            </tr>
+         </table>
 		</div>
 		<div >
 			<ul id="selectvar">
@@ -601,11 +605,13 @@ img {
                <textarea  cols="87" rows="5" name="comments" id="comments"></textarea>
                <button type="button" id="btnCommentRegister">리뷰 등록</button>
                
-               <c:forEach items="${reviewList}" var="reviewList">
-                  <input type="hidden" name="masterno" value="${reviewList.fk_masterno}"/>
-                  <input type="hidden" name="email" value="${reviewList.email}"/>
-                  <input type="hidden" name="menuname" value="${reviewList.menuname}"/>               
+            <c:if test="${reviewList != null}">
+               <c:forEach items="${reviewList}" var="review">
+                  <input type="hidden" name="masterno" value="${review.fk_masterno}"/>
+                  <input type="hidden" name="email" value="${review.email}"/>
+                  <input type="hidden" name="menuname" value="${review.menuname}"/>               
                </c:forEach>
+            </c:if>
             </form>
          </div>
          <!--  리뷰 등록 끝  -->

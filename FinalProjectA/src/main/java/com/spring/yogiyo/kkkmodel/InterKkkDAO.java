@@ -46,6 +46,13 @@ public interface InterKkkDAO {
 	   int addReview(HashMap<String, String> paramap);
 
 	   // 결제테이블에서 Status 체크
-	   List<HashMap<String, String>> checkOrderStatus(HashMap<String, String> paramap);	   
+	   List<HashMap<String, String>> checkOrderStatus(HashMap<String, String> paramap);
+
+	   // 리뷰갯수 구해오기
+	   int getReviewCount1(String masterno);	   
+	   
+	   // 별점이랑 리뷰갯수 업데이트 해주기
+	   int updateStarpAndReviewc(HashMap<String, String> masterStarReviewMap);   
+	   
 	   
 }

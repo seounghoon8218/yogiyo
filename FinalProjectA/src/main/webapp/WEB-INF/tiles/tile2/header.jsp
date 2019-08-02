@@ -220,6 +220,7 @@
           	           	  sessionStorage.setItem('latitude', latitude);
           	           	  sessionStorage.setItem('longitude', longitude);
                            
+          	           	  history.go(0);
                           
                      } else if(json.status == 'ZERO_RESULTS') {
                          alert("지오코딩이 성공했지만 반환된 결과가 없음을 나타냅니다.\n\n이는 지오코딩이 존재하지 않는 address 또는 원격 지역의 latlng을 전달받는 경우 발생할 수 있습니다.")

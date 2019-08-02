@@ -113,7 +113,7 @@
 		<span style="font-size: 9pt;">필수 입력</span>
 	</div>
 	<form name="menuRegFrm" enctype="multipart/form-data" id="menuRegFrm">
-		<table style="width: 100%;"><%-- 현제 로그인되어진 사용자에 한에서 세션에 정보저장후 불러오기 --%>			
+		<table style="width: 100%;"><%-- 현재 로그인되어진 사용자에 한에서 세션에 정보저장후 불러오기 --%>			
 			<tr>				
 				<td class="tdTitle" style="width: 63px;">사업자번호<span style="color: red;"> *</span></td>
 				<td class="inputTd">
