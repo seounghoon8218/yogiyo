@@ -14,7 +14,13 @@ public interface InterWwwDAO {
 
    int selectUserID(String email); // 이메일 중복검사
 
+<<<<<<< HEAD
    int edit(MemberVO membervo); // 내정보 수정
 
    int pwdSearch(HashMap<String, String> map); // 찾기
+=======
+   int edit(MemberVO membervo);
+
+   
+>>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
 }

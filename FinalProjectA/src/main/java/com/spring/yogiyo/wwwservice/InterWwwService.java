@@ -14,6 +14,11 @@ public interface InterWwwService {
    public void RegisterMember(MemberVO membervo); // 회원가입처리하기
 
    int selectUserID(String email);// 이메일 중복검사
+<<<<<<< HEAD
+=======
+
+   int edit(MemberVO membervo); // 회원정보 수정
+>>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
 
    int edit(MemberVO membervo); // 회원정보 수정
 

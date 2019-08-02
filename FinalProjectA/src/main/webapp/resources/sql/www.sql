@@ -90,5 +90,12 @@ insert into tbl_Member (idx,email, pwd, name, tel, status) values (seq_tbl_membe
 
 
 SELECT *
-      FROM tbl_member;
-      WHERE email =
+FROM tbl_member;
+
+delete from tbl_member where email = 'admin@gmail.com';
+
+update tbl_member set name = '관리자',pwd = 'qwer1234$', lastpwdchangdate = sysdate, tel = '01030031234' 
+		where idx = 172
+
+commit;
+      

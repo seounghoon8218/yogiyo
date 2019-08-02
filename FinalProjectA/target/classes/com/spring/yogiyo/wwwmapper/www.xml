@@ -34,6 +34,7 @@
    </select>
    
    <!-- 회원정보 수정 -->
+<<<<<<< HEAD
    <update id="edit" parameterType="com.spring.member.model.MemberVO">
       update tbl_member set name = #{name} ,pwd = #{pwd}, lastpwdchangdate = sysdate, tel = #{tel}
       where idx = #{idx}
@@ -45,6 +46,12 @@
      from tbl_member
      where email = #{email} and tel = #{tel}
    </select>
+=======
+	<update id="edit" parameterType="com.spring.member.model.MemberVO">
+		update tbl_member set name = #{name} ,pwd = #{pwd}, lastpwdchangdate = sysdate, tel = #{tel}
+		where idx = #{idx}
+	</update>
+>>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
 
    
 </mapper>

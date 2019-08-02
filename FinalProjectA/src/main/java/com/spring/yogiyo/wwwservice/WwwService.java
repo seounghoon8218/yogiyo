@@ -83,6 +83,7 @@ public class WwwService implements InterWwwService {
    }
    
    // 회원정보 수정
+<<<<<<< HEAD
    @Override
    public int edit(MemberVO membervo) {
       int n = dao.edit(membervo);
@@ -96,5 +97,12 @@ public class WwwService implements InterWwwService {
       return pwdOK;
    }
 
+=======
+	@Override
+	public int edit(MemberVO membervo) {
+		int n = dao.edit(membervo);
+		return n;
+	}
+>>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
 
 }
