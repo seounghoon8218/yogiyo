@@ -45,7 +45,6 @@ public SHA256 as = null;
       return n;
    }
 
-<<<<<<< HEAD
    // 내정보수정
    @Override
    public int edit(MemberVO membervo) {
@@ -60,14 +59,6 @@ public SHA256 as = null;
      int pwdOK = sqlsession.selectOne("www.pwdSearch", map); 
       return pwdOK;
    }
-=======
-	@Override
-	public int edit(MemberVO membervo) {
-		membervo.setPwd(as.encrypt(membervo.getPwd()));
-		int n = sqlsession.update("www.edit", membervo);
-	    return n;
-	}
->>>>>>> branch 'master' of https://github.com/seounghoon8218/yogiyo.git
 
 
 }
