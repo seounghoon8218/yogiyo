@@ -83,8 +83,8 @@
 	    font-weight: bold;
 	}
 </style>	
-	
-	<div class="category-list" ng-hide="$location.path() != &quot;/&quot;">
+
+	<div  class="category-list" ng-hide="$location.path() != &quot;/&quot;">
 		<div class="row">
 			<!-- ngRepeat: banner in banner_list -->
 			

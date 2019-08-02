@@ -23,13 +23,6 @@ public class WwwService implements InterWwwService {
    @Autowired 
    AES256 aes;
    
-   
-   // === #37. 메인 페이지용 이미지 파일을 가져오기===
-   @Override
-   public List<String> getImgfilenameList() {
-      List<String> imgfilenameList = dao.getImgfilenameList();
-      return imgfilenameList;
-   }
 
    // === #42. 로그인 처리하기 ===
    @Override
@@ -82,11 +75,26 @@ public class WwwService implements InterWwwService {
       
    }
 
-
+   // 중복검사
    @Override
    public int selectUserID(String email) {
       int n = dao.selectUserID(email);
       return n;
    }
+   
+   // 회원정보 수정
+   @Override
+   public int edit(MemberVO membervo) {
+      int n = dao.edit(membervo);
+      return n;
+   }
+   
+   // 비밀번호 찾기
+   @Override
+   public int pwdSearch(HashMap<String, String> map) {
+      int pwdOK = dao.pwdSearch(map);
+      return pwdOK;
+   }
+
 
 }

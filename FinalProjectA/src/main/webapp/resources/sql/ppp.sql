@@ -6,6 +6,32 @@ show user;
 */
 
 select * from user_tables;
+select * from user_sequences;
+
+desc TBL_CART;
+select * from TBL_CART;
+select * from TBL_PAYMENT;
+
+select * from TBL_CART;
+
+delete from TBL_CART where email = 'psh7603zz@naver.com';
+
+commit;
+-- cart
+SELECT orderno,V.masterno AS masterno,V.menucode AS menucode,V.menuname AS menuname,V.menuqty AS menuqty,V.menuprice AS menuprice,shopname,shopimage,M.filename AS filename , V.email AS email
+FROM
+(
+SELECT orderno,C.masterno AS masterno,menucode,menuname,menuqty,menuprice,S.shopname AS shopname,S.shopimage AS shopimage, C.email AS email 
+FROM tbl_cart C JOIN tbl_shop S
+    ON C.masterno = S.masterno
+)V JOIN tbl_menu M
+ON V.menucode = M.menucode
+WHERE email = 'psh7603zz@naver.com';
+
+desc TBL_PAYMENT;
+desc TBL_CART;
+desc TBL_ORDERDETAIL;
+desc TBL_MENU;
 
 select * from TBL_SHOPCATEGORY;
 
@@ -59,7 +85,7 @@ declare
         
 
 ----
-
+--1
 CREATE OR REPLACE FUNCTION RADIANS(nDegrees IN NUMBER) 
 RETURN NUMBER DETERMINISTIC 
 IS
@@ -70,7 +96,8 @@ BEGIN
   */
   RETURN nDegrees / 57.29577951308232087679815481410517033235;
 END RADIANS;
- 
+
+--2
 create or replace function DISTNACE_WGS84( H_LAT in number, H_LNG in number, T_LAT in number, T_LNG in number)
 return number deterministic
 is
@@ -85,10 +112,7 @@ end DISTNACE_WGS84;
  
 select DISTNACE_WGS84(33.504274, 126.529182, 33.524383, 126.544333) from dual;
 /* 결과 2.64059773979495999846417249534463003211 */
- 
-/*
-  삼성혈 LOCALY = 33.504274, LOCALX = 126.529182
-*/
+
 
 ----- 내위치에서 2km 범위의 가게 불러오기
 select * 
@@ -107,3 +131,10 @@ where rownum < 10;
 
 select * from tbl_shop;
  
+insert into tbl_payment(payno,addr1,addr2,tel,yocheong,totalprice,paymethod,email)
+		values(seq_tbl_payment_payno.nextval,'서울','11번지','010-3333-3333','맛있게','35000','card','psh@psh' );
+select * from tbl_payment;
+
+
+
+

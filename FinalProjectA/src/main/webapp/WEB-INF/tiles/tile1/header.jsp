@@ -19,6 +19,8 @@
 
    $(document).ready(function(){   
       
+	   goGPS();
+	   
       $("#main-search-input").click(function(){
           new daum.Postcode({
              oncomplete: function(data) {
@@ -27,6 +29,14 @@
           }).open();
       }); // click ---------------------------
             
+      
+      
+      $("#main-search-button").click(function(){
+    	  var addressVal = $("#main-search-input").val().trim();
+			goAddressToLatlng(addressVal);			
+      });
+      
+      
    }); // ready -------------------------------
    
    function goGPS() {
@@ -37,11 +47,20 @@
        navigator.geolocation.getCurrentPosition(function(position) {
            latitude = position.coords.latitude;   //위도
            longitude = position.coords.longitude; //경도
+
+           if (window.sessionStorage) {
+	
+	           sessionStorage.setItem('latitude', latitude);
+	           // var position = sessionStorage.getItem('latitude');
+	           sessionStorage.setItem('longitude', longitude);
+	           
+	       }
            
        var latlng = latitude+","+longitude;  // 위도,경도
             goLatlngToAddress(latlng);
        });
-              
+       
+      
       function goLatlngToAddress(latlng) {
          
           $.ajax({
@@ -59,6 +78,14 @@
                      
                      
                      $("#main-search-input").val(html);
+                     
+                     if (window.sessionStorage) {
+                    		
+          	           sessionStorage.setItem('addr1', html);
+          	           //var addr1 = sessionStorage.getItem('addr1');
+          	           
+          			  }
+                     
                   } else if(json.status == 'ZERO_RESULTS') {
                       alert("지오코딩이 성공했지만 반환된 결과가 없음을 나타냅니다.\n\n이는 지오코딩이 존재하지 않는 address 또는 원격 지역의 latlng을 전달받는 경우 발생할 수 있습니다.")
                   } else if(json.status == 'OVER_QUERY_LIMIT') {
@@ -79,7 +106,50 @@
       
    } // goGPS() ---------------------------------
    
+   
+   //////////////////////////////////////////////////////////////////////////////
+   
+    function goAddressToLatlng(addressVal) {
+         var address = encodeURIComponent(addressVal);
+         
+         $.ajax({
+             url: "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDDQx9Q_JsWUjWyssoeEaeBGSbhvGcTyrA&sensor=false&address="+address,
+             type: "GET",
+             dataType: "JSON",
+                success: function(json){
+                      if(json.status == 'OK') {
+                    	  
+                          var addr1 = json.results[0].formatted_address;
+                          var latitude = json.results[0].geometry.location.lat;
+                          var longitude = json.results[0].geometry.location.lng;
+                   		  
+                          addr1 = addr1.substring( 5 );
+                    		
+                          sessionStorage.setItem('addr1', addr1);           	           
+           	           	  sessionStorage.setItem('latitude', latitude);
+           	           	  sessionStorage.setItem('longitude', longitude);
+                            
+           	              location.href="<%=ctxPath %>/categryList.yo?shopcategorycode=0";
+                           
+                      } else if(json.status == 'ZERO_RESULTS') {
+                          alert("지오코딩이 성공했지만 반환된 결과가 없음을 나타냅니다.\n\n이는 지오코딩이 존재하지 않는 address 또는 원격 지역의 latlng을 전달받는 경우 발생할 수 있습니다.")
+                      } else if(json.status == 'OVER_QUERY_LIMIT') {
+                          alert("할당량이 초과되었습니다.");
+                      } else if(json.status == 'REQUEST_DENIED') {
+                          alert("요청이 거부되었습니다.\n\n대부분의 경우 sensor 매개변수가 없기 때문입니다.");
+                      } else if(json.status == 'INVALID_REQUEST') {
+                          alert("일반적으로 쿼리(address 또는 latlng)가 누락되었음을 나타냅니다.");
+                      }
+              }
+         });
+     }
+   
+   
+   
+   
+   
 </script>
+
 
 <nav class="navbar navbar-inverse" style="background-color: red; border: none; height: 80px; margin-bottom: 0">
   <div class="container-fluid" style="width: 70%;font-size: 16pt;" >
@@ -102,14 +172,14 @@
      </c:if>
      <c:if test="${sessionScope.loginuser != null }">
          <ul class="nav navbar-nav navbar-right">
-           <li><a href="#"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+           <li><a href="<%=ctxPath%>/edit.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
          </ul>
          <ul class="nav navbar-nav navbar-right">
            <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
          </ul>
          <c:if test="${sessionScope.loginuser.email != 'admin@gmail.com' }">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
+              <li><a href="<%=ctxPath%>/kkk/orderMenuList.yo"><span class="glyphicon glyphicon-list-alt"></span> 주문표</a></li>
             </ul>
          </c:if>
          <c:if test="${sessionScope.loginuser.email == 'admin@gmail.com' }">
@@ -117,7 +187,7 @@
               <li><a href="<%=ctxPath%>/shopregister.yo"><span class="glyphicon glyphicon-log-in"></span> 매장등록</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 메뉴등록</a></li>
+              <li><a href="<%=ctxPath%>/registerMenu.yo"><span class="glyphicon glyphicon-log-in"></span> 메뉴등록</a></li>
             </ul>
          </c:if>
       </c:if>

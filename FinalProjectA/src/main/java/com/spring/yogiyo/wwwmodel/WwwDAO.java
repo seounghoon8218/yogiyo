@@ -20,13 +20,6 @@ public SHA256 as = null;
    @Autowired
    private SqlSessionTemplate sqlsession;
 
-   // === #38. 메인 페이지용 이미지 파일을 가져오기===
-   @Override
-   public List<String> getImgfilenameList() {
-      List<String> imgfilenameList = sqlsession.selectList("www.getImgfilenameList");
-      return imgfilenameList;
-   }
-
    // === #46. 로그인 처리하기 ===
    @Override
    public MemberVO getLoginMember(HashMap<String, String> paraMap) {
@@ -50,6 +43,21 @@ public SHA256 as = null;
    public int selectUserID(String email) {
       int n = sqlsession.selectOne("www.selectUserID", email);
       return n;
+   }
+
+   // 내정보수정
+   @Override
+   public int edit(MemberVO membervo) {
+      membervo.setPwd(as.encrypt(membervo.getPwd()));
+      int n = sqlsession.update("www.edit", membervo);
+       return n;
+   }
+   
+   // 찾기
+   @Override
+   public int pwdSearch(HashMap<String, String> map) {
+     int pwdOK = sqlsession.selectOne("www.pwdSearch", map); 
+      return pwdOK;
    }
 
 

@@ -29,5 +29,19 @@ public class YogiyoService implements InterYogiyoService {
 		List<HashMap<String, String>> chartList = dao.chartList();
 		return chartList;
 	}
+
+	// TBL_PAYMENT 테이블에 추가
+	@Override
+	public int insertPayment(HashMap<String, String> paraMap) {
+		int m = dao.insertPayment(paraMap);
+		return m;
+	}
+
+	// 결제완료했으면 해당 아이디 장바구니 비우기
+	@Override
+	public int alldeleteCart(String email) {
+		int z = dao.alldeleteCart(email);
+		return z;
+	}
 	
 }

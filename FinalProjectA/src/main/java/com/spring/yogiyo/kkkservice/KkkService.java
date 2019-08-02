@@ -45,5 +45,83 @@ public class KkkService implements InterKkkService {
 			return menuList;
 		}
 
-	
+		// 장바구니에 insert 하기 전 이미 존재하는것인지 체크하기
+		@Override
+		public int cartSelect(HashMap<String, String> paramap) {
+			int m = dao.cartSelect(paramap);
+			return m;
+		}
+		// 장바구니에 insert 해주기
+		@Override
+		public int cartInsert(HashMap<String, String> paramap) {
+			int n = dao.cartInsert(paramap);
+			return n;
+		}
+
+		// 로그인된 email 에 해당하는 cart테이블정도 select 해오기
+		@Override
+		public List<HashMap<String, String>> selectCartList(String email) {
+			List<HashMap<String, String>> cartList = dao.selectCartList(email);
+			return cartList;
+		}
+
+
+		// 주문메뉴 삭제
+		@Override
+		public int delMenu(String orderno) {
+			int n = dao.delMenu(orderno);
+			return n;
+
+		}
+
+		// 타음식점 추가 불가 기능
+		@Override
+		public String getCartMasterno(String email) {
+			String msno = dao.getCartMasterno(email);
+			return msno;
+		}
+
+		// 지훈 - 매장정보
+	      @Override
+	      public List<HashMap<String, String>> getShopInfo(String masterno) {
+	         List<HashMap<String, String>> shopInfo = dao.getShopInfo(masterno);
+	         return shopInfo;
+	      }
+
+	   // 총 별점 평균 보여주기
+	      @Override
+	      public double getStarpointAvg(int masterno) {
+	         double starpointAvg = dao.getStarpointAvg(masterno);
+	         return starpointAvg;
+	      }
+
+	      // 총 리뷰 갯수 보여주기
+	      @Override
+	      public int getReviewCount(int masterno) {
+	         int reviewCount = dao.getReviewCount(masterno);
+	         return reviewCount;
+	      }
+
+	      // 리뷰 보여주기
+	      @Override
+	      public List<HashMap<String, String>> getReviewList(String masterno) {
+	         List<HashMap<String, String>> reviewList = dao.getReviewList(masterno);
+	         return reviewList;
+	      }
+
+	      // 리뷰 등록
+	      @Override
+	      public int addReview(HashMap<String, String> paramap) {
+	         int n = dao.addReview(paramap);
+	         return n;
+	      }
+
+	      // 결제테이블에서 Status 체크
+	      @Override
+	      public List<HashMap<String, String>> checkOrderStatus(HashMap<String, String> paramap) {
+	         List<HashMap<String, String>> k = dao.checkOrderStatus(paramap);
+	         return k;
+	         
+	      }	      
+	      
 }

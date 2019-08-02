@@ -37,6 +37,16 @@
 		order by percnt desc
 	</select>
 	
+	<insert id="insertPayment" parameterType="HashMap" >
+		insert into tbl_payment(payno,addr1,addr2,tel,yocheong,totalprice,paymethod,email,paymenuname,masterno)
+		values(seq_tbl_payment_payno.nextval,#{addr1},#{addr2},#{tel},#{yocheong},#{totalprice},'card',#{email},#{paymenuname},#{masterno} )
+	</insert>
+	
+	<!-- // 결제완료했으면 해당 아이디 장바구니 비우기 -->
+	<delete id="alldeleteCart" parameterType="String">
+		delete from TBL_CART where email = #{email}
+	</delete>
+	
 </mapper>
 
 

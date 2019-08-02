@@ -28,6 +28,20 @@ public class YogiyoDAO implements InterYogiyoDAO {
 		List<HashMap<String, String>> chartList = sqlsession.selectList("yogiyo.chartList");
 		return chartList;
 	}
+
+	// TBL_PAYMENT 테이블에 추가
+	@Override
+	public int insertPayment(HashMap<String, String> paraMap) {
+		int m = sqlsession.insert("yogiyo.insertPayment",paraMap);
+		return m;
+	}
+
+	// 결제완료했으면 해당 아이디 장바구니 비우기
+	@Override
+	public int alldeleteCart(String email) {
+		int z = sqlsession.delete("yogiyo.alldeleteCart",email);
+		return z;
+	}
 	
 }
 

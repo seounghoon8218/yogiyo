@@ -121,10 +121,11 @@ public class MyUtil {
       String result = param;
       
       if(param != null) {
-         result = result.replaceAll("<", "&lt;"); // "<" 가 있으면 태그로 보지말고 "&lt"가 있다면 태그다. 
-         result = result.replaceAll(">", "&gt;"); 
-         result = result.replaceAll("&", "&amp;"); 
-         result = result.replaceAll("\"", "&quot;");
+//         result = result.replaceAll("<", "&lt;"); // "<" 가 있으면 태그로 보지말고 "&lt"가 있다면 태그다. 
+//         result = result.replaceAll(">", "&gt;"); 
+//         result = result.replaceAll("&", "&amp;"); 
+//         result = result.replaceAll("\"", "&quot;");
+    	  result = result.replaceAll("<script", "&lt;script"); // 스마트에디터 사용하기 위해 위에 다 주석처리하고 이걸로 바꾼다.
       }
       
       return result;      

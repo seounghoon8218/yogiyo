@@ -21,14 +21,29 @@
       where email = #{email}
    </update>
    
+   <!-- 회원가입 -->
    <insert id="RegisterMember" parameterType="String"> 
       insert into tbl_Member (idx, email, pwd, name, tel) values (seq_tbl_member.nextval, #{email}, #{pwd}, #{name}, #{tel}) 
    </insert>
 
+   <!-- 이메일중복 -->
    <select id="selectUserID" parameterType="String" resultType="int">
       SELECT COUNT(*) as RESULT
       FROM tbl_member
       WHERE email = #{email}
+   </select>
+   
+   <!-- 회원정보 수정 -->
+   <update id="edit" parameterType="com.spring.member.model.MemberVO">
+      update tbl_member set name = #{name} ,pwd = #{pwd}, lastpwdchangdate = sysdate, tel = #{tel}
+      where idx = #{idx}
+   </update>
+   
+   <!-- 비밀번호 찾기 -->
+   <select id="pwdSearch" parameterType="HashMap" resultType="int">
+        select count(*)
+     from tbl_member
+     where email = #{email} and tel = #{tel}
    </select>
 
    
