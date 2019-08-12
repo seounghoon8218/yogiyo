@@ -64,10 +64,13 @@
           });
             
       });
-        
         $("#btnOK").click(function () {
+           var email2 = $("#email2").val().trim(); 
+       	   var cer = $("#cer").val().trim();
            var frm = document.loginFrm;
             
+            frm.email2.value = email2;
+            frm.cer.value = cer;
             frm.action = "<%=ctxPath%>/newPwd.yo";
             frm.method = "POST";
             frm.submit();
@@ -102,18 +105,7 @@
        frm.submit();
        
     } // end of function func_Login(event)-----------------------------
-    
-    
-    function pwdSearch() {
-           
-       var frm = document.loginFrm;
-       
-       frm.action = "<%=ctxPath%>/pwdSearch.yo";
-       frm.method = "GET";
-       frm.submit();
-       
-    } // end of function func_Login(event)-----------------------------
-     
+   
 </script>
 
 <div class="container custom-border">
@@ -178,7 +170,7 @@
                   </td>
               </tr>
               <tr>
-               <td><input type="text" placeholder="(필수)인증번호" name="text" id="text"/></td>
+               <td><input type="text" placeholder="(필수)인증번호" name="cer" id="cer"/></td>
               </tr>
             
          </table>

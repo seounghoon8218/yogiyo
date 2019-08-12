@@ -5,14 +5,16 @@
 <style type="text/css">
 	#menuRegFrm { width: 50%; display: inline-block; margin: 10px 0px 0px 25%; }
 	input { height: 34px; }
+	select { height: 34px; width: 110px; }
 	tr { margin: 0px 0px 10px 0px }
 	td { width: 180px; padding: 10px; }
 	tr, td { border: 1px solid #E0E0E0; border-left: none; border-right: none; }
-	#title { margin-left: 25%; width: 50%; border-bottom: red solid 2px;}
+	.button{ padding: 10px 25% 10px 25%; display: inline-block; width: 100%; border-top: 1px solid #888; margin-top: 10px; }
 	.tdTitle { width: 150px; height: 34px; border-right: 1px solid #E0E0E0; background-color: #ce252508;}
+	#title { margin-left: 25%; width: 50%; border-bottom: red solid 2px;}
 	#firTitle { width: 50%; margin: 30px 0px 0px 25%; border-bottom: solid #888 1px; padding-bottom: 10px; }
-	#secTitle { border-top: solid #888 1px; border-bottom: solid #888 1px; padding: 50px 0px 10px 0px; margin-top: 10px;}
-	select { height: 34px; }
+	#secTitle { border-top: solid #888 1px; border-bottom: solid #888 1px; padding: 50px 0px 10px 0px; margin: 10px 0px 10px 0px;}
+	
 </style>
 
 <script type="text/javascript">
@@ -24,8 +26,6 @@
 			var masternoReg = /^[0-9]{1,20}$/;
 			var masternoTest = masternoReg.test($("#masterno").val());
 			
-			var menunameReg = /^[가-힣0-9A-z]{1,20}$/;
-			var menunameTest = menunameReg.test($("#menuname").val());
 			
 			var menupriceReg = /^[0-9]{1,20}$/;
 			var menupriceTest = menupriceReg.test($("#menuprice").val());
@@ -62,12 +62,7 @@
 				$("#menuname").val("");
 				$("#menuname").focus();
 				return;
-			} else if ($("#menuname").val().trim()!="" && !menunameTest) {
-				alert("메뉴명을 잘못 입력하셨습니다.");
-				$("#menuname").val("");
-				$("#menuname").focus();
-				return;
-			}
+			} 
 			
 			if ($("#menuprice").val().trim()=="") {
 				alert("메뉴가격을 입력하세요.");
@@ -113,7 +108,7 @@
 		<span style="font-size: 9pt;">필수 입력</span>
 	</div>
 	<form name="menuRegFrm" enctype="multipart/form-data" id="menuRegFrm">
-		<table style="width: 100%;"><%-- 현재 로그인되어진 사용자에 한에서 세션에 정보저장후 불러오기 --%>			
+		<table style="width: 100%;">			
 			<tr>				
 				<td class="tdTitle" style="width: 63px;">사업자번호<span style="color: red;"> *</span></td>
 				<td class="inputTd">
@@ -185,7 +180,7 @@
 				</td>
 			</tr>			
 		</table>
-		<div class="inputTd" style=" margin: 25px 0px 25px 24.5%;">
+		<div class="button">
 			<input type="button" style="background-color: red;   border: none; width: 180px; height: 45px; color: white; font-weight: bold;"   value="등록" id="menuRegister" />
 			<input type="reset"  style="background-color: white; border: 1px black solid; width: 180px; height: 45px; font-weight: bold;"  value="취소"/>
 		</div>		

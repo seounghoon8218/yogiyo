@@ -1,7 +1,6 @@
 -- 테이블 전체조회
 SELECT *
 FROM user_tables;
-
 select * from TBL_CLIENT;    
 select * from TBL_ORDERSUM;       
 select * from TBL_SHOPCATEGORY;       
@@ -13,16 +12,20 @@ select * from TBL_CART;
 select * from TBL_PAYMENT;      
 select * from TBL_ORDERDETAIL;  
 select * from TBL_MEMBER;      
+select * from TBL_GREETINGBOARD;
+select * from TBL_GREETINGCOMMENT;
+desc TBL_GREETINGCOMMENT;
 
-desc TBL_SHOPCATEGORY;
+SELECT *
+  FROM USER_CONSTRAINTS
+ WHERE CONSTRAINT_NAME = 'FK_TBL_REVIEW';
 
 -- 시퀀스 전체조회
 select * from user_sequences;
-
 -- 컬럼추가
-alter table tbl_menu add(pop_menuspeccode varchar2(2) default 0);
+alter table TBL_GREETINGCOMMENT add(commentCount   number default 0 not null);
 -- 컬럼 삭제
-ALTER TABLE tbl_menu DROP COLUMN pop_menuspeccode;
+ALTER TABLE TBL_GREETINGBOARD DROP COLUMN commentcount ; 
 rollback;
 DESC TBL_SHOP;
 -- 제약조건 조회하기
@@ -186,6 +189,20 @@ insert into TBL_SHOP
 values(SEQ_TBL_SHOP_MASTERNO.nextval,'신림동만리장성',3,'서울 관악구 관악로 146','2층','37.478214','126.9525562','02-886-1117','만리장성.jpg','10:00 - 20:40','10,000','카드','	24시만리장성','돼지고기: 국내산 소 고 기: 호주산 닭 고 기: 브라질산 김 치: 중국산 쌀 : 국내산 오 징 어: 국내산, 베트남 쭈 꾸 미: 베트남 해파리채: 중국산', '','','');
 
 delete tbl_shop where masterno = 87;
+
+insert into tbl_greetingcomment(seq, fk_email, name, content, regDate, parentseq, status, groupno, fk_seq, depthno, commentcount)
+values(seq_tbl_greetingcomment_seq, 'admin@gmail.com', '관리자', '첫번째 댓글 테스트입니다.', default, 6, 1, 1,   );
+SEQ          NOT NULL NUMBER         
+FK_EMAIL     NOT NULL VARCHAR2(20)   
+NAME         NOT NULL VARCHAR2(20)   
+CONTENT      NOT NULL VARCHAR2(1000) 
+REGDATE      NOT NULL DATE           
+PARENTSEQ    NOT NULL NUMBER         
+STATUS       NOT NULL NUMBER(1)      
+GROUPNO      NOT NULL NUMBER         
+FK_SEQ       NOT NULL NUMBER         
+DEPTHNO      NOT NULL NUMBER         
+COMMENTCOUNT NOT NULL NUMBER   
 commit;
 
 select menuspeccode, menuspecname
@@ -216,3 +233,73 @@ delete from tbl_menu where masterno = 176;
 commit;
 
 update tbl_menu set fk_shopcategory = '9' where masterno = 227;
+
+create sequence seq_tbl_greetingcomment_seq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+create table tbl_greetingComment
+(seq           number               not null   -- 댓글번호
+,fk_email     varchar2(20)         not null   -- 사용자ID
+,name          varchar2(20)         not null   -- 성명
+,content       varchar2(1000)       not null   -- 댓글내용
+,regDate       date default sysdate not null   -- 작성일자
+,parentSeq     number               not null   -- 원게시물 글번호
+,status        number(1) default 1  not null   -- 글삭제여부
+                                               -- 1 : 사용가능한 글,  0 : 삭제된 글
+                                               -- 댓글은 원글이 삭제되면 자동적으로 삭제되어야 한다.
+,groupno        number                not null   -- 답변글쓰기에 있어서 그룹번호
+                                                 -- 원글(부모님)과 답변글은 동일한 groupno 를 가진다.
+                                                 -- 답변글이 아닌 원글(부모글)인 경우 groupno 의 값은 groupno 컬럼의 최대값(max)+1 로 한다.
+,fk_seq         number default 0      not null   -- fk_seq 컬럼은 절대로 foreign key가 아니다.!!!!!!!!!
+                                                 -- fk_seq 컬럼은 자신의 글(답변글)이 있어서
+                                                 -- 원글(부모글)이 누구인지에 대한 정보값이다.
+                                                 -- 답변글쓰기에 있어서 답변글이라면 fk_seq 컬럼의 값은
+                                                 -- 원글(부모글)의 seq 컬럼의 값을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+
+,depthno        number default 0      not null   -- 답변글쓰기에 있어서 답변글 이라면
+                                                 -- 원글(부모글)의 depthno+1 을 가지게 되며, 
+                                                 -- 답변글이 아닌 원글일 경우 0을 가지도록 한다.
+,commentcount   number not null                                              
+,constraint PK_tbl_gc_seq primary key(seq)
+,constraint FK_tbl_gc_email foreign key(fk_email)
+                                    references tbl_member(email)
+,constraint FK_tbl_gc_parentSeq foreign key(parentSeq) 
+                                      references tbl_greetingBoard(seq) on delete cascade
+,constraint CK_tbl_gc_status check( status in(1,0) ) 
+);
+
+select previousseq, previoustitle, seq, fk_email, name, title, content, readCount, regDate, nextseq, nexttitle
+from
+(
+    select lag(seq, 1) over(order by seq desc) as previousseq
+         , lag(title, 1) over(order by seq desc) as previoustitle
+         , seq, fk_email, name, title, content, readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+         , lead(seq, 1) over(order by seq desc) as nextseq
+         , lead(title, 1) over(order by seq desc) as nexttitle
+    from tbl_greetingboard
+    where status = 1
+    order by seq desc
+) V
+where V.seq = 1;
+            
+           select * from tbl_greetingboard order by seq; 
+            
+select previousseq, previoustitle, seq, fk_email, name, title, content, readCount, regDate, nextseq , nexttitle
+from
+(
+    select lag(seq, 1) over(order by seq desc) as previousseq
+         , lead(title, 1 ) over(order by title desc) as previoustitle
+         , seq, fk_email, name, title, content, readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+         , lag(seq, 1 ) over(order by seq desc) as nextseq
+         , lead(title, 1) over(order by title desc) as nexttitle
+    from tbl_greetingboard
+    where status = 1
+) V
+where seq = 1;

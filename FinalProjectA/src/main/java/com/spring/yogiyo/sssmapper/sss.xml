@@ -6,9 +6,143 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="sss">
 
+	<!-- 메뉴등록 -->
 	<insert id="menuRegister" parameterType="com.spring.yogiyo.sssmodel.MenuVO">
 		insert into tbl_menu(menucode, masterno,fk_masterno, fk_menuspeccode, menuname, menuprice, menucomment, fileName, orgFilename, fileSize, fk_shopcategory, pop_menuspeccode)
 		values(SEQ_TBL_MENU_MENUCODE.nextval, #{masterno}, #{masterno}, #{fk_menuspeccode}, #{menuname}, #{menuprice}, #{menucomment}, #{fileName}, #{orgFilename}, #{fileSize}, #{fk_shopcategorycode}, #{pop_menuspeccode})
 	</insert>
 
+	<!-- 검색어가 없을때의 게시물 갯수 -->
+	<select id="getTotalCountWithOutSearch" resultType="int">
+		select count(*)
+		from tbl_greetingboard
+		where status = 1
+	</select> 
+	
+	<!-- 검색어가 있을때의 게시물 갯수 -->
+	<select id="getTotalCountWithSearch" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_greetingboard
+		where status = 1 and ${searchType} like '%'|| #{searchWord} ||'%'
+	</select>
+	
+	<!-- 댓글형 게시판 X , 가입인사 등록 -->
+	<insert id="addGreeting" parameterType="com.spring.yogiyo.sssmodel.GreetingBoardVO">
+		insert into tbl_greetingboard(seq, fk_email, name, title, content, pw, readCount, regDate, status, commentCount)
+		values(seq_tbl_greetingboard_seq.nextval, #{fk_email}, #{name}, #{title}, #{content}, #{pw} ,default, default, default, default )
+	</insert>
+	
+	<!-- 페이징처리한 게시물 리스트 -->
+	<select id="greetingList" parameterType="HashMap" resultType="com.spring.yogiyo.sssmodel.GreetingBoardVO">
+		select seq , fk_email, name, title, readCount , regDate, commentCount
+		from
+		(	
+			select rownum AS rno, seq, fk_email, name, title, readCount, regDate, commentCount
+			from
+			(
+				select seq, fk_email ,name , title, readCount, to_char(regDate, 'yyyy-mm-dd') AS regDate, commentCount
+				from tbl_greetingboard
+				where status = 1
+				<if test='searchWord != "" '>
+					and ${searchType} like '%'|| #{searchWord} ||'%'
+				</if>
+				order by seq desc
+			) V
+		) T 
+		where T.rno between #{startRno} and #{endRno}
+	</select>
+	
+	<!-- 글 1개 보여주기 및 readCount 증가하기 -->
+	<select id="getGreetingView" parameterType="String" resultType="com.spring.yogiyo.sssmodel.GreetingBoardVO">
+		select lag(seq, 1) over(order by seq desc) as previousseq
+			 , lead(title, 1 ) over(order by title desc) as previoustitle
+			 , seq, fk_email, name, title, content, readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+			 , lead(seq, 1 ) over(order by seq desc) as nextseq
+			 , lag(title, 1) over(order by title desc) as nexttitle
+			 , commentCount 
+		from tbl_greetingboard
+		where seq = #{seq}
+	</select>
+	<update id="addGreetingReadCount" parameterType="String">
+		update tbl_greetingboard set readCount = readCount + 1
+		where status = 1 and seq = #{seq}
+	</update>
+	
+	<!-- 글 1개 보여주기 -->
+	<select id="getGreetingViewNoAddCount" parameterType="String" resultType="com.spring.yogiyo.sssmodel.GreetingBoardVO">
+		select previousseq, previoustitle, seq, fk_email, name, title, content, readCount, regDate, nextseq
+			 , nexttitle
+			from
+			(
+				select lag(seq, 1) over(order by seq desc) as previousseq
+					 , lag(title, 1 ) over(order by seq desc) as previoustitle
+					 , seq, fk_email, name, title, content, readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+					 , lead(seq, 1 ) over(order by seq desc) as nextseq
+					 , lead(title, 1) over(order by seq desc) as nexttitle
+				from tbl_greetingboard
+				where status = 1
+			) V
+			where v.seq = #{seq}
+			
+	</select>
+	
+	<!-- 댓글 불러오기 -->
+	<select id="getGreetingCommentList" parameterType="String" resultType="com.spring.yogiyo.sssmodel.GreetingCommentVO">
+		select name, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate , parentSeq, groupno, fk_seq, depthno, commentCount
+		from tbl_greetingcomment
+		where parentSeq = #{parentSeq}
+		order by seq asc
+	</select>
+	
+	<insert id="addGreetingComment" parameterType="com.spring.yogiyo.sssmodel.GreetingCommentVO">
+		<!-- 일반 댓글인경우 -->
+		<if test='fk_seq == ""'>
+			insert into tbl_greetingcomment(seq, fk_email, name, content, regDate, parentSeq, status, groupno, fk_seq, depthno, commentcount)
+			values(seq_tbl_greetingcomment_seq.nextval, #{fk_email}, #{name}, #{content}, default, #{parentSeq}, default, #{groupno}, default, default, default)		
+		</if>
+		
+		<!-- 답변형 댓글인경우 -->
+		<if test='fk_seq != ""'>
+			insert into tbl_greetingcomment(seq, fk_email, name, content, regDate, parentSeq, status, groupno, fk_seq, depthno, commentcount)
+			values(seq_tbl_greetingcomment_seq.nextval, #{fk_email}, #{name}, #{content}, default, #{parentSeq}, default, #{groupno}+1, #{fk_seq}, #{depthno}, default)
+		
+		</if>		
+	</insert>
+	
+	<!-- 글수정하기 -->
+	<update id="editGreeting" parameterType="com.spring.yogiyo.sssmodel.GreetingBoardVO">
+		update tbl_greetingboard set title = #{title} , content = #{content}, regDate = sysdate 
+		where seq = #{seq}
+	</update>
+	
+	<!-- 비밀번호가 맞는지 가져오기 -->
+	<select id="checkPW" parameterType="com.spring.yogiyo.sssmodel.GreetingBoardVO" resultType="int">
+		select count(*)
+		from tbl_greetingboard
+		where seq = #{seq} and pw = #{pw}
+	</select>
+	
+	<!-- 글 삭제하기 -->
+	<update id="destroyGreeting" parameterType="com.spring.yogiyo.sssmodel.GreetingBoardVO">
+		update tbl_greetingboard set status = 0 
+		where seq = #{seq}
+	</update>
+	
+	<!-- 글 삭제시 딸려있는 댓글 삭제하기 -->
+	<delete id="destroyGreetingComment" parameterType="String">
+		delete from tbl_greetingComment where parentSeq = #{seq}
+	</delete>
+	
+	<!-- tbl_greetingcomment 에서 groupno 컬럼의 최대값 구하기 -->
+	<select id="getGroupnoMax" resultType="int">
+		select nvl(max(groupno), 0)
+		from tbl_greetingcomment
+	</select>
 </mapper>
+
+
+
+
+
+
+

@@ -6,29 +6,205 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="ooo">
    <insert id="addshop">
-      insert into tbl_shop(masterno, shopname, shopcategorycode, addr, addr2, wdo, kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname, wonsanji)
-      values (seq_tbl_shop_masterno.nextval, #{shopname}, #{shopcategorycode}, #{addr}, #{addr2}, #{wdo}, #{kdo}, #{shoptel}, #{shopimage}, #{shoptime}, #{minprice}, #{paymethod}, #{sanghoname}, #{wonsanji})
+      insert into tbl_shop(masterno, shopname, shopcategorycode, addr, addr2, wdo,
+      kdo, shoptel, shopimage, shoptime, minprice, paymethod, sanghoname,
+      wonsanji)
+      values (seq_tbl_shop_masterno.nextval, #{shopname}, #{shopcategorycode},
+      #{addr}, #{addr2}, #{wdo}, #{kdo}, #{shoptel}, #{shopimage},
+      #{shoptime}, #{minprice}, #{paymethod}, #{sanghoname}, #{wonsanji})
    </insert>
-   
+
    <resultMap type="HashMap" id="shopCategoryMap">
-      <result property="shopcategorycode" column="shopcategorycode" javaType="String" />
-      <result property="shopcategoryname" column="shopcategoryname" javaType="String" />
+      <result property="shopcategorycode" column="shopcategorycode"
+         javaType="String" />
+      <result property="shopcategoryname" column="shopcategoryname"
+         javaType="String" />
    </resultMap>
-   
-   <select id="selectShopCategory" resultMap="shopCategoryMap" >
+
+   <select id="selectShopCategory" resultMap="shopCategoryMap">
       select shopcategorycode, shopcategoryname
       from tbl_shopcategory
       order by shopcategorycode desc
    </select>
-   
-    
-   <select id="getMasterNo" resultType="int" >
+
+
+   <select id="getMasterNo" resultType="int">
       select SEQ_TBL_SHOP_MASTERNO.nextval as masterno
       from dual
    </select>
-   
-</mapper>
 
+   <select id="getTotalCountWithNOsearch" resultType="int">
+      select count(*)
+      from tbl_oooBoard
+      where status = 1
+   </select>
+
+
+   <select id="getTotalCountWithSearch" resultType="int"
+      parameterType="HashMap">
+      select count(*)
+      from tbl_oooBoard
+      where status = 1 and ${searchType} like '%'|| #{searchWord} ||'%'
+   </select>
+
+
+   <select id="boardListWithPaging" parameterType="HashMap"
+      resultType="com.spring.yogiyo.ooomodel.oooBoardVO">
+      select seq, fk_userid, name, subject, readcount, regDate, commentCount
+      , groupno, fk_seq, depthno
+      , fileName, orgFilename, fileSize
+      from
+      (
+      select rownum AS rno
+      , seq, fk_userid, name, subject, readcount, regDate, commentCount
+      , groupno, fk_seq, depthno
+      , fileName, orgFilename, fileSize
+      from
+      (
+      select seq, fk_userid, name, subject,
+      readcount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate,
+      commentCount,
+      groupno, fk_seq, depthno
+      , fileName, orgFilename, fileSize
+      from tbl_oooBoard
+      where status = 1
+      <if test='searchWord != "" '>
+         and ${searchType} like '%'|| #{searchWord} ||'%'
+      </if>
+      start with fk_seq = 0
+      connect by prior seq = fk_seq
+      order siblings by groupno desc, seq asc
+      <!-- order siblings by 를 사용하는 이유는 그냥 정렬(order by)하면 계층구조가 깨진다. 그래서 계층구조를 
+         그대로 유지하면서 동일한 groupno 를 가진 행끼리 정렬을 하려면 siblings 를 써야 한다. -->
+      ) V
+      ) T
+      where rno between #{startRno} and #{endRno}
+
+   </select>
+
+
+   <select id="getGroupnoMax" resultType="int">
+      select nvl(max(groupno), 0)
+      from tbl_oooBoard
+   </select>
+
+   <insert id="add"
+      parameterType="com.spring.yogiyo.ooomodel.oooBoardVO">
+      <if test='fk_seq.equals("")'>
+         insert into tbl_oooBoard(seq, fk_userid, name, subject, content, pw,
+         readCount, regDate, status, groupno, fk_seq, depthno)
+         values(oooboardSeq.nextval, #{fk_userid}, #{name}, #{subject},
+         #{content}, #{pw}, default, default, default, #{groupno}, default,
+         default)
+      </if>
+
+      <if test='!fk_seq.equals("")'>
+         insert into tbl_oooBoard(seq, fk_userid, name, subject,
+         content, pw, readCount, regDate, status, groupno, fk_seq, depthno)
+         values(oooboardSeq.nextval, #{fk_userid}, #{name}, #{subject},
+         #{content}, #{pw}, default, default, default, #{groupno}, #{fk_seq},
+         #{depthno}+1)
+      </if>
+   </insert>
+
+   <insert id="add_withFile"
+      parameterType="com.spring.yogiyo.ooomodel.oooBoardVO">
+      <if test='fk_seq.equals("")'>
+         insert into tbl_oooBoard(seq, fk_userid, name, subject, content, pw,
+         readCount, regDate, status, groupno, fk_seq, depthno, fileName,
+         orgFilename, fileSize)
+         values(oooboardSeq.nextval, #{fk_userid}, #{name}, #{subject}, #{content}, #{pw}, default,
+         default, default, #{groupno}, default, default, #{fileName},
+         #{orgFilename}, #{fileSize})
+      </if>
+
+      <if test='!fk_seq.equals("")'>
+         insert into tbl_oooBoard(seq, fk_userid, name, subject, content, pw,
+         readCount, regDate, status, groupno, fk_seq, depthno, fileName,
+         orgFilename, fileSize)
+         values(oooboardSeq.nextval, #{fk_userid}, #{name}, #{subject}, #{content}, #{pw}, default,
+         default, default, #{groupno}, #{fk_seq}, #{depthno}+1,, #{fileName},
+         #{orgFilename}, #{fileSize})
+      </if>
+   </insert>
+
+   <select id="getView" parameterType="String"
+      resultType="com.spring.yogiyo.ooomodel.oooBoardVO">
+      select previousseq, previoussubject,
+      seq, fk_userid, name, subject, content, readCount, regDate,
+      nextseq, nextsubject
+      , commentCount
+      , groupno, fk_seq, depthno
+      , fileName, orgFilename, fileSize
+      from
+      (
+      select lag(seq, 1) over(order by seq desc) as previousseq
+      , lag(subject, 1) over(order by seq desc) as previoussubject
+      , seq, fk_userid, name, subject, content
+      , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+      , lead(seq, 1) over(order by seq desc) as nextseq
+      , lead(subject, 1) over(order by seq desc) as nextsubject
+      , commentCount
+      , groupno, fk_seq, depthno
+      , fileName, orgFilename, fileSize
+      from tbl_oooBoard
+      where status = 1
+      ) V
+      where V.seq = #{seq}
+   </select>
+
+   <update id="setAddReadCount" parameterType="String">
+      update tbl_oooBoard set readCount = readCOunt + 1
+      where status = 1 and seq = #{seq}
+   </update>
+
+   <!-- 원게시물에 딸린 댓글 보여주기 -->
+   <select id="getCommentList" parameterType="String"
+      resultType="com.spring.yogiyo.ooomodel.oooCommentVO">
+      select name, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+      from tbl_oooComment
+      where parentSeq = #{parentSeq}
+      order by seq desc
+   </select>
+
+   <select id="checkPW" parameterType="com.spring.yogiyo.ooomodel.oooBoardVO" resultType="int">
+      select count(*)
+      from tbl_oooBoard
+      where seq = #{seq} and pw = #{pw}
+   </select>
+
+
+   <update id="updateBoard" parameterType="com.spring.yogiyo.ooomodel.oooBoardVO">
+      update tbl_oooBoard set subject = #{subject}
+                         , content = #{content}
+                         , regdate = sysdate 
+       where seq = #{seq}
+   </update>
+
+   <update id="deleteBoard" parameterType="com.spring.yogiyo.ooomodel.oooBoardVO">
+       update tbl_oooBoard set status = 0
+       where seq = #{seq}
+   </update>
+
+   <update id="updateCommentCount" parameterType="String">
+       update tbl_oooBoard set commentCount = commentCount + 1 
+       where seq = #{parentSeq}
+    </update>
+
+   <insert id="addComment" parameterType="com.spring.yogiyo.ooomodel.oooCommentVO">
+       insert into tbl_oooComment(seq, fk_userid, name, content, regDate, parentSeq, status)
+        values(ooocommentSeq.nextval, #{fk_userid}, #{name}, #{content}, default, #{parentSeq}, default)
+    </insert>
+   
+    <select id="wordSearchShow" parameterType="HashMap" resultType="String"> 
+       select ${searchType}
+       from tbl_oooBoard
+       where lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+    </select>
+
+
+
+</mapper>
 
 
 

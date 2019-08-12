@@ -6,5 +6,167 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="lll">
 
-	
+   <!-- === #129. 답변형 게시판의 글쓰기(파일첨부가 없는 글쓰기) === 
+                     먼저 #56. 을 주석처리한 후 아래처럼 해야 한다. -->
+    <insert id="moonadd" parameterType="com.spring.yogiyo.lllmodel.MoonVO"> 
+       <if test='fk_seq.equals("")'>
+          insert into tbl_moonboard(seq, fk_email, name, subject, content, pw, readCount, regDate, status, groupno, fk_seq, depthno)
+         values(seq_tbl_moonboard_seq.nextval, #{fk_email}, #{name}, #{subject}, #{content}, #{pw}, default, default, default, #{groupno}, default, default) 
+      </if>
+      
+      <if test='!fk_seq.equals("")'>
+         insert into tbl_moonboard(seq, fk_email, name, subject, content, pw, readCount, regDate, status, groupno, fk_seq, depthno)
+         values(seq_tbl_moonboard_seq.nextval, #{fk_email}, #{name}, #{subject}, #{content}, #{pw}, default, default, default, #{groupno}, #{fk_seq}, #{depthno}+1)  
+       </if>
+    </insert>
+    
+    <!--  === #128. tblBoard 테이블에서 groupno 컬럼의 최대값 구하기 === -->
+   <select id="getGroupnoMax" resultType="int">
+       select nvl(max(groupno), 0)
+      from tbl_moonboard
+   </select>
+   
+   <!--  === #112. 검색조건이 없을 경우의 총 게시물 건수(totalCount) === -->
+   <select id="getTotalCountWithNOsearch" resultType="int">
+      select count(*)
+      from tbl_moonboard
+      where status = 1
+   </select>  
+   
+   
+   <!-- === #115. 검색조건이 있을 경우의 총 게시물 건수(totalCount) === --> 
+   <select id="getTotalCountWithSearch" parameterType="HashMap" resultType="int"> 
+      select count(*)
+      from tbl_moonboard
+      where status = 1
+      and ${searchType} like '%'|| #{searchWord} ||'%' 
+   </select>
+   
+   <!--  === #142. 첨부파일이 있는 답변형 게시판의 페이징 처리한 글목록 가져오기(검색이 있든지 , 검색이 없든지 다 포함한것) === 
+                                 먼저, #130. 을 주석처리한 이후 아래처럼 해야 한다. -->
+                                 
+   <select id="boardListWithPaging" parameterType="HashMap" resultType="com.spring.yogiyo.lllmodel.MoonVO"> 
+      select seq, fk_email, name, subject, readcount, regDate, commentCount
+           , groupno, fk_seq, depthno 
+           
+      from 
+      (
+          select rownum AS rno
+               , seq, fk_email, name, subject, readcount, regDate, commentCount  
+               , groupno, fk_seq, depthno
+               
+               
+          from
+          (
+              select seq, fk_email, name, subject,  
+                     readcount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate,
+                     commentCount,
+                     groupno, fk_seq, depthno
+               
+              from tbl_moonboard
+              where status = 1
+           <if test='searchWord != "" '>   
+              and ${searchType} like '%'|| #{searchWord} ||'%'
+           </if> 
+              start with fk_seq = 0
+              connect by prior seq = fk_seq
+              order siblings by groupno desc, seq asc
+              <!-- order siblings by 를 사용하는 이유는
+                              그냥 정렬(order by)하면 계층구조가 깨진다.
+                              그래서 계층구조를 그대로 유지하면서
+                              동일한 groupno 를 가진 행끼리 정렬을 하려면
+                   siblings 를 써야 한다.  -->
+          ) V
+      ) T
+      where rno between #{startRno} and #{endRno}
+   </select>
+   
+    <!-- === #145. 글 1개 보여주기 (댓글쓰기 및 답변형 첨부파일이 있는 게시판) === 
+                               먼저 위의  #93. 을 주석처리 한다. -->
+    <select id="getView" parameterType="String" resultType="com.spring.yogiyo.lllmodel.MoonVO">
+       select previousseq, previoussubject, 
+             seq, fk_email, name, subject, content, readCount, regDate,
+             nextseq, nextsubject 
+           , commentCount
+           , groupno, fk_seq, depthno
+         
+      from 
+      (
+          select lag(seq, 1) over(order by seq desc) as previousseq
+               , lag(subject, 1) over(order by seq desc) as previoussubject
+               , seq, fk_email, name, subject, content
+               , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+               , lead(seq, 1) over(order by seq desc) as nextseq
+               , lead(subject, 1) over(order by seq desc) as nextsubject
+               , commentCount
+               , groupno, fk_seq, depthno
+          from tbl_moonboard
+          where status = 1
+      ) V
+      where V.seq = #{seq}
+    </select>
+    
+    <!-- === #66. 글 조회수 1증가 하기 === --> 
+    <update id="setAddReadCount" parameterType="String">
+       update tbl_moonboard set readCount = readCount + 1 
+       where status = 1 and seq = #{seq}
+    </update>
+    
+     <!-- === #90. 원게시물에 딸린 댓글보여주기 === -->
+     <select id="getCommentList" parameterType="String" resultType="com.spring.yogiyo.lllmodel.CommentVO"> 
+        select name, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate 
+        from tbl_moonComment
+        where parentSeq = #{parentSeq}
+        order by seq desc
+     </select>
+     
+     
+     <!-- === #74. 글수정 및 글삭제시 암호일치 여부 알아오기 === --> 
+    <select id="checkPW" parameterType="com.spring.yogiyo.lllmodel.MoonVO" resultType="int"> 
+       select count(*)
+      from tbl_moonboard
+      where seq = #{seq} and pw = #{pw}
+    </select>
+    
+    
+    <!-- === #76. 글 1개를 수정한다. === -->
+    <update id="updateBoard" parameterType="com.spring.yogiyo.lllmodel.MoonVO">
+       update tbl_moonboard set subject = #{subject}
+                         , content = #{content}
+                         , regdate = sysdate 
+       where seq = #{seq}
+    </update>
+    
+    <!-- === #81. 1개글 삭제하기(우리는 update 로 처리하겠다) === -->
+    <update id="deleteBoard" parameterType="com.spring.yogiyo.lllmodel.MoonVO">
+       update tbl_moonboard set status = 0
+       where seq = #{seq}
+    </update>
+    
+    <!--  === #95. 원게시물에 딸린 모든 댓글들을 삭제하도록 한다. === -->
+     <delete id="deleteComment" parameterType="String">
+        delete from tbl_moonComment
+        where parentSeq = #{seq} 
+     </delete>
+     
+      <!--  === #89. 댓글쓰기(tblComment 테이블에 insert) === -->
+    <insert id="addComment" parameterType="com.spring.yogiyo.lllmodel.CommentVO" >
+       insert into tbl_moonComment(seq, fk_email, name, content, regDate, parentSeq, status)
+        values(seq_tbl_moonComment_seq.nextval, #{fk_email}, #{name}, #{content}, default, #{parentSeq}, default)
+    </insert>
+    
+    <!--  === #90. tblBoard 테이블에 commentCount 컬럼의 값을 1증가(update) === -->  
+    <update id="updateCommentCount" parameterType="String">
+       update tbl_moonboard set commentCount = commentCount + 1 
+       where seq = #{parentSeq}
+    </update>
+    
+    <!--  === #106. 검색어 입력시 자동글 완성하기 6 === --> 
+    <select id="wordSearchShow" parameterType="HashMap" resultType="String"> 
+       select ${searchType}
+       from tbl_moonboard
+       where lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+    </select>
+
+   
 </mapper>

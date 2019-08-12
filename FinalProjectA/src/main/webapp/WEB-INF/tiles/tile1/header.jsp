@@ -1,9 +1,11 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- ======= #25. tile1 중 header 페이지 만들기  ======= --%>
 <%
    String ctxPath = request.getContextPath();
+
 %>
 
 <meta charset="UTF-8">
@@ -19,8 +21,8 @@
 
    $(document).ready(function(){   
       
-	   goGPS();
-	   
+      goGPS();
+      
       $("#main-search-input").click(function(){
           new daum.Postcode({
              oncomplete: function(data) {
@@ -32,8 +34,8 @@
       
       
       $("#main-search-button").click(function(){
-    	  var addressVal = $("#main-search-input").val().trim();
-			goAddressToLatlng(addressVal);			
+         var addressVal = $("#main-search-input").val().trim();
+         goAddressToLatlng(addressVal);         
       });
       
       
@@ -49,12 +51,12 @@
            longitude = position.coords.longitude; //경도
 
            if (window.sessionStorage) {
-	
-	           sessionStorage.setItem('latitude', latitude);
-	           // var position = sessionStorage.getItem('latitude');
-	           sessionStorage.setItem('longitude', longitude);
-	           
-	       }
+   
+              sessionStorage.setItem('latitude', latitude);
+              // var position = sessionStorage.getItem('latitude');
+              sessionStorage.setItem('longitude', longitude);
+              
+          }
            
        var latlng = latitude+","+longitude;  // 위도,경도
             goLatlngToAddress(latlng);
@@ -80,11 +82,11 @@
                      $("#main-search-input").val(html);
                      
                      if (window.sessionStorage) {
-                    		
-          	           sessionStorage.setItem('addr1', html);
-          	           //var addr1 = sessionStorage.getItem('addr1');
-          	           
-          			  }
+                          
+                        sessionStorage.setItem('addr1', html);
+                        //var addr1 = sessionStorage.getItem('addr1');
+                        
+                     }
                      
                   } else if(json.status == 'ZERO_RESULTS') {
                       alert("지오코딩이 성공했지만 반환된 결과가 없음을 나타냅니다.\n\n이는 지오코딩이 존재하지 않는 address 또는 원격 지역의 latlng을 전달받는 경우 발생할 수 있습니다.")
@@ -118,18 +120,18 @@
              dataType: "JSON",
                 success: function(json){
                       if(json.status == 'OK') {
-                    	  
+                         
                           var addr1 = json.results[0].formatted_address;
                           var latitude = json.results[0].geometry.location.lat;
                           var longitude = json.results[0].geometry.location.lng;
-                   		  
+                           
                           addr1 = addr1.substring( 5 );
-                    		
-                          sessionStorage.setItem('addr1', addr1);           	           
-           	           	  sessionStorage.setItem('latitude', latitude);
-           	           	  sessionStorage.setItem('longitude', longitude);
+                          
+                          sessionStorage.setItem('addr1', addr1);                         
+                              sessionStorage.setItem('latitude', latitude);
+                              sessionStorage.setItem('longitude', longitude);
                             
-           	              location.href="<%=ctxPath %>/categryList.yo?shopcategorycode=0";
+                            location.href="<%=ctxPath %>/categryList.yo?shopcategorycode=0";
                            
                       } else if(json.status == 'ZERO_RESULTS') {
                           alert("지오코딩이 성공했지만 반환된 결과가 없음을 나타냅니다.\n\n이는 지오코딩이 존재하지 않는 address 또는 원격 지역의 latlng을 전달받는 경우 발생할 수 있습니다.")
@@ -159,7 +161,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/요기요로고.png" style="width: 130px; height: 50px;" /></a>
+      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/mrlogo.png" style="width: 130px; height: 50px;" /></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
      <c:if test="${sessionScope.loginuser == null }">
@@ -172,7 +174,7 @@
      </c:if>
      <c:if test="${sessionScope.loginuser != null }">
          <ul class="nav navbar-nav navbar-right">
-           <li><a href="<%=ctxPath%>/edit.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+           <li><a href="<%=ctxPath%>/editMember.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
          </ul>
          <ul class="nav navbar-nav navbar-right">
            <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
@@ -183,6 +185,9 @@
             </ul>
          </c:if>
          <c:if test="${sessionScope.loginuser.email == 'admin@gmail.com' }">
+         	<ul class="nav navbar-nav navbar-right">
+              <li><a href="<%=ctxPath%>/adminChart.yo"><span class="glyphicon glyphicon-log-in"></span> 관리자페이지</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="<%=ctxPath%>/shopregister.yo"><span class="glyphicon glyphicon-log-in"></span> 매장등록</a></li>
             </ul>

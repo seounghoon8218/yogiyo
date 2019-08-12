@@ -106,8 +106,8 @@ public class KkkDAO implements InterKkkDAO {
 	public List<HashMap<String, String>> getReviewList(String masterno) {
 		List<HashMap<String, String>> reviewList = sqlsession.selectList("kkk.getReviewList", masterno);
 
-		if (reviewList == null) {
-			System.out.println("~~~~~~ 널이군요~~");
+		if (reviewList == null){
+			System.out.println("널이군요!");
 		}
 
 		return reviewList;
@@ -131,7 +131,6 @@ public class KkkDAO implements InterKkkDAO {
 	@Override
 	public int getReviewCount1(String masterno) {
 		int reviewCnt = sqlsession.selectOne("kkk.getReviewCount1", masterno);
-		System.out.println("~~~~~~~~~ reviewCnt : " + reviewCnt);
 		return reviewCnt;
 	}
 
@@ -141,5 +140,124 @@ public class KkkDAO implements InterKkkDAO {
 		int sprc = sqlsession.update("kkk.updateStarpAndReviewc", masterStarReviewMap);
 		return sprc;
 	}
+	
+	
+	  /*----------------------- 손혜현 게시판 시작 -----------------------*/
+	   // 페이징 처리한 글목록 가져오기
+	   @Override
+	   public List<BoardVO> KKKBoardListWithPaging(HashMap<String, String> paraMap) {
+	      List<BoardVO> list = sqlsession.selectList("kkk.KKKBoardListWithPaging", paraMap);
+	      return list;
+	   }      
+	      
+
+	   // 검색조건이 없을 경우의 총 게시물 건수(totalCount)
+	   @Override
+	   public int getKKKTotalCountWithNOsearch() {
+	      int n = sqlsession.selectOne("kkk.getKKKTotalCountWithNOsearch");
+	      return n;
+	   }
+
+	   // 검색조건이 있을 경우의 총 게시물 건수(totalCount)
+	   @Override
+	   public int getKKKTotalCountWithSearch(HashMap<String, String> paraMap) {
+	      int n = sqlsession.selectOne("kkk.getKKKTotalCountWithSearch", paraMap);
+	      return n;
+	   }
+
+	   // === 검색어 입력시 자동 글 완성하기  ===
+	   @Override
+	   public List<String> KKKwordSearchShow(HashMap<String, String> paraMap) {
+	      List<String> wordList = sqlsession.selectList("kkk.KKKwordSearchShow", paraMap);
+	      return wordList;
+	   }
+
+	   // 첨부파일이 없는 경우
+	   @Override
+	   public int KKKadd(BoardVO boardvo) {
+	      int n = sqlsession.insert("kkk.KKKadd", boardvo);
+	      return n;
+	   }
+
+	   // 첨부파일이 있는 경우
+	   @Override
+	   public int KKKadd_withFile(BoardVO boardvo) {
+	      int n = sqlsession.insert("kkk.KKKadd_withFile", boardvo);
+	      return n;
+	   }
+
+	   // 원게시물에 딸린 댓글들을 조회해오는 것
+	   @Override
+	   public List<CommentVO> getKKKCommentList(String parentSeq) {
+	      List<CommentVO> commentList = sqlsession.selectList("kkk.getKKKCommentList", parentSeq);
+	      return commentList;
+	   }
+
+	   // 댓글쓰기
+	   @Override
+	   public int addKKKComment(CommentVO commentvo) {
+	      int n = sqlsession.insert("kkk.addKKKComment", commentvo);
+	      return n;
+	   }
+
+	   // === 1개 글 보여주기 === //
+	   @Override
+	   public BoardVO getKKKView(String seq) {
+	      BoardVO boardvo = sqlsession.selectOne("kkk.getKKKView", seq);
+	      return boardvo;
+	   }
+
+	   // === 글조회수 1증가하기 === //
+	   @Override
+	   public void setKKKAddReadCount(String seq) {
+	      sqlsession.update("kkk.setKKKAddReadCount", seq);
+	      
+	   }
+
+	   // === 글수정 및 글삭제시 암호일치 여부 알아오기 === 
+	   @Override
+	   public boolean checkPWKKK(BoardVO boardvo) {
+	      int n = sqlsession.selectOne("kkk.checkPWKKK", boardvo); 
+	      
+	      if(n==1) 
+	         return true;
+	      else
+	         return false;
+	   }
+
+	   // === 글 1개를 수정한다. ===
+	   @Override
+	   public int updateBoardKKK(BoardVO boardvo) {
+	      int n = sqlsession.update("kkk.updateKKKBoard", boardvo);
+	      return n;
+	   }
+
+	   // === KKKBoard 테이블에서 groupno 컬럼의 최대값 구하기 ===
+	   @Override
+	   public int getKKKGroupnoMax() {
+	      int max = sqlsession.selectOne("kkk.getKKKGroupnoMax");
+	      return max;
+	   }
+
+	   // === 원게시물에 딸린 댓글삭제 ===
+	   @Override
+	   public int deleteKKKComment(String seq) {
+	      int n = sqlsession.delete("kkk.deleteKKKComment", seq);
+	      return n;
+	   }
+
+
+	   @Override
+	   public int deleteKKKBoard(BoardVO boardvo) {
+	      int n = sqlsession.update("kkk.deleteKKKBoard", boardvo);
+	      return n;
+	   }
+
+
+	   @Override
+	   public int updateKKKCommentCount(String parentSeq) {
+	      int n = sqlsession.update("kkk.updateKKKCommentCount", parentSeq);
+	      return n;
+	   }
 
 }

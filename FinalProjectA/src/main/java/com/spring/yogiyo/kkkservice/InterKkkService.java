@@ -3,6 +3,8 @@ package com.spring.yogiyo.kkkservice;
 import java.util.HashMap;
 import java.util.List;
 
+import com.spring.yogiyo.kkkmodel.BoardVO;
+import com.spring.yogiyo.kkkmodel.CommentVO;
 import com.spring.yogiyo.ooomodel.oooVO;
 
 public interface InterKkkService {
@@ -51,5 +53,42 @@ public interface InterKkkService {
 	// 별점이랑 리뷰갯수 업데이트 해주기
 	int updateStarpAndReviewc(HashMap<String, String> masterStarReviewMap);
 	
+	
+	/*-------------손혜현 게시판 시작----------------*/
+	   // 페이징 처리한 글목록 가져오기
+	   List<BoardVO> KKKBoardListWithPaging(HashMap<String, String> paraMap);
+	   
+	   // 검색조건이 없을 경우의 총 게시물 건수(totalCount)
+	   int getKKKTotalCountWithNOsearch();
+
+	   // 검색조건이 있을 경우의 총 게시물 건수(totalCount)
+	   int getKKKTotalCountWithSearch(HashMap<String, String> paraMap);
+
+	   // === 검색어 입력시 자동 글 완성하기 ===
+	   List<String> KKKwordSearchShow(HashMap<String, String> paraMap);
+
+	   // 첨부파일이 없는 경우
+	   int KKKadd(BoardVO boardvo);
+
+	   // 첨부파일이 있는 경우
+	   int KKKadd_withFile(BoardVO boardvo);
+
+	   // 글조회수 증가와 함께 글1개 조회를 해주는 것
+	   BoardVO getKKKView(String seq, String userid);
+
+	   // 글조회수 증가는 없고 단순히 글1개 조회만을 해주는 것
+	   BoardVO getKKKViewWithNoAddCount(String seq);
+
+	   // 원게시물에 딸린 댓글들을 조회해오는 것
+	   List<CommentVO> getKKKCommentList(String parentSeq);
+
+	   // 글수정 페이지 완료하기
+	   int editKKK(BoardVO boardvo);
+
+	   // 글삭제 페이지 완료하기
+	   int delKKK(BoardVO boardvo) throws Throwable;
+
+	   // 댓글쓰기
+	   int addKKKComment(CommentVO commentvo) throws Throwable;
 	
 }

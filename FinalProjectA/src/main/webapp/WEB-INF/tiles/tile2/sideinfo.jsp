@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<% String ctxPath = request.getContextPath(); %>
 <%-- ======= #26. tile2 중 sideinfo 페이지 만들기  ======= --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -75,11 +75,11 @@
 <div align="center" style="margin-bottom: 30px;"> <h1>== 게시판 == </h1> </div>
 <div id="noticeboardVar">
 	<ul id="noticeboardUL">
-		<a href="#"><li>==박성훈 게시판==</li></a>
-		<a href="##"><li>==오명훈 게시판==</li></a>
-		<a href="#"><li>==우상경 게시판==</li></a>
-		<a href="##"><li>==이지훈 게시판==</li></a>
-		<a href="#"><li>==김선규 게시판==</li></a>
-		<a href="##"><li>==손혜현 게시판==</li></a>
+		<a href="<%= ctxPath%>/pshComplimentBoard.yo"><li>==신고 게시판==</li></a>
+		<a href="<%= ctxPath%>/oooBoardList.yo"><li>==추천 게시판==</li></a>
+		<a href="<%= ctxPath%>/freePage.yo"><li>==자유 게시판==</li></a>
+		<a href="<%= ctxPath%>/moonlist.yo"><li>==문의 게시판==</li></a>
+		<a href="<%= ctxPath%>/greetingList.yo"><li>==가입인사 게시판==</li></a>
+		<a href="<%= ctxPath%>/kkkBoardList.yo"><li>==공지사항 게시판==</li></a>
 	</ul>
 </div>

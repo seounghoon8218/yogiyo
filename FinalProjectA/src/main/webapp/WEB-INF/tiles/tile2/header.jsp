@@ -1,9 +1,19 @@
+<%@page import="java.net.InetAddress"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- ======= #25. tile1 중 header 페이지 만들기  ======= --%>
 <%
    String ctxPath = request.getContextPath();
+
+	// === 서버 IP 주소 알아오기 ===
+	InetAddress inet = InetAddress.getLocalHost();
+	String serverIP = inet.getHostAddress();
+	
+	// === 서버 포트번호 알아오기 ===
+	int portnumber = request.getServerPort();
+	
+	String serverName = "http://"+serverIP+":"+portnumber;
 %>
 
 <style type="text/css">
@@ -245,7 +255,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/요기요로고.png" style="width: 100px; height: 50px;" /></a>
+      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/mrlogo.png" style="width: 100px; height: 50px;" /></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
      <c:if test="${sessionScope.loginuser == null }">
@@ -258,7 +268,7 @@
      </c:if>
      <c:if test="${sessionScope.loginuser != null }">
          <ul class="nav navbar-nav navbar-right">
-           <li><a href="<%=ctxPath%>/edit.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+           <li><a href="<%=ctxPath%>/editMember.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
          </ul>
          <ul class="nav navbar-nav navbar-right">
            <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
@@ -269,6 +279,9 @@
             </ul>
          </c:if>
          <c:if test="${sessionScope.loginuser.email == 'admin@gmail.com' }">
+         	<ul class="nav navbar-nav navbar-right">
+              <li><a href="<%=ctxPath%>/adminChart.yo"><span class="glyphicon glyphicon-log-in"></span> 관리자페이지</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="<%=ctxPath%>/shopregister.yo"><span class="glyphicon glyphicon-log-in"></span> 매장등록</a></li>
             </ul>
@@ -302,17 +315,5 @@
 </div>
 
 
-<div class="list-option">
-  <div class="list-option-inner">
-  <select>
-    <option value="rank" >기본 정렬순</option>
-    <option value="review_avg" >별점순</option>
-    <option value="review_count" >리뷰 많은순</option>
-    <option value="min_order_value" >최소 주문 금액순</option>
-    <option value="distance" >거리순</option>    
-  </select>
-  <i class="arr-down"></i>
-  </div>
-</div>
 
 

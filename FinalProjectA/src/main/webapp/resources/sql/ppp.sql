@@ -16,6 +16,16 @@ select * from TBL_CART;
 
 delete from TBL_CART where email = 'psh7603zz@naver.com';
 
+select * from TBL_MEMBER where email like '%'||'admin'||'%';
+
+select * from tbl_shop where shopname like '%'||'CU'||'%';
+
+
+-- 메뉴등록
+insert into tbl_menu(menucode, masterno, fk_menuspeccode, menuname, menuprice, menucomment, fileName, orgFilename, fileSize, fk_shopcategory,fk_masterno, pop_menuspeccode)
+values(SEQ_TBL_MENU_MENUCODE.nextval, 216, 1, '후라이드', 9000, '바삭바삭', '20180727874648684522468.jpg', '네네종로후라이드.jpg', 232934, 3, 216, 1);
+
+
 commit;
 -- cart
 SELECT orderno,V.masterno AS masterno,V.menucode AS menucode,V.menuname AS menuname,V.menuqty AS menuqty,V.menuprice AS menuprice,shopname,shopimage,M.filename AS filename , V.email AS email
@@ -33,6 +43,7 @@ desc TBL_CART;
 desc TBL_ORDERDETAIL;
 desc TBL_MENU;
 
+desc TBL_SHOPCATEGORY;
 select * from TBL_SHOPCATEGORY;
 
 select * from TBL_SHOP;
@@ -60,13 +71,59 @@ select * from TBL_SHOP;
 select * from TBL_SHOPCATEGORY;
 
 select C.shopcategoryname as shopcategoryname
-		      , count(*) as CNT
+            , count(*) as CNT
               , round(count(*)/(select count(*) from TBL_SHOP)*100,2) as PERCNT
-		from TBL_SHOPCATEGORY C left join TBL_SHOP S
-		on S.shopcategorycode = C.shopcategorycode
-		group by C.shopcategoryname
+      from TBL_SHOPCATEGORY C left join TBL_SHOP S
+      on S.shopcategorycode = C.shopcategorycode
+      group by C.shopcategoryname
         order by percnt desc;
+--------------------
+select V.shopcategoryname
+      ,count(*) as CNT
+      , round(count(*)/(select count(*) from tbl_payment)*100,2) as PERCNT
+from
+(
+select C.shopcategorycode , C.shopcategoryname , S.masterno ,S.shopname
+from TBL_SHOPCATEGORY C left join TBL_SHOP S
+      on S.shopcategorycode = C.shopcategorycode
+)V right join tbl_payment P
+on V.masterno = P.masterno
+group by V.shopcategoryname
+order by percnt desc;
+--====
+select rno , shopname , cnt , percnt
+from
+(
+    select rownum as rno , shopname , cnt , percnt
+    from 
+    (
+        select V.shopname, count(*) as cnt
+              , round(count(*)/( select count(*)
+                                    from (
+                                    select C.shopcategorycode , C.shopcategoryname , S.masterno ,S.shopname
+                                    from TBL_SHOPCATEGORY C left join TBL_SHOP S
+                                            on S.shopcategorycode = C.shopcategorycode
+                                    )W right join tbl_payment P
+                                    on W.masterno = P.masterno
+                                    where shopcategoryname = '분식' 
+                                )*100,2) as percnt
+                
+        from (
+        select C.shopcategorycode , C.shopcategoryname , S.masterno ,S.shopname
+        from TBL_SHOPCATEGORY C left join TBL_SHOP S
+                on S.shopcategorycode = C.shopcategorycode
+        )V right join tbl_payment P
+        on V.masterno = P.masterno
+        where shopcategoryname = '분식'
+        group by v.shopname
+        order by percnt desc
+    ) X
+) Y
+where rno between 1 and 3;
+-------------
 
+
+select * from tbl_payment;
 
 select * from tbl_member;
 desc tbl_member;
@@ -132,9 +189,98 @@ where rownum < 10;
 select * from tbl_shop;
  
 insert into tbl_payment(payno,addr1,addr2,tel,yocheong,totalprice,paymethod,email)
-		values(seq_tbl_payment_payno.nextval,'서울','11번지','010-3333-3333','맛있게','35000','card','psh@psh' );
+      values(seq_tbl_payment_payno.nextval,'서울','11번지','010-3333-3333','맛있게','35000','card','psh@psh' );
 select * from tbl_payment;
 
 
+--------
 
+select * from TBL_MEMBER;
 
+select name, email, tel,status
+from
+(
+    select rownum as rno , name, email, tel,status
+    from
+    (
+        select name,email,tel ,status
+        from tbl_member
+        where email like '%'||''||'%'
+        order by idx asc
+    ) V
+)T
+where rno between 1 and 5;
+
+-------------------------------------------------------
+
+-- * 댓글 및 답변형 파일첨부가 있는 게시판
+
+create table pppBoard
+(seq            number                not null   -- 글번호
+,fk_email      varchar2(20)          not null   -- 사용자ID
+,name           Nvarchar2(20)         not null   -- 글쓴이
+,subject        Nvarchar2(200)        not null   -- 글제목
+,content        Nvarchar2(2000)       not null   -- 글내용    -- clob
+,pw             varchar2(20)          not null   -- 글암호
+,readCount      number default 0      not null   -- 글조회수
+,regDate        date default sysdate  not null   -- 글쓴시간
+,status         number(1) default 1   not null   -- 글삭제여부  1:사용가능한글,  0:삭제된글 
+,commentCount   number default 0      not null   -- 댓글의 갯수
+,groupno        number                not null   -- 답변글쓰기에 있어서 그룹번호
+                                                 -- 원글(부모글)과 답변글은 동일한 groupno 를 가진다.
+                                                 -- 답변글이 아닌 원글(부모글)인 경우 groupno 의 값은 groupno 컬럼의 최대값(max)+1 로 한다.
+
+,fk_seq         number default 0      not null   -- fk_seq 컬럼은 절대로 foreign key가 아니다.
+                                                 -- fk_seq 컬럼은 자신의 글(답변글)에 있어서 
+                                                 -- 원글(부모글)이 누구인지에 대한 정보값이다.
+                                                 -- 답변글쓰기에 있어서 답변글이라면 fk_seq 컬럼의 값은
+                                                 -- 원글(부모글)의 seq 컬럼의 값을 가지게 되며,
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+
+,depthno        number default 0      not null   -- 답변글쓰기에 있어서 답변글 이라면
+                                                 -- 원글(부모글)의 depthno+1 을 가지게 되며
+                                                 -- 답변글이 아닌 원글일 경우 0 을 가지도록 한다.
+
+,fileName       varchar2(225)                    -- WAS(톰켓)에 저장될 파일명(2019072509271512312.png)
+,orgFilename    varchar2(255)                    -- 진짜 파일명(강아지.png) // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명
+,fileSize       number                           -- 파일크기
+,constraint  PK_pppBoard_seq primary key(seq)
+,constraint  FK_pppBoard_userid foreign key(fk_email) references TBL_MEMBER(email)
+,constraint  CK_pppBoard_status check( status in(0,1) )
+);
+
+create sequence pppboardSeq
+start with 1
+increment by 1
+nomaxvalue 
+nominvalue
+nocycle
+nocache;      
+            
+select * from pppBoard;         
+            
+create table pppComment
+(seq           number               not null   -- 댓글번호
+,fk_email     varchar2(20)         not null   -- 사용자ID
+,name          varchar2(20)         not null   -- 성명
+,content       varchar2(1000)       not null   -- 댓글내용
+,regDate       date default sysdate not null   -- 작성일자
+,parentSeq     number               not null   -- 원게시물 글번호
+,status        number(1) default 1  not null   -- 글삭제여부
+                                               -- 1 : 사용가능한 글,  0 : 삭제된 글
+                                               -- 댓글은 원글이 삭제되면 자동적으로 삭제되어야 한다.
+,constraint PK_tblComment_seq primary key(seq)
+,constraint FK_tblComment_userid foreign key(fk_email)
+                                    references TBL_MEMBER(email)
+,constraint FK_tblComment_parentSeq foreign key(parentSeq) 
+                                      references pppBoard(seq) on delete cascade
+,constraint CK_tblComment_status check( status in(1,0) ) 
+);
+
+create sequence pppcommentSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;

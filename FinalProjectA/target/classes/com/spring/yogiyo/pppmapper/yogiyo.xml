@@ -5,48 +5,319 @@
 
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="yogiyo">
-	
-	<resultMap type="HashMap" id="categoryList">
-		
-		<result property="shopcategorycode" 	column="shopcategorycode" 		javaType="String" />
-		<result property="shopcategoryname" 	column="shopcategoryname" 		javaType="String" />
-		
-	</resultMap>
+   
+   <resultMap type="HashMap" id="categoryList">
+      
+      <result property="shopcategorycode"    column="shopcategorycode"       javaType="String" />
+      <result property="shopcategoryname"    column="shopcategoryname"       javaType="String" />
+      
+   </resultMap>
 
-	<select id="getShopCategory" resultMap="categoryList">
-		select shopcategorycode, shopcategoryname 
-		from tbl_shopcategory
-	</select>
-	
-	<resultMap type="HashMap" id="chartTest">
-		
-		<result property="shopcategoryname" 	column="shopcategoryname" 	javaType="String" />
-		<result property="cnt" 				column="cnt" 				javaType="String" />
-		<result property="percnt" 			column="percnt" 			javaType="String" />
-		
-	</resultMap>
-	
-	<!-- // 차트 테스트 ( 업종별 매장수 차트 ) -->
-	<select id="chartList" resultMap="chartTest">
-		select C.shopcategoryname as shopcategoryname
-		      , count(*) as cnt
+   <select id="getShopCategory" resultMap="categoryList">
+      select shopcategorycode, shopcategoryname 
+      from tbl_shopcategory
+   </select>
+   
+   <!-- // 차트 테스트 ( 업종별 매장수 차트 ) -->
+   <resultMap type="HashMap" id="chartTest">
+      
+      <result property="shopcategoryname"    column="shopcategoryname"    javaType="String" />
+      <result property="cnt"             column="cnt"             javaType="String" />
+      <result property="percnt"          column="percnt"          javaType="String" />
+      
+   </resultMap>
+   
+   <select id="chartList" resultMap="chartTest">
+      select C.shopcategoryname as shopcategoryname
+            , count(*) as cnt
               , round(count(*)/(select count(*) from TBL_SHOP)*100,2) as percnt
-		from TBL_SHOPCATEGORY C left join TBL_SHOP S
-		on S.shopcategorycode = C.shopcategorycode
-		group by C.shopcategoryname
-		order by percnt desc
-	</select>
-	
-	<insert id="insertPayment" parameterType="HashMap" >
-		insert into tbl_payment(payno,addr1,addr2,tel,yocheong,totalprice,paymethod,email,paymenuname,masterno)
-		values(seq_tbl_payment_payno.nextval,#{addr1},#{addr2},#{tel},#{yocheong},#{totalprice},'card',#{email},#{paymenuname},#{masterno} )
-	</insert>
-	
-	<!-- // 결제완료했으면 해당 아이디 장바구니 비우기 -->
-	<delete id="alldeleteCart" parameterType="String">
-		delete from TBL_CART where email = #{email}
-	</delete>
-	
-</mapper>
+      from TBL_SHOPCATEGORY C left join TBL_SHOP S
+      on S.shopcategorycode = C.shopcategorycode
+      group by C.shopcategoryname
+      order by percnt desc
+   </select>
+   
+   <!-- // 음식별 매장 판매 랭킹 -->
+   <resultMap type="HashMap" id="categoryRankShopMap">
+      
+      <result property="shopcategoryname"    column="shopcategoryname"    javaType="String" />
+      <result property="cnt"             column="cnt"             javaType="String" />
+      <result property="percnt"          column="percnt"          javaType="String" />
+      
+   </resultMap>
+   
+   <select id="categoryRankShop" resultMap="categoryRankShopMap">
+      select shopcategoryname
+            ,count(*) as cnt
+            , round(count(*)/(select count(*) from tbl_payment)*100,2) as percnt
+      from
+         (
+         select C.shopcategorycode , C.shopcategoryname , S.masterno ,S.shopname
+         from TBL_SHOPCATEGORY C left join TBL_SHOP S
+               on S.shopcategorycode = C.shopcategorycode
+         )V right join tbl_payment P
+      on V.masterno = P.masterno
+      group by V.shopcategoryname
+      order by percnt desc
+   </select>
+   <!-- // 음식별 매장 판매 랭킹2 -->
+   <resultMap type="HashMap" id="categoryRankEndShopMap">
+      
+      <result property="shopname"       column="shopname"          javaType="String" />
+      <result property="cnt"             column="cnt"             javaType="String" />
+      <result property="percnt"          column="percnt"          javaType="String" />
+      
+   </resultMap>
+   
+   <select id="categoryRankShopEnd" resultMap="categoryRankEndShopMap" parameterType="String">
+      select rno , shopname , cnt , percnt
+      from
+      (
+          select rownum as rno , shopname , cnt , percnt
+          from 
+          (
+              select V.shopname, count(*) as cnt
+                    , round(count(*)/( select count(*)
+                                          from (
+                                          select C.shopcategorycode , C.shopcategoryname , S.masterno ,S.shopname
+                                          from TBL_SHOPCATEGORY C left join TBL_SHOP S
+                                                  on S.shopcategorycode = C.shopcategorycode
+                                          )W right join tbl_payment P
+                                          on W.masterno = P.masterno
+                                          where shopcategoryname = #{shopcategoryname}
+                                      )*100,2) as percnt
+                      
+              from (
+              select C.shopcategorycode , C.shopcategoryname , S.masterno ,S.shopname
+              from TBL_SHOPCATEGORY C left join TBL_SHOP S
+                      on S.shopcategorycode = C.shopcategorycode
+              )V right join tbl_payment P
+              on V.masterno = P.masterno
+              where shopcategoryname = #{shopcategoryname}
+              group by v.shopname
+              order by percnt desc
+          ) X
+      ) Y
+      where rno between 1 and 3
+   </select>
+   
+   <insert id="insertPayment" parameterType="HashMap" >
+      insert into tbl_payment(payno,addr1,addr2,tel,yocheong,totalprice,paymethod,email,paymenuname,masterno)
+      values(seq_tbl_payment_payno.nextval,#{addr1},#{addr2},#{tel},#{yocheong},#{totalprice},'card',#{email},#{paymenuname},#{masterno} )
+   </insert>
+   
+   <!-- // 결제완료했으면 해당 아이디 장바구니 비우기 -->
+   <delete id="alldeleteCart" parameterType="String">
+      delete from TBL_CART where email = #{email}
+   </delete>
+   
+   
+   <!-- // 총 회원수 구하기 -->
+   <select id="getTotalMemberCnt" parameterType="String" resultType="int">
+      select count(*)
+      from tbl_member
+      where email like '%'||#{searchWord}||'%'
+   </select>
+   
+   <!-- 페이징 처리한 데이터 조회 결과물 가져오기 -->
+   <select id="getPageMember" parameterType="HashMap" resultType="com.spring.member.model.MemberVO">
+      select name, email, tel, status
+      from
+      (
+          select rownum as rno , name, email, tel, status
+          from
+          (
+              select name,email,tel, status
+              from tbl_member
+              where email like '%'||#{searchWord}||'%'
+              order by idx desc
+          ) V
+      )T
+      where rno between #{startno} and #{endno}
+   </select>
+   
+   <!-- ====================================================================== -->
+   
+   <!-- 검색조건이 없을경우의 총 게시물 건수(totalCount) -->
+   <select id="getTotalCountWithNoSearch" resultType="int">
+      select
+      count(*)
+      from pppBoard
+      where status = 1
+   </select>
 
+   <!-- // 검색조건이 있을경우의 총 게시물 건수(totalCount) -->
+   <select id="getTotalCountWithSearch" resultType="int" parameterType="HashMap">
+      select count(*)
+      from pppBoard
+      where status = 1
+      and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+   </select>
+   
+   <!-- 첨부파일이 있는 답변형게시판의 페이징 처리한 글목록 가져오기 ( 검색이 있든지, 검색이 없든지 다 포함한 것 ) -->
+   <select id="boardListWithPaging" resultType="com.spring.yogiyo.pppmodel.BoardVO" parameterType="HashMap">
+      select rno ,
+      seq,fk_email,name,subject,content,pw,readCount,regDate,status ,
+      commentCount ,groupno, fk_seq, depthno
+      ,fileName,orgFilename,fileSize
+      from
+      (
+         select rownum as rno
+         ,seq,fk_email,name,subject,content,pw,readCount,regDate,status ,
+         commentCount ,groupno, fk_seq, depthno
+         ,fileName,orgFilename,fileSize
+         from
+         (
+            select
+            seq,fk_email,name,subject,content,pw,readCount,to_char(regDate,'yyyy-mm-dd
+            hh24:mi:ss') as regDate,status , commentCount
+            ,groupno, fk_seq, depthno
+            ,fileName,orgFilename,fileSize
+            from pppBoard
+            where status = 1
+            <if test='searchWord != "" '>
+               and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+            </if>
+            start with fk_seq = 0
+            connect by prior seq = fk_seq
+      
+            order siblings by groupno desc, seq asc
+            <!-- order siblings by 를 사용하는 이유는 그냥정렬(order by) 하면 계층구조가 깨진다. -->
+            <!-- 그래서 계층구조를 그대로 유지하면서 동일한 groupno를 가진 행끼리 정렬을 하려면 siblings를 써야한다. -->
+         )V
+      )T
+      where T.rno between #{startRno} and #{endRno}
+   </select>
+   
+   <!-- === 답변형 게시판의 글쓰기(파일첨부가 없는 글쓰기) ===  -->
+   <insert id="add" parameterType="com.spring.yogiyo.pppmodel.BoardVO">
+      <if test='fk_seq.equals("")'>
+         insert into pppBoard(seq, fk_email, name, subject, content, pw, readCount,
+         regDate, status,groupno,fk_seq, depthno)
+         values(pppboardSeq.nextval, #{fk_email}, #{name}, #{subject}, #{content}, #{pw}, default,
+         default, default,#{groupno},default,default)
+      </if>
+
+      <if test='!fk_seq.equals("")'>
+         insert into pppBoard(seq, fk_email, name, subject, content, pw, readCount,
+         regDate, status ,groupno,fk_seq, depthno)
+         values(pppboardSeq.nextval, #{fk_email}, #{name}, #{subject}, #{content}, #{pw}, default,
+         default, default,#{groupno},#{fk_seq},#{depthno}+1)
+      </if>
+   </insert>
+
+   <!-- === 글쓰기(파일첨부가 있는 글쓰기) === -->
+   <insert id="add_withFile" parameterType="com.spring.yogiyo.pppmodel.BoardVO">
+      <if test='fk_seq.equals("")'>
+         insert into pppBoard(seq, fk_email, name, subject, content, pw, readCount,
+         regDate, status,groupno,fk_seq, depthno , fileName, orgFilename,
+         fileSize)
+         values(pppboardSeq.nextval, #{fk_email}, #{name}, #{subject}, #{content}, #{pw}, default,
+         default, default,#{groupno},default,default , #{fileName},
+         #{orgFilename}, #{fileSize})
+      </if>
+
+      <if test='!fk_seq.equals("")'>
+         insert into pppBoard(seq, fk_email, name, subject, content, pw, readCount,
+         regDate, status ,groupno,fk_seq, depthno , fileName, orgFilename,
+         fileSize)
+         values(pppboardSeq.nextval, #{fk_email}, #{name}, #{subject}, #{content}, #{pw}, default,
+         default, default,#{groupno},#{fk_seq},#{depthno}+1 , #{fileName},
+         #{orgFilename}, #{fileSize})
+      </if>
+   </insert>
+   <!--  === pppBoard 테이블에서 groupno 컬럼의 최대값 구하기 === -->
+   <select id="getGroupnoMax" resultType="int">
+       select nvl(max(groupno), 0)
+      from pppBoard
+   </select>
+   
+   <!-- === 글 1개 보여주기 (댓글쓰기 및 답변형 첨부파일이 있는 게시판) === -->
+    <select id="getView" parameterType="String" resultType="com.spring.yogiyo.pppmodel.BoardVO">
+       select previousseq, previoussubject, 
+             seq, fk_email, name, subject, content, readCount, regDate,
+             nextseq, nextsubject 
+           , commentCount
+           , groupno, fk_seq, depthno
+           , fileName, orgFilename, fileSize
+      from 
+      (
+          select lag(seq, 1) over(order by seq desc) as previousseq
+               , lag(subject, 1) over(order by seq desc) as previoussubject
+               , seq, fk_email, name, subject, content
+               , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+               , lead(seq, 1) over(order by seq desc) as nextseq
+               , lead(subject, 1) over(order by seq desc) as nextsubject
+               , commentCount
+               , groupno, fk_seq, depthno
+               , fileName, orgFilename, fileSize
+          from pppBoard
+          where status = 1
+      ) V
+      where V.seq = #{seq}
+    </select>    
+    
+    
+    <!-- === 글 조회수 1증가 하기 === --> 
+    <update id="setAddReadCount" parameterType="String">
+       update pppBoard set readCount = readCount + 1 
+       where status = 1 and seq = #{seq}
+    </update>
+   
+    <!-- === 원게시물에 딸린 댓글보여주기 === -->
+     <select id="getCommentList" parameterType="String" resultType="com.spring.yogiyo.pppmodel.CommentVO"> 
+        select name, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate 
+        from pppComment
+        where parentSeq = #{parentSeq}
+        order by seq desc
+     </select>
+   
+   <!-- === 글수정 및 글삭제시 암호일치 여부 알아오기 === --> 
+    <select id="checkPW" parameterType="com.spring.yogiyo.pppmodel.BoardVO" resultType="int"> 
+       select count(*)
+      from pppBoard
+      where seq = #{seq} and pw = #{pw}
+    </select>
+    
+    
+    <!-- ===  글 1개를 수정한다. === -->
+    <update id="updateBoard" parameterType="com.spring.yogiyo.pppmodel.BoardVO">
+       update pppBoard set subject = #{subject}
+                         , content = #{content}
+                         , regdate = sysdate 
+       where seq = #{seq}
+    </update>
+   
+   <!--  ===  원게시물에 딸린 모든 댓글들을 삭제하도록 한다. === -->
+     <delete id="deleteComment" parameterType="String">
+        delete from pppComment
+        where parentSeq = #{seq} 
+     </delete>
+   
+   <!-- === 1개글 삭제하기(우리는 update 로 처리하겠다) === -->
+    <update id="deleteBoard" parameterType="com.spring.yogiyo.pppmodel.BoardVO">
+       update pppBoard set status = 0
+       where seq = #{seq}
+    </update>
+   
+   <!--  ===댓글쓰기(tblComment 테이블에 insert) === -->
+    <insert id="addComment" parameterType="com.spring.yogiyo.pppmodel.CommentVO">
+       insert into pppComment(seq, fk_email, name, content, regDate, parentSeq, status)
+        values(pppcommentSeq.nextval, #{fk_email}, #{name}, #{content}, default, #{parentSeq}, default)
+    </insert>
+   
+   <!--  ===pppBoard 테이블에 commentCount 컬럼의 값을 1증가(update) === -->  
+    <update id="updateCommentCount" parameterType="String">
+       update pppBoard set commentCount = commentCount + 1 
+       where seq = #{parentSeq}
+    </update>
+   
+   <!--  검색어 입력시 자동글 완성하기 6 === --> 
+    <select id="wordSearchShow" parameterType="HashMap" resultType="String"> 
+       select ${searchType}
+       from pppBoard
+       where lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+    </select>
+   
+</mapper>
 

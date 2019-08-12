@@ -19,7 +19,7 @@
 		
 		  	var scrollBottom = $("body").height() - $(window).height() - $(window).scrollTop();
 			
-		  	if(scrollBottom == 0){
+		  	if(scrollBottom <= 5){
 		  		cnt += 4;
 		  		shoplist(cnt,latitude,longitude);
 		  		

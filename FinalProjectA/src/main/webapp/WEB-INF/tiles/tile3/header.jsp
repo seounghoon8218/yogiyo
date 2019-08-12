@@ -14,7 +14,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/요기요로고.png" style="width: 100px; height: 50px;" /></a>
+      <a class="navbar-brand" href="<%=ctxPath%>/index.yo"><img src="<%=ctxPath %>/resources/images/mrlogo.png" style="width: 100px; height: 50px;" /></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar" style="color: white; margin-top: 12px;">
      <c:if test="${sessionScope.loginuser == null }">
@@ -27,7 +27,7 @@
      </c:if>
      <c:if test="${sessionScope.loginuser != null }">
          <ul class="nav navbar-nav navbar-right">
-           <li><a href="<%=ctxPath%>/edit.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
+           <li><a href="<%=ctxPath%>/editMember.yo"><span class="glyphicon glyphicon-user"></span> 내정보</a></li>
          </ul>
          <ul class="nav navbar-nav navbar-right">
            <li><a href="<%=ctxPath%>/logout.yo"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
@@ -38,6 +38,9 @@
             </ul>
          </c:if>
          <c:if test="${sessionScope.loginuser.email == 'admin@gmail.com' }">
+         	<ul class="nav navbar-nav navbar-right">
+              <li><a href="<%=ctxPath%>/adminChart.yo"><span class="glyphicon glyphicon-log-in"></span> 관리자페이지</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="<%=ctxPath%>/shopregister.yo"><span class="glyphicon glyphicon-log-in"></span> 매장등록</a></li>
             </ul>

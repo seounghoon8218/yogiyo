@@ -248,5 +248,175 @@
 		#{reviewCount}
 		where masterno = #{masterno}
 	</update>
+	
+	
+	
+	
+   <!-- ===== 손혜현 게시판 시작 ==== -->
+   
+   <!-- 검색조건이 없을 경우의 총 게시물 건수(totalCount) -->
+      <select id="getKKKTotalCountWithNOsearch" resultType="int">
+         select count(*)
+      from KKKBoard
+      where status = 1
+      </select>
+            
+      <!-- 검색조건이 있을 경우의 총 게시물 건수(totalCount) -->
+      <select id="getKKKTotalCountWithSearch" parameterType="HashMap" resultType="int">
+         select count(*)
+      from KKKBoard
+      where status = 1 and lower(${searchType}) like '%' || lower(#{searchWord}) || '%'
+      </select>
+   
+   <!-- 답변형 게시판에 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 다 포함한 것) 첨부파일 있는 것 -->
+      <select id="KKKBoardListWithPaging" parameterType="HashMap" resultType="com.spring.yogiyo.kkkmodel.BoardVO">
+         select RNO,
+              seq, fk_userid, name, subject, readCount, regDate, commentCount, 
+              groupno, fk_seq, depthno, 
+              fileName, orgFilename, fileSize
+      from
+      (
+         select rownum as RNO,
+                 seq, fk_userid, name, subject, readCount, regDate, commentCount, 
+                 groupno, fk_seq, depthno, 
+                 fileName, orgFilename, fileSize
+         from
+         (
+               select rownum, seq, fk_userid, name, subject, readCount, to_char(regDate, 'yyyy-mm-dd') AS regDate,
+                     commentCount,
+                     groupno, fk_seq, depthno,
+                     fileName, orgFilename, fileSize
+            from KKKBoard
+            where status = 1
+           <if test='searchWord != ""'>
+             and ${searchType} like '%'|| #{searchWord} ||'%'
+           </if>
+              start with fk_seq = 0
+              connect by prior seq = fk_seq              
+             order siblings by groupno desc, seq asc
+             
+           )V
+      )T
+      where RNO between #{startRno} and #{endRno}
+      </select>
+   
+   
+   <!-- #129. 답변형 게시판의 글쓰기 (파일첨부가 없는 글쓰기) -->
+   <insert id="KKKadd" parameterType="com.spring.yogiyo.kkkmodel.BoardVO" > 
+        <!-- 원글이라면 -->
+     <if test='fk_seq == "" '> <!-- "" 은 공백이 아니다 null도 아니다 그냥 값이 없는 것이다. 웹에선 null을 하면 글자 그대로 나온다. -->   
+         insert into KKKBoard (seq, fk_userid, name, subject, content, pw, readCount, regdate, status, groupno, fk_seq, depthno)
+         values(KKKBoardSeq.nextval,#{fk_userid},#{name},#{subject},#{content},#{pw},default,default,default, #{groupno}, default, default)
+      </if>
+      
+      <!-- 원글이 아니라면(답변글) -->
+     <if test='fk_seq != "" '>   
+         insert into KKKBoard (seq, fk_userid, name, subject, content, pw, readCount, regdate, status, groupno, fk_seq, depthno)
+         values(KKKBoardSeq.nextval,#{fk_userid},#{name},#{subject},#{content},#{pw},default,default,default, #{groupno}, #{fk_seq}, #{depthno}+1)
+      </if>
+   </insert> 
+   
+   
+   <!-- #141. 답변형 게시판의 글쓰기 (파일첨부가 있는 글쓰기)  -->
+   <insert id="KKKadd_withFile" parameterType="com.spring.yogiyo.kkkmodel.BoardVO" >
+        <!-- 원글이라면 -->
+     <if test='fk_seq == "" '> <!-- "" 은 공백이 아니다 null도 아니다 그냥 값이 없는 것이다. 웹에선 null을 하면 글자 그대로 나온다. -->   
+         insert into KKKBoard (seq, fk_userid, name, subject, content, pw, readCount, regdate, status, groupno, fk_seq, depthno, fileName, orgFilename, fileSize)
+         values(KKKBoardSeq.nextval,#{fk_userid},#{name},#{subject},#{content},#{pw},default,default,default, #{groupno}, default, default, #{fileName}, #{orgFilename}, #{fileSize})
+      </if>
+      
+      <!-- 원글이 아니라면(답변글) -->
+     <if test='fk_seq != "" '>   
+         insert into KKKBoard (seq, fk_userid, name, subject, content, pw, readCount, regdate, status, groupno, fk_seq, depthno, fileName, orgFilename, fileSize)
+         values(KKKBoardSeq.nextval,#{fk_userid},#{name},#{subject},#{content},#{pw},default,default,default, #{groupno}, #{fk_seq}, #{depthno}+1, #{fileName}, #{orgFilename}, #{fileSize})
+      </if>
+   </insert>
+   
+   
+   <!-- 검색어 입력시 자동 글 완성하기  -->
+      <select id="KKKwordSearchShow" parameterType="HashMap" resultType="String">
+         select ${searchType}
+      from KKKBoard
+      where lower(${searchType}) like '%' || lower(#{searchWord}) || '%'
+      </select>
+   
+   <!-- #128.tblBoard 테이블에서 groupno 컬럼의 최대값 구하기 -->
+      <select id="getKKKGroupnoMax" resultType="int">
+         select nvl(max(groupno), 0)
+         from KKKBoard
+      </select>
+   
+   <!--  글 1개 보여주기 (댓글쓰기 및 답변형 게시판) 첨부파일 있는 것   -->
+   <select id="getKKKView" parameterType="String" resultType="com.spring.yogiyo.kkkmodel.BoardVO">
+      select previousseq, previoussubject, seq, fk_userid, name, subject, content, readCount, regDate, nextseq, nextsubject , commentCount
+             , groupno, fk_seq, depthno, fileName, orgFilename, fileSize 
+      from 
+      (
+          select lag(seq, 1) over(order by seq desc ) as previousseq
+               , lag(subject, 1) over(order by seq desc ) as previoussubject
+               , seq, fk_userid, name, subject, content, readCount , to_char(regDate, 'yyyy-mm-dd') as regDate
+               , lead(seq, 1) over(order by seq desc ) as nextseq
+               , lead(subject, 1) over(order by seq desc) as nextsubject
+               , commentCount
+               , groupno
+               , fk_seq
+               , depthno
+            , fileName, orgFilename, fileSize             
+          from KKKBoard
+          where status = 1
+      )V
+      where V.seq = #{seq}
+   </select>
+   
+   <!-- #66. 글 조회수 1증가 하기 -->
+   <update id="setKKKAddReadCount" parameterType="String" >
+      update KKKBoard set readCount = readCount + 1
+      where status = 1 and seq = #{seq}
+   </update>
+   
+   <!-- #74. 글수정 및 글삭제시 암호일치 여부 알아보기 -->
+   <select id="checkPWKKK" resultType="int" parameterType="com.spring.yogiyo.kkkmodel.BoardVO">
+      select count(*) 
+      from KKKBoard
+      where seq = #{seq} and pw = #{pw}
+   </select>
+   
+   <!-- #76. 글 1개 수정하기 -->
+   <update id="updateKKKBoard" parameterType="com.spring.yogiyo.kkkmodel.BoardVO">
+      update KKKBoard set subject = #{subject} , content = #{content}, regDate = sysdate
+      where seq = #{seq}      
+   </update>
+   
+   <!-- #.81 글 1개 삭제하기 -->
+   <update id="deleteKKKBoard" parameterType="com.spring.yogiyo.kkkmodel.BoardVO">
+      update KKKBoard set status = 0
+      where seq = #{seq}      
+   </update>
+   
+   <!-- #89. 댓글쓰기 (KKKBoardComment 테이블에 insert)-->
+   <insert id="addKKKComment" parameterType="com.spring.yogiyo.kkkmodel.CommentVO">
+       insert into KKKBoardComment(seq, fk_userid, name, content, regDate, parentSeq, status)
+        values(KKKCommentSeq.nextval, #{fk_userid}, #{name}, #{content}, default, #{parentSeq}, default)
+    </insert>
+
+
+   <!-- #90. KKKBoard테이블에 commentBount 컬럼의 값을 1증가(update)-->
+   <update id="updateKKKCommentCount" parameterType="String">
+       update KKKBoard set commentCount = commentCount + 1 
+       where seq = #{parentSeq}
+    </update>
+    
+    <!-- #90. 원 게시물에 딸린 댓글 불러오기 -->
+    <select id="getKKKCommentList" parameterType="String" resultType="com.spring.yogiyo.kkkmodel.CommentVO">
+       select name, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate 
+       from KKKBoardComment
+       where parentSeq = #{parentSeq}
+       order by seq desc
+    </select>
+    
+    <!-- #95.원게시물에 딸린 모든 댓글 삭제하기 -->
+    <delete id="deleteKKKComment" parameterType="String">
+       delete from KKKBoardComment where parentSeq = #{seq}
+    </delete>
 
 </mapper>

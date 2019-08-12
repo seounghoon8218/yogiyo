@@ -55,4 +55,54 @@ public interface InterKkkDAO {
 	   int updateStarpAndReviewc(HashMap<String, String> masterStarReviewMap);   
 	   
 	   
+	   /*-------------------------------손혜현 게시판 시작------------------------------*/
+	   // 페이징 처리한 글목록 가져오기
+	   List<BoardVO> KKKBoardListWithPaging(HashMap<String, String> paraMap);
+	   
+	   // 검색조건이 없을 경우의 총 게시물 건수(totalCount)
+	   int getKKKTotalCountWithNOsearch();
+	   
+	   // 검색조건이 있을 경우의 총 게시물 건수(totalCount)   
+	   int getKKKTotalCountWithSearch(HashMap<String, String> paraMap);
+
+	   // === 검색어 입력시 자동 글 완성하기  ===
+	   List<String> KKKwordSearchShow(HashMap<String, String> paraMap);
+
+	   // 첨부파일이 없는 경우
+	   int KKKadd(BoardVO boardvo);
+
+	   // 첨부파일이 있는 경우
+	   int KKKadd_withFile(BoardVO boardvo);
+
+	   // 글조회수 증가와 함께 글1개 조회를 해주는 것
+	   BoardVO getKKKView(String seq);
+	   // 글 조회수 1 증가
+	   void setKKKAddReadCount(String seq);
+
+	   // 글수정 및 글삭제시 암호일치 여부 알아오기 
+	   boolean checkPWKKK(BoardVO boardvo);   
+
+	   // 원게시물에 딸린 댓글들을 조회해오는 것
+	   List<CommentVO> getKKKCommentList(String parentSeq);
+
+	   // 글 1개를 수정한다.
+	   int updateBoardKKK(BoardVO boardvo);
+	      
+	   // 댓글쓰기
+	   int addKKKComment(CommentVO commentvo);
+
+	   // KKKBoard 테이블에서 groupno 컬럼의 최댓값 구하기
+	   int getKKKGroupnoMax();
+
+	   // 원게시물에 딸린 댓글삭제
+	   int deleteKKKComment(String seq);
+
+	   // 글 1개를 삭제한다.
+	   int deleteKKKBoard(BoardVO boardvo);
+
+	   // KKKBoard 테이블에 commentCount 컬럼의 값을 1증가(update) 
+	   int updateKKKCommentCount(String parentSeq);
+
+	   
+	   
 }
